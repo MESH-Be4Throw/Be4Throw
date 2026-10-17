@@ -1,0 +1,309 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             Int                  @id @default(autoincrement())
+  nama           String
+  email          String               @unique
+  passwordHash   String
+  role           Role                 @default(pengguna)
+  status         StatusAkun           @default(aktif)
+  fotoProfil     String?
+  createdAt      DateTime             @default(now())
+  updatedAt      DateTime             @updatedAt
+  domisili       String?
+  noTelepon      String?
+  username       String?              @unique
+  analisis       AnalisisBarang[]
+  auditPerubahan AuditPerubahan[]
+  aturanDibuat   BasisPengetahuan[]
+  faktorDibuat   FaktorDampak[]
+  resetTokens    PasswordResetToken[]
+  umpanBalik     UmpanBalik[]
+}
+
+model PasswordResetToken {
+  id        Int       @id @default(autoincrement())
+  userId    Int
+  tokenHash String    @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Kategori {
+  id         Int                @id @default(autoincrement())
+  nama       String             @unique
+  deskripsi  String?
+  status     StatusKonten       @default(aktif)
+  createdAt  DateTime           @default(now())
+  updatedAt  DateTime           @updatedAt
+  barang     Barang[]
+  aturan     BasisPengetahuan[]
+  pertanyaan Pertanyaan[]
+}
+
+model Barang {
+  id            Int              @id @default(autoincrement())
+  nama          String
+  kategoriId    Int
+  gambar        String?
+  estimasiBerat Float?
+  material      String?
+  status        StatusKonten     @default(aktif)
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+  analisis      AnalisisBarang[]
+  kategori      Kategori         @relation(fields: [kategoriId], references: [id])
+
+  @@unique([nama, kategoriId])
+}
+
+model Pertanyaan {
+  id             Int            @id @default(autoincrement())
+  kategoriId     Int
+  kode           String
+  teks           String
+  tipe           TipePertanyaan
+  opsi           Json?
+  wajib          Boolean        @default(true)
+  bolehTidakTahu Boolean        @default(false)
+  urutan         Int            @default(0)
+  indukId        Int?
+  tampilJika     Json?
+  status         StatusKonten   @default(aktif)
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  induk          Pertanyaan?    @relation("PertanyaanLanjutan", fields: [indukId], references: [id])
+  lanjutan       Pertanyaan[]   @relation("PertanyaanLanjutan")
+  kategori       Kategori       @relation(fields: [kategoriId], references: [id])
+
+  @@unique([kategoriId, kode])
+}
+
+model AnalisisBarang {
+  id                     Int                     @id @default(autoincrement())
+  userId                 Int?
+  barangId               Int
+  status                 StatusAnalisis          @default(draft)
+  pesanKeterbatasan      String?
+  createdAt              DateTime                @default(now())
+  updatedAt              DateTime                @updatedAt
+  beratKg                Float?
+  kodeAksesHash          String?                 @unique
+  versiAturan            Json?
+  versiFaktor            Json?
+  barang                 Barang                  @relation(fields: [barangId], references: [id])
+  user                   User?                   @relation(fields: [userId], references: [id])
+  kondisi                KondisiBarang?
+  pemeriksaanKeselamatan PemeriksaanKeselamatan?
+  rekomendasi            Rekomendasi[]
+  skorSolusi             SkorSolusi[]
+  umpanBalik             UmpanBalik?
+
+  @@index([userId])
+}
+
+model KondisiBarang {
+  id               Int            @id @default(autoincrement())
+  analisisId       Int            @unique
+  fungsiUtama      FungsiUtama?
+  kondisiFisik     String[]
+  usiaTahun        Float?
+  kelengkapan      Int?
+  mengandungBahaya Boolean?
+  jenisBahaya      String[]
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+  jawaban          Json?
+  analisis         AnalisisBarang @relation(fields: [analisisId], references: [id], onDelete: Cascade)
+}
+
+model PemeriksaanKeselamatan {
+  id                  Int            @id @default(autoincrement())
+  analisisId          Int            @unique
+  adaBahaya           Boolean
+  tindakanDieliminasi Tindakan[]
+  peringatan          String[]
+  createdAt           DateTime       @default(now())
+  analisis            AnalisisBarang @relation(fields: [analisisId], references: [id], onDelete: Cascade)
+}
+
+model SkorSolusi {
+  id         Int            @id @default(autoincrement())
+  analisisId Int
+  tindakan   Tindakan
+  skor       Int
+  peringkat  Int
+  createdAt  DateTime       @default(now())
+  analisis   AnalisisBarang @relation(fields: [analisisId], references: [id], onDelete: Cascade)
+
+  @@unique([analisisId, tindakan])
+}
+
+model Rekomendasi {
+  id             Int               @id @default(autoincrement())
+  analisisId     Int
+  tindakan       Tindakan
+  jenis          JenisRekomendasi
+  skor           Int
+  alasan         String
+  langkahPraktis String[]
+  peringatan     String[]
+  createdAt      DateTime          @default(now())
+  dampak         DampakLingkungan?
+  analisis       AnalisisBarang    @relation(fields: [analisisId], references: [id], onDelete: Cascade)
+
+  @@unique([analisisId, tindakan])
+}
+
+model DampakLingkungan {
+  id                   Int         @id @default(autoincrement())
+  rekomendasiId        Int         @unique
+  material             String
+  limbahDialihkanKg    Float?
+  emisiDihindariKgCO2e Float?
+  asumsi               String?
+  sumber               String?
+  tahunFaktor          Int?
+  createdAt            DateTime    @default(now())
+  rekomendasi          Rekomendasi @relation(fields: [rekomendasiId], references: [id], onDelete: Cascade)
+}
+
+model UmpanBalik {
+  id         Int            @id @default(autoincrement())
+  analisisId Int            @unique
+  userId     Int?
+  rating     Int
+  komentar   String?
+  createdAt  DateTime       @default(now())
+  updatedAt  DateTime       @updatedAt
+  analisis   AnalisisBarang @relation(fields: [analisisId], references: [id], onDelete: Cascade)
+  user       User?          @relation(fields: [userId], references: [id])
+}
+
+model BasisPengetahuan {
+  id         Int          @id @default(autoincrement())
+  kode       String       @unique
+  namaAturan String
+  kategoriId Int?
+  kondisi    Json
+  tindakan   Tindakan
+  bobot      Int          @default(0)
+  eliminasi  Boolean      @default(false)
+  alasan     String
+  versi      Int          @default(1)
+  status     StatusKonten @default(aktif)
+  adminId    Int
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+  admin      User         @relation(fields: [adminId], references: [id])
+  kategori   Kategori?    @relation(fields: [kategoriId], references: [id])
+
+  @@index([status])
+}
+
+model FaktorDampak {
+  id        Int          @id @default(autoincrement())
+  kode      String       @unique
+  material  String
+  tindakan  Tindakan
+  nilai     Float
+  satuan    String
+  sumber    String
+  tahun     Int
+  versi     Int          @default(1)
+  status    StatusKonten @default(aktif)
+  adminId   Int
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+  admin     User         @relation(fields: [adminId], references: [id])
+
+  @@index([material, tindakan, status])
+}
+
+model AuditPerubahan {
+  id             Int            @id @default(autoincrement())
+  adminId        Int
+  jenisData      JenisData
+  dataId         Int
+  versi          Int?
+  ringkasan      String
+  dataSebelum    Json?
+  dataSesudah    Json?
+  createdAt      DateTime       @default(now())
+  jenisPerubahan JenisPerubahan
+  admin          User           @relation(fields: [adminId], references: [id])
+
+  @@index([jenisData, dataId])
+  @@index([createdAt])
+}
+
+enum Role {
+  pengguna
+  admin
+}
+
+enum StatusAkun {
+  aktif
+  nonaktif
+}
+
+enum StatusKonten {
+  draft
+  aktif
+  nonaktif
+}
+
+enum Tindakan {
+  gunakan_kembali
+  perbaiki
+  jual
+  donasikan
+  daur_ulang
+}
+
+enum TipePertanyaan {
+  pilihan_tunggal
+  pilihan_ganda
+  angka
+  ya_tidak
+}
+
+enum FungsiUtama {
+  berfungsi_penuh
+  berfungsi_sebagian
+  tidak_berfungsi
+}
+
+enum StatusAnalisis {
+  draft
+  selesai
+  gagal
+}
+
+enum JenisRekomendasi {
+  utama
+  alternatif
+}
+
+enum JenisData {
+  kategori
+  barang
+  pertanyaan
+  aturan
+  faktor_dampak
+}
+
+enum JenisPerubahan {
+  tambah
+  ubah
+  hapus
+}
