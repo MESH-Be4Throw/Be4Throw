@@ -1,0 +1,385 @@
+
+.identify-page {
+  min-height: 100vh;
+  padding-bottom: 85px;
+  box-sizing: border-box;
+  background: #fff;
+  color: #26332c;
+  font-family: inherit;
+}
+
+.identify-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 42px;
+  padding: 0 16px;
+  border-bottom: 1px solid #edf0ed;
+  background: #fff;
+}
+
+.identify-back {
+  display: grid;
+  width: 23px;
+  height: 30px;
+  padding: 0;
+  place-items: center;
+  border: 0;
+  background: transparent;
+  color: #65746a;
+  font-size: 19px;
+  cursor: pointer;
+}
+
+.identify-back-label {
+  color: #69766d;
+  font-size: 10px;
+}
+
+.identify-header h1 {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 750;
+}
+
+.identify-content {
+  width: calc(100% - 32px);
+  max-width: 480px;
+  margin: 0 auto;
+  padding-top: 13px;
+}
+
+.identify-description {
+  margin: 0 0 18px;
+  color: #737e76;
+  font-size: 10px;
+  line-height: 1.6;
+}
+
+.identify-section {
+  margin-bottom: 20px;
+}
+
+.identify-section h2,
+.identify-safety h2 {
+  margin: 0 0 7px;
+  color: #39734d;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.identify-hint {
+  margin: 0 0 8px;
+  color: #78837b;
+  font-size: 9px;
+  line-height: 1.5;
+}
+
+/* PILIHAN FUNGSI */
+
+.identify-function-options {
+  display: grid;
+  gap: 7px;
+}
+
+.identify-function-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  box-sizing: border-box;
+  padding: 10px;
+  border: 1px solid #e8ede9;
+  border-radius: 8px;
+  background: #fff;
+  cursor: pointer;
+}
+
+.identify-function-card.active {
+  border-color: #43865b;
+  background: #f9fcf8;
+}
+
+.identify-function-card input,
+.identify-safety-option input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.identify-radio {
+  position: relative;
+  display: block;
+  flex-shrink: 0;
+  width: 14px;
+  height: 14px;
+  box-sizing: border-box;
+  margin-top: 1px;
+  border: 1px solid #d5ddd6;
+  border-radius: 50%;
+  background: #fff;
+}
+
+.identify-function-card.active .identify-radio,
+.identify-safety-option.active .identify-radio {
+  border: 4px solid #26724a;
+}
+
+.identify-function-card input:focus-visible + .identify-radio,
+.identify-safety-option input:focus-visible + .identify-radio {
+  outline: 2px solid #78b58a;
+  outline-offset: 3px;
+}
+
+.identify-option-text {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.identify-option-text strong {
+  color: #34433a;
+  font-size: 10px;
+  font-weight: 750;
+}
+
+.identify-option-text small {
+  color: #77837a;
+  font-size: 9px;
+  line-height: 1.5;
+}
+
+/* CHECKBOX KONDISI FISIK */
+
+.identify-checkbox-list {
+  display: grid;
+  gap: 6px;
+}
+
+.identify-checkbox-card {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 30px;
+  box-sizing: border-box;
+  padding: 6px 9px;
+  border: 1px solid #e8ede9;
+  border-radius: 6px;
+  color: #4e5b52;
+  font-size: 9px;
+  cursor: pointer;
+}
+
+.identify-checkbox-card:has(input:checked) {
+  border-color: #82b891;
+  background: #f5faf4;
+}
+
+.identify-checkbox-card input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.identify-custom-checkbox {
+  display: grid;
+  flex-shrink: 0;
+  width: 13px;
+  height: 13px;
+  box-sizing: border-box;
+  place-items: center;
+  border: 1px solid #d4ddd5;
+  border-radius: 3px;
+  background: #fff;
+  color: #fff;
+  font-size: 9px;
+}
+
+.identify-checkbox-card input:checked + .identify-custom-checkbox {
+  border-color: #26724a;
+  background: #26724a;
+}
+
+.identify-checkbox-card input:focus-visible + .identify-custom-checkbox {
+  outline: 2px solid #78b58a;
+  outline-offset: 2px;
+}
+
+/* INPUT INFORMASI TAMBAHAN */
+
+.identify-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 12px;
+}
+
+.identify-field > span {
+  color: #58665d;
+  font-size: 9px;
+  font-weight: 650;
+}
+
+.identify-field input {
+  width: 100%;
+  min-height: 34px;
+  box-sizing: border-box;
+  padding: 8px 10px;
+  border: 1px solid #e1e8e2;
+  border-radius: 7px;
+  outline: none;
+  background: #fff;
+  color: #34433a;
+  font: inherit;
+  font-size: 10px;
+}
+
+.identify-field input:focus {
+  border-color: #43865b;
+  box-shadow: 0 0 0 2px rgb(67 134 91 / 10%);
+}
+
+.identify-field input::placeholder {
+  color: #a3aca5;
+}
+
+/* INDIKATOR BAHAYA */
+
+.identify-safety {
+  margin-bottom: 18px;
+  padding: 12px;
+  border: 1px solid #dfe5e0;
+  border-radius: 9px;
+  background: #fff;
+}
+
+.identify-safety h2 {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #45534a;
+}
+
+.identify-safety > p {
+  margin: 0 0 10px;
+  color: #77837a;
+  font-size: 9px;
+  line-height: 1.55;
+}
+
+.identify-safety-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 31px;
+  box-sizing: border-box;
+  margin-top: 6px;
+  padding: 7px 9px;
+  border: 1px solid #e8ede9;
+  border-radius: 6px;
+  color: #536057;
+  font-size: 9px;
+  cursor: pointer;
+}
+
+.identify-safety-option.active {
+  border-color: #b8d8bd;
+  background: #f7fbf5;
+}
+
+.identify-safety-option.active.danger {
+  border-color: #d7a6a0;
+  background: #fff8f7;
+}
+
+.identify-safety-option.active.danger .identify-radio {
+  border-color: #b54d43;
+}
+
+/* PESAN ERROR */
+
+.identify-error {
+  margin: 0 0 12px;
+  padding: 10px;
+  border: 1px solid #f0c8c4;
+  border-radius: 7px;
+  background: #fff7f6;
+  color: #a33b32;
+  font-size: 10px;
+  line-height: 1.5;
+}
+
+/* TOMBOL BAWAH */
+
+.identify-actions {
+  position: fixed;
+  z-index: 20;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  box-sizing: border-box;
+  padding: 10px 16px max(12px, env(safe-area-inset-bottom));
+  border-top: 1px solid #edf0ed;
+  background: #fff;
+  box-shadow: 0 -3px 12px rgb(30 50 35 / 4%);
+}
+
+.identify-previous-button,
+.identify-next-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 36px;
+  box-sizing: border-box;
+  padding: 8px 12px;
+  border-radius: 7px;
+  font-family: inherit;
+  font-size: 9px;
+  font-weight: 750;
+  cursor: pointer;
+}
+
+.identify-previous-button {
+  flex: 1;
+  border: 1px solid #dce5dd;
+  background: #fff;
+  color: #5e6f62;
+}
+
+.identify-next-button {
+  flex: 1.5;
+  border: 1px solid #155c3d;
+  background: #155c3d;
+  color: #fff;
+}
+
+.identify-next-button:hover {
+  background: #104b31;
+}
+
+@media (min-width: 700px) {
+  .identify-header {
+    padding-right: max(24px, calc((100vw - 480px) / 2));
+    padding-left: max(24px, calc((100vw - 480px) / 2));
+  }
+
+  .identify-content {
+    padding-top: 20px;
+  }
+
+  .identify-actions {
+    right: auto;
+    left: 50%;
+    width: 480px;
+    padding: 12px 16px;
+    transform: translateX(-50%);
+  }
+}

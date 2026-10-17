@@ -1,0 +1,285 @@
+
+.feedback-page {
+  --feedback-green: #18583f;
+  --feedback-green-dark: #124832;
+  --feedback-text: #243c2d;
+  --feedback-muted: #78877b;
+  --feedback-border: #e7eee8;
+
+  min-height: 100vh;
+  background: #ffffff;
+  color: var(--feedback-text);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.feedback-page * {
+  box-sizing: border-box;
+}
+
+/* Header */
+.feedback-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 58px;
+  padding: 0 20px;
+  border-bottom: 1px solid var(--feedback-border);
+  background: #ffffff;
+}
+
+.feedback-back {
+  display: grid;
+  width: 24px;
+  height: 32px;
+  flex-shrink: 0;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #26382d;
+  cursor: pointer;
+}
+
+.feedback-back:hover {
+  color: var(--feedback-green);
+}
+
+.feedback-header h1 {
+  margin: 0;
+  color: #24372b;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+/* Area utama */
+.feedback-content {
+  width: 100%;
+  max-width: 440px;
+  margin: 0 auto;
+  padding: 20px 16px 40px;
+}
+
+/* Card feedback */
+.feedback-card {
+  width: 100%;
+  padding: 18px 12px 14px;
+  border: 1px solid #e6eee8;
+  border-radius: 11px;
+  background: #ffffff;
+}
+
+/* Pertanyaan */
+.feedback-card h2 {
+  margin: 0 0 14px;
+  color: #17583e;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+/* Rating bintang */
+.feedback-stars {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+  padding: 1px 0 13px;
+}
+
+.feedback-star {
+  display: grid;
+  width: 30px;
+  height: 30px;
+  flex: 0 1 30px;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #cfd8d1;
+  font-size: 25px;
+  line-height: 1;
+  cursor: pointer;
+  transition: color 0.15s ease, transform 0.15s ease;
+}
+
+.feedback-star:hover:not(:disabled) {
+  color: #8eaf91;
+  transform: scale(1.1);
+}
+
+.feedback-star.selected {
+  color: #e8b84e;
+}
+
+.feedback-star:focus-visible {
+  outline: 2px solid #72a581;
+  outline-offset: 2px;
+  border-radius: 5px;
+}
+
+.feedback-star:disabled {
+  cursor: default;
+}
+
+/* Garis pemisah */
+.feedback-divider {
+  width: 100%;
+  height: 1px;
+  margin: 0 0 22px;
+  background: #edf1ed;
+}
+
+/* Komentar */
+.feedback-label {
+  display: block;
+  margin-bottom: 9px;
+  color: #26382d;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.feedback-card textarea {
+  display: block;
+  width: 100%;
+  min-height: 96px;
+  padding: 10px;
+  border: 1px solid #e5ece7;
+  border-radius: 8px;
+  outline: none;
+  background: #ffffff;
+  color: #26382d;
+  font-family: inherit;
+  font-size: 11px;
+  line-height: 1.6;
+  resize: vertical;
+  transition: border-color 0.2s ease;
+}
+
+.feedback-card textarea::placeholder {
+  color: #a2ada4;
+}
+
+.feedback-card textarea:focus {
+  border-color: #78a989;
+  box-shadow: 0 0 0 2px rgb(120 169 137 / 10%);
+}
+
+.feedback-card textarea:disabled {
+  background: #f8faf8;
+  cursor: default;
+}
+
+/* Pesan validasi dan sukses */
+.feedback-message {
+  margin: 10px 0 0;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.feedback-message.error {
+  color: #b42318;
+}
+
+.feedback-message.success {
+  padding: 9px;
+  border-radius: 7px;
+  background: #eef8eb;
+  color: #21683b;
+}
+
+/* Tombol kirim */
+.feedback-submit {
+  display: flex;
+  width: 100%;
+  min-height: 43px;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+  padding: 11px 14px;
+  border: 0;
+  border-radius: 8px;
+  background: var(--feedback-green);
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.feedback-submit:hover {
+  background: var(--feedback-green-dark);
+}
+
+.feedback-submit:focus-visible,
+.feedback-skip:focus-visible {
+  outline: 2px solid #72a581;
+  outline-offset: 3px;
+}
+
+/* Tombol lewati */
+.feedback-skip {
+  display: flex;
+  width: 100%;
+  min-height: 39px;
+  align-items: center;
+  justify-content: center;
+  margin-top: 7px;
+  padding: 9px 12px;
+  border: 1px solid #dfe9e2;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #26382d;
+  font-family: inherit;
+  font-size: 11px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.feedback-skip:hover {
+  background: #f5faf5;
+}
+
+/* Responsif */
+@media (min-width: 768px) {
+  .feedback-header {
+    min-height: 64px;
+    padding: 0 32px;
+  }
+
+  .feedback-header h1 {
+    font-size: 16px;
+  }
+
+  .feedback-content {
+    padding-top: 32px;
+  }
+
+  .feedback-card {
+    padding: 22px 18px 16px;
+  }
+}
+
+@media (max-width: 360px) {
+  .feedback-header {
+    padding: 0 15px;
+  }
+
+  .feedback-content {
+    padding: 17px 12px 30px;
+  }
+
+  .feedback-card {
+    padding: 16px 11px 12px;
+  }
+
+  .feedback-card h2 {
+    font-size: 12px;
+  }
+
+  .feedback-star {
+    font-size: 23px;
+  }
+}

@@ -1,0 +1,414 @@
+.catalog-page {
+  min-height: 100vh;
+  padding-bottom: 82px;
+  box-sizing: border-box;
+  background: #ffffff;
+  color: #27332c;
+  font-family: inherit;
+}
+
+/* HEADER */
+
+.catalog-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 48px;
+  padding: 0 16px;
+  border-bottom: 1px solid #edf0ed;
+  background: #ffffff;
+}
+
+.catalog-back {
+  display: grid;
+  width: 28px;
+  height: 32px;
+  padding: 0;
+  place-items: center;
+  border: 0;
+  background: transparent;
+  color: #155c3d;
+  font-size: 25px;
+  cursor: pointer;
+}
+
+.catalog-header h1 {
+  margin: 0;
+  color: #26332c;
+  font-size: 14px;
+  font-weight: 750;
+}
+
+/* AREA KONTEN */
+
+.catalog-content {
+  width: calc(100% - 32px);
+  max-width: 650px;
+  margin: 0 auto;
+}
+
+/* PENCARIAN */
+
+.catalog-search {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  height: 39px;
+  box-sizing: border-box;
+  margin: 12px 0 10px;
+  padding: 0 12px;
+  border: 1px solid #e9eeea;
+  border-radius: 10px;
+  background: #f8faf8;
+}
+
+.catalog-search > span {
+  color: #9aa69d;
+  font-size: 21px;
+  line-height: 1;
+}
+
+.catalog-search input {
+  width: 100%;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: #26332c;
+  font: inherit;
+  font-size: 11px;
+}
+
+.catalog-search input::placeholder {
+  color: #a2aaa5;
+}
+
+.catalog-search input::-webkit-search-cancel-button {
+  cursor: pointer;
+}
+
+.catalog-search button {
+  flex-shrink: 0;
+  border: 0;
+  background: transparent;
+  color: #738078;
+  font-size: 19px;
+  cursor: pointer;
+}
+
+/* KATEGORI */
+
+.catalog-categories {
+  display: flex;
+  gap: 17px;
+  overflow-x: auto;
+  border-bottom: 1px solid #edf0ed;
+  scrollbar-width: none;
+}
+
+.catalog-categories::-webkit-scrollbar {
+  display: none;
+}
+
+.catalog-categories button {
+  position: relative;
+  flex-shrink: 0;
+  padding: 9px 0 10px;
+  border: 0;
+  background: transparent;
+  color: #78827b;
+  font-size: 10px;
+  cursor: pointer;
+}
+
+.catalog-categories button.active {
+  color: #155c3d;
+  font-weight: 750;
+}
+
+.catalog-categories button.active::after {
+  position: absolute;
+  right: 0;
+  bottom: -1px;
+  left: 0;
+  height: 2px;
+  border-radius: 2px;
+  background: #155c3d;
+  content: "";
+}
+
+/* DAFTAR BARANG */
+
+.catalog-list {
+  display: grid;
+  gap: 9px;
+  padding: 10px 0 16px;
+}
+
+.catalog-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  min-height: 72px;
+  box-sizing: border-box;
+  padding: 10px;
+  border: 1px solid #e9eeea;
+  border-radius: 11px;
+  background: #ffffff;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.catalog-item.selected {
+  border-color: #397c58;
+  background: #f8fcf7;
+}
+
+.catalog-item-icon {
+  display: grid;
+  flex-shrink: 0;
+  width: 39px;
+  height: 43px;
+  place-items: center;
+  border: 1px solid #e8eee8;
+  border-radius: 9px;
+  background: #ffffff;
+  color: #387b59;
+  font-size: 24px;
+}
+
+.catalog-item-info {
+  flex: 1;
+  min-width: 0;
+  padding-right: 2px;
+}
+
+.catalog-item-category {
+  display: block;
+  margin-bottom: 3px;
+  color: #8a968e;
+  font-size: 8px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.catalog-item-info h2 {
+  margin: 0 0 4px;
+  color: #303b34;
+  font-size: 11px;
+  font-weight: 750;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.catalog-item-info p {
+  margin: 0;
+  color: #8a948d;
+  font-size: 9px;
+  line-height: 1.4;
+}
+
+.catalog-select-button {
+  flex-shrink: 0;
+  min-width: 49px;
+  padding: 7px 9px;
+  border: 1px solid #155c3d;
+  border-radius: 6px;
+  background: #155c3d;
+  color: #ffffff;
+  font-size: 9px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.catalog-select-button:hover {
+  background: #104b31;
+}
+
+.catalog-select-button.is-selected {
+  border-color: #d7e4da;
+  background: #ffffff;
+  color: #65746a;
+}
+
+.catalog-select-button.is-selected:hover {
+  border-color: #155c3d;
+  color: #155c3d;
+}
+
+.catalog-check {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  display: grid;
+  width: 17px;
+  height: 17px;
+  place-items: center;
+  border: 2px solid #ffffff;
+  border-radius: 50%;
+  background: #155c3d;
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: 800;
+}
+
+/* HASIL KOSONG */
+
+.catalog-empty {
+  padding: 45px 16px;
+  color: #7b887f;
+  text-align: center;
+}
+
+.catalog-empty > span {
+  font-size: 30px;
+}
+
+.catalog-empty h2 {
+  margin: 10px 0 6px;
+  color: #34433a;
+  font-size: 14px;
+}
+
+.catalog-empty p {
+  font-size: 11px;
+}
+
+.catalog-empty button {
+  padding: 8px 12px;
+  border: 1px solid #155c3d;
+  border-radius: 7px;
+  background: #ffffff;
+  color: #155c3d;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+/* BAR BAWAH */
+
+.catalog-bottom {
+  position: fixed;
+  z-index: 20;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 65px;
+  box-sizing: border-box;
+  padding: 10px max(16px, calc((100vw - 650px) / 2));
+  border-top: 1px solid #e9eeea;
+  background: #ffffff;
+  box-shadow: 0 -3px 12px rgb(30 50 35 / 4%);
+}
+
+.catalog-total {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.catalog-total span {
+  color: #99a39b;
+  font-size: 8px;
+}
+
+.catalog-total strong {
+  color: #155c3d;
+  font-size: 12px;
+}
+
+.catalog-continue {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  min-height: 39px;
+  padding: 0 15px;
+  border: 0;
+  border-radius: 8px;
+  background: #155c3d;
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: 750;
+  cursor: pointer;
+}
+
+.catalog-continue:hover:not(:disabled) {
+  background: #104b31;
+}
+
+.catalog-continue:disabled {
+  background: #a9b9ae;
+  cursor: not-allowed;
+}
+
+/* TABLET DAN DESKTOP */
+
+@media (min-width: 700px) {
+  .catalog-header {
+    padding-right: max(24px, calc((100vw - 650px) / 2));
+    padding-left: max(24px, calc((100vw - 650px) / 2));
+  }
+
+  .catalog-content {
+    padding-top: 8px;
+  }
+
+  .catalog-item {
+    min-height: 78px;
+    padding: 12px;
+  }
+
+  .catalog-item-icon {
+    width: 44px;
+    height: 46px;
+  }
+
+  .catalog-item-info h2 {
+    font-size: 12px;
+  }
+}
+
+/* MOBILE */
+
+@media (max-width: 380px) {
+  .catalog-content {
+    width: calc(100% - 24px);
+  }
+
+  .catalog-categories {
+    gap: 13px;
+  }
+
+  .catalog-item {
+    gap: 8px;
+    padding: 8px;
+  }
+
+  .catalog-item-icon {
+    width: 34px;
+    height: 39px;
+  }
+
+  .catalog-item-info h2 {
+    font-size: 10px;
+  }
+
+  .catalog-select-button {
+    min-width: 43px;
+    padding: 7px;
+  }
+
+  .catalog-bottom {
+    padding-right: 12px;
+    padding-left: 12px;
+  }
+}

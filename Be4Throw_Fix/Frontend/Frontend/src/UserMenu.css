@@ -1,0 +1,121 @@
+
+.um-overlay {
+  position: fixed;
+  z-index: 2000;
+  inset: 0;
+  display: flex;
+  background: rgb(20 30 24 / 43%);
+  animation: um-fade-in 0.18s ease;
+}
+
+.um-sidebar {
+  display: flex;
+  flex-direction: column;
+  width: min(280px, 78vw);
+  min-height: 100%;
+  background: #fff;
+  box-shadow: 8px 0 30px rgb(0 0 0 / 8%);
+  animation: um-slide-in 0.2s ease;
+}
+
+.um-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 54px;
+  padding: 0 12px;
+  border-bottom: 1px solid #edf3ed;
+}
+
+.um-brand {
+  color: #175b3d;
+  font-size: 12px;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.um-close {
+  display: grid;
+  width: 27px;
+  height: 27px;
+  place-items: center;
+  border: 0;
+  border-radius: 7px;
+  background: #eff9e9;
+  color: #175b3d;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.um-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 13px 9px;
+}
+
+.um-link {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 33px;
+  padding: 7px 9px;
+  border: 1px solid transparent;
+  border-radius: 22px;
+  color: #45624e;
+  font-size: 10px;
+  text-decoration: none;
+  transition: background 0.15s ease;
+}
+
+.um-link:hover {
+  background: #f4faf0;
+}
+
+.um-link.active {
+  border-color: #d1e9b9;
+  background: #effbe6;
+  color: #175b3d;
+  font-weight: 700;
+}
+
+.um-link-icon {
+  display: grid;
+  width: 17px;
+  height: 17px;
+  flex-shrink: 0;
+  place-items: center;
+  border-radius: 50%;
+  background: #eff9e9;
+  color: #357b4c;
+  font-size: 12px;
+}
+
+.um-footer {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: auto;
+  padding: 12px;
+  color: #175b3d;
+  font-size: 8px;
+  font-weight: 700;
+}
+
+.um-status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #85c34a;
+}
+
+@keyframes um-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes um-slide-in {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(0); }
+}
