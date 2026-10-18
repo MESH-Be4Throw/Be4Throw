@@ -70,6 +70,57 @@ function getCode(item, prefix) {
   return `${prefix}-${String(item.id).padStart(2, "0")}`;
 }
 
+const QUESTION_TYPE_LABELS = {
+  pilihan_tunggal: "Pilihan tunggal",
+  pilihan_ganda: "Pilihan ganda",
+  angka: "Angka",
+  ya_tidak: "Ya / Tidak",
+};
+
+function renderQuestionDetail(item) {
+  const opsi = item.opsi;
+  const choices = Array.isArray(opsi) ? opsi : [];
+  const isNumber = item.questionType === "angka" && opsi && !Array.isArray(opsi);
+
+  return (
+    <dl className="kd-detail-list">
+      <dt>Tipe</dt>
+      <dd>{QUESTION_TYPE_LABELS[item.questionType] || item.questionType}</dd>
+
+      {choices.length > 0 && (
+        <>
+          <dt>Pilihan jawaban</dt>
+          <dd>
+            <ul className="kd-detail-options">
+              {choices.map((option, index) => (
+                <li key={option.nilai || index}>{option.label || option.nilai}</li>
+              ))}
+            </ul>
+          </dd>
+        </>
+      )}
+
+      {isNumber && (
+        <>
+          <dt>Rentang nilai</dt>
+          <dd>
+            {opsi.min ?? "-"} – {opsi.max ?? "-"} {opsi.satuan || ""}
+          </dd>
+        </>
+      )}
+
+      <dt>Wajib diisi</dt>
+      <dd>{item.required ? "Ya" : "Tidak"}</dd>
+
+      <dt>Boleh "Tidak tahu"</dt>
+      <dd>{item.unknownAllowed ? "Ya" : "Tidak"}</dd>
+
+      <dt>Urutan</dt>
+      <dd>{item.order ?? 0}</dd>
+    </dl>
+  );
+}
+
 export default function KelolaData({ initialTab }) {
   const [activeTab, setActiveTab] = useState(
     tabs.includes(initialTab) ? initialTab : "Kategori"
@@ -117,7 +168,7 @@ export default function KelolaData({ initialTab }) {
       const questionRows = questionResponse.data || [];
       setCategories(categoryRows.map((item) => ({ ...item, name: item.nama, description: item.deskripsi || "", status: item.status === "aktif" ? "Aktif" : "Nonaktif" })));
       setItems(itemRows.map((item) => ({ ...item, name: item.nama, category: item.kategori?.nama || "", categoryId: item.kategoriId, description: item.estimasiBerat != null ? `Estimasi berat: ${item.estimasiBerat} kg` : "Estimasi berat belum ditentukan", status: item.status === "aktif" ? "Aktif" : "Nonaktif" })));
-      setQuestions(questionRows.map((item) => ({ ...item, code: item.kode, title: item.teks, content: `Tipe: ${item.tipe} · Opsi: ${JSON.stringify(item.opsi ?? {})}`, optionsJson: JSON.stringify(item.opsi ?? {}, null, 2), questionType: item.tipe, required: item.wajib, unknownAllowed: item.bolehTidakTahu, order: item.urutan, category: item.kategori?.nama || "", status: item.status === "aktif" ? "Aktif" : "Nonaktif" })));
+      setQuestions(questionRows.map((item) => ({ ...item, code: item.kode, title: item.teks, optionsJson: JSON.stringify(item.opsi ?? {}, null, 2), questionType: item.tipe, required: item.wajib, unknownAllowed: item.bolehTidakTahu, order: item.urutan, category: item.kategori?.nama || "", status: item.status === "aktif" ? "Aktif" : "Nonaktif" })));
     } catch (err) {
       setMessage(err.message || "Gagal mengambil data admin. Pastikan login sebagai admin dan backend aktif.");
     } finally {
@@ -555,7 +606,9 @@ setQuestionOptions(
           </p>
         )}
 
-        <p className="kd-card-description">{description}</p>
+        {activeTab !== "Pertanyaan" && (
+          <p className="kd-card-description">{description}</p>
+        )}
       </article>
     );
   }
@@ -1067,11 +1120,15 @@ selectedQuestionCategory === null ? (
               </p>
             )}
 
-            <p className="kd-detail-description">
-              {viewingItem.description ||
-                viewingItem.content ||
-                "Belum ada deskripsi."}
-            </p>
+            {activeTab === "Pertanyaan" ? (
+              renderQuestionDetail(viewingItem)
+            ) : (
+              <p className="kd-detail-description">
+                {viewingItem.description ||
+                  viewingItem.content ||
+                  "Belum ada deskripsi."}
+              </p>
+            )}
 
             <div className="kd-form-actions">
               <button

@@ -643,6 +643,31 @@
   color: #536174;
 }
 
+.kd-detail-list {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 8px 16px;
+  margin: 0 0 16px;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.kd-detail-list dt {
+  color: #536174;
+  font-weight: 600;
+}
+
+.kd-detail-list dd {
+  margin: 0;
+  color: #7b8698;
+  overflow-wrap: anywhere;
+}
+
+.kd-detail-options {
+  margin: 0;
+  padding-left: 18px;
+}
+
 @media (min-width: 701px) {
   .kd-page {
     max-width: 100%;
