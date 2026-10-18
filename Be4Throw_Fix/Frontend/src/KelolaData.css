@@ -797,3 +797,137 @@
 .kd-modal {
   background-color: #ffffff;
 }
+
+.kd-category-instruction {
+  margin: 0 0 14px;
+  color: #778078;
+  font-size: 14px;
+}
+
+.kd-question-category-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+.kd-question-category-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 18px 16px;
+  border: 1px solid #dce8de;
+  border-radius: 12px;
+  background: #f7faf7;
+  color: #176744;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.kd-question-category-card:hover {
+  background: #edf6ef;
+  border-color: #b8d5bf;
+}
+
+.kd-question-category-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+  border-radius: 9px;
+  background: #e2f2e6;
+}
+
+.kd-question-category-info {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+}
+
+.kd-question-category-info strong {
+  color: #17221a;
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.kd-question-category-info > span {
+  color: #778078;
+  font-size: 14px;
+}
+
+.kd-back-category {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin: 0 0 16px;
+}
+
+.kd-options-editor {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 10px 0 18px;
+}
+
+.kd-options-hint {
+  margin: -5px 0 3px;
+  color: #778078;
+  font-size: 13px;
+}
+
+.kd-option-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.kd-option-number {
+  width: 24px;
+  flex-shrink: 0;
+  color: #778078;
+  text-align: center;
+  font-size: 18px;
+}
+
+.kd-option-row input {
+  flex: 1;
+  min-width: 0;
+}
+
+.kd-option-remove {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: #c94c4c;
+  cursor: pointer;
+}
+
+.kd-option-remove:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.kd-option-add {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  gap: 7px;
+  padding: 9px 12px;
+  border: 1px dashed #8aab91;
+  border-radius: 8px;
+  background: #f5faf5;
+  color: #367747;
+  cursor: pointer;
+}

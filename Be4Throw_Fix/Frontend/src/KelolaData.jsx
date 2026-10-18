@@ -79,6 +79,7 @@ export default function KelolaData({ initialTab }) {
   const [items, setItems] = useState([]);
   const [questions, setQuestions] = useState([]);
   const [loadingData, setLoadingData] = useState(false);
+  const [selectedQuestionCategory, setSelectedQuestionCategory] = useState(null);
 
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("Semua Status");
@@ -103,6 +104,7 @@ export default function KelolaData({ initialTab }) {
     image: "",
     estimatedWeight: "",
   });
+  const [questionOptions, setQuestionOptions] = useState(["", ""]);
 
   async function loadAdminData() {
     setLoadingData(true);
@@ -122,6 +124,23 @@ export default function KelolaData({ initialTab }) {
       setLoadingData(false);
     }
   }
+
+function buatNilaiOpsi(label) {
+  return label
+    .trim()
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, "_")
+    .replace(/^_+|_+$/g, "")
+    .slice(0, 50);
+}
+
+const NILAI_FUNGSI_UTAMA = [
+  "berfungsi_penuh",
+  "berfungsi_sebagian",
+  "tidak_berfungsi",
+];
 
   useEffect(() => { loadAdminData(); }, []);
 
@@ -157,13 +176,17 @@ export default function KelolaData({ initialTab }) {
   }, [initialTab]);
 
   const sourceData =
-    activeTab === "Kategori"
-      ? categories
-      : activeTab === "Barang"
-        ? items
+  activeTab === "Kategori"
+    ? categories
+    : activeTab === "Barang"
+      ? items
+      : selectedQuestionCategory
+        ? questions.filter(
+            (question) =>
+              question.category === selectedQuestionCategory
+          )
         : questions;
-
-  const filteredData = useMemo(() => {
+         const filteredData = useMemo(() => {
     const keyword = search.trim().toLowerCase();
 
     return sourceData.filter((item) => {
@@ -220,10 +243,12 @@ export default function KelolaData({ initialTab }) {
     setShowForm(false);
     setEditingId(null);
     setViewingItem(null);
+    setSelectedQuestionCategory(null);
     setMessage("");
   }
 
   function resetForm() {
+    setQuestionOptions(["", ""]);
     setForm({
       name: "",
       description: "",
@@ -241,11 +266,13 @@ export default function KelolaData({ initialTab }) {
   function openAddForm() {
     setEditingId(null);
     setViewingItem(null);
+    setQuestionOptions(["", ""]);
 
     setForm({
       name: "",
       description: "",
-      category: categories[0]?.name || "",
+      category:
+      selectedQuestionCategory || categories[0]?.name || "",
       status: "Aktif",
       title: "",
       content: "",
@@ -259,6 +286,13 @@ export default function KelolaData({ initialTab }) {
   function openEditForm(item) {
     setEditingId(item.id);
     setViewingItem(null);
+    const savedOptions = Array.isArray(item.opsi)
+  ? item.opsi.map((option) => option.label || "")
+  : [];
+
+setQuestionOptions(
+  savedOptions.length > 0 ? savedOptions : ["", ""]
+);
 
     setForm({
       name: item.name || "",
@@ -274,16 +308,14 @@ export default function KelolaData({ initialTab }) {
     setShowForm(true);
   }
 
+  
   async function handleSubmit(event) {
     event.preventDefault();
 
     const isQuestion = activeTab === "Pertanyaan";
     const isCategory = activeTab === "Kategori";
 
-    const name = isQuestion
-      ? form.title.trim()
-      : form.name.trim();
-
+    const name = isQuestion ? form.title.trim() : form.name.trim();
     const description = isQuestion
       ? form.content.trim()
       : form.description.trim();
@@ -298,20 +330,63 @@ export default function KelolaData({ initialTab }) {
       return;
     }
 
-    if (isCategory && !description) {
-      // Deskripsi kategori boleh kosong di backend.
-    }
-
     try {
       let payload;
+      let endpoint;
+
       if (isCategory) {
-        payload = { nama: name, deskripsi: description || null, status: form.status === "Aktif" ? "aktif" : "nonaktif" };
-      } else if (isQuestion) {
-        let opsi;
-        try { opsi = JSON.parse(form.optionsJson || "null"); }
-        catch { throw new Error("Format opsi harus JSON yang valid."); }
+        endpoint = "/admin/kategori";
+
         payload = {
-          kategoriId: Number(categories.find((item) => item.name === form.category)?.id),
+          nama: name,
+          deskripsi: description || null,
+          status: form.status === "Aktif" ? "aktif" : "nonaktif",
+        };
+      } else if (isQuestion) {
+        endpoint = "/admin/pertanyaan";
+
+        const isChoiceQuestion = [
+          "pilihan_tunggal",
+          "pilihan_ganda",
+        ].includes(form.questionType);
+
+        const pilihan = questionOptions
+          .map((option) => option.trim())
+          .filter(Boolean);
+
+        if (isChoiceQuestion && pilihan.length < 2) {
+          setMessage("Isi minimal 2 pilihan jawaban.");
+          return;
+        }
+
+        const kodePertanyaan = form.code.trim().toLowerCase();
+        let opsi = {};
+
+        if (form.questionType === "ya_tidak") {
+          opsi = [
+            { nilai: "ya", label: "Ya" },
+            { nilai: "tidak", label: "Tidak" },
+          ];
+        } else if (isChoiceQuestion) {
+          const nilaiKhusus =
+            kodePertanyaan === "fungsi_utama"
+              ? NILAI_FUNGSI_UTAMA
+              : null;
+
+          opsi = pilihan.map((label, index) => ({
+            nilai: nilaiKhusus
+              ? nilaiKhusus[index] || buatNilaiOpsi(label)
+              : buatNilaiOpsi(label),
+            label,
+          }));
+        }
+
+        payload = {
+          kategoriId: Number(
+            categories.find(
+              (item) => item.name === form.category
+            )?.id
+          ),
           teks: name,
           tipe: form.questionType,
           opsi,
@@ -320,24 +395,65 @@ export default function KelolaData({ initialTab }) {
           urutan: Number(form.order) || 0,
           status: form.status === "Aktif" ? "aktif" : "nonaktif",
         };
-        if (editingId === null) payload.kode = form.code.trim().toLowerCase();
+
+        if (editingId === null) {
+          payload.kode = kodePertanyaan;
+        }
       } else {
-        payload = { nama: name, kategoriId: Number(categories.find((item) => item.name === form.category)?.id), gambar: form.image.trim() || null, estimasiBerat: form.estimatedWeight === "" ? null : Number(form.estimatedWeight), status: form.status === "Aktif" ? "aktif" : "nonaktif" };
+        endpoint = "/admin/barang";
+
+        payload = {
+          nama: name,
+          kategoriId: Number(
+            categories.find(
+              (item) => item.name === form.category
+            )?.id
+          ),
+          gambar: form.image.trim() || null,
+          estimasiBerat:
+            form.estimatedWeight === ""
+              ? null
+              : Number(form.estimatedWeight),
+          status: form.status === "Aktif" ? "aktif" : "nonaktif",
+        };
       }
-      const endpoint = isCategory ? "/admin/kategori" : isQuestion ? "/admin/pertanyaan" : "/admin/barang";
-      await apiRequest(editingId !== null ? `${endpoint}/${editingId}` : endpoint, {
-        method: editingId !== null ? "PUT" : "POST",
-        body: JSON.stringify(payload),
-      });
+
+      if (
+        !isCategory &&
+        !categories.some((item) => item.name === form.category)
+      ) {
+        setMessage("Pilih kategori yang valid terlebih dahulu.");
+        return;
+      }
+
+      await apiRequest(
+        editingId !== null
+          ? `${endpoint}/${editingId}`
+          : endpoint,
+        {
+          method: editingId !== null ? "PUT" : "POST",
+          body: JSON.stringify(payload),
+        }
+      );
+
       await loadAdminData();
-      setMessage(editingId !== null ? "Data berhasil diperbarui di database." : "Data berhasil ditambahkan ke database.");
+
+      setMessage(
+        editingId !== null
+          ? "Data berhasil diperbarui di database."
+          : "Data berhasil ditambahkan ke database."
+      );
+
       resetForm();
-      return;
     } catch (err) {
-      setMessage(err.errors?.map((item) => item.message).join(" ") || err.message || "Gagal menyimpan data ke backend.");
-      return;
+      setMessage(
+        err.errors?.map((item) => item.message).join(" ") ||
+          err.message ||
+          "Gagal menyimpan data ke backend."
+      );
     }
   }
+
 
   async function handleDelete(item) {
     const label = item.name || item.title;
@@ -618,11 +734,15 @@ export default function KelolaData({ initialTab }) {
           />
 
           {activeTab !== "Kategori" && (
-            <>
-              <label htmlFor="kd-category">Kategori</label>
+  <>
+    <label htmlFor="kd-category">Kategori</label>
 
-              <select
-                id="kd-category"
+    <select
+      id="kd-category"
+      disabled={
+        activeTab === "Pertanyaan" &&
+        selectedQuestionCategory !== null
+      }
                 value={form.category}
                 onChange={(event) =>
                   setForm((previous) => ({
@@ -657,8 +777,63 @@ export default function KelolaData({ initialTab }) {
               <select id="kd-question-type" value={form.questionType} onChange={(event) => setForm((old) => ({ ...old, questionType: event.target.value }))}>
                 <option value="pilihan_tunggal">Pilihan tunggal</option><option value="pilihan_ganda">Pilihan ganda</option><option value="angka">Angka</option><option value="ya_tidak">Ya / Tidak</option>
               </select>
-              <label htmlFor="kd-options">Opsi (JSON sesuai tipe pertanyaan)</label>
-              <textarea id="kd-options" rows={5} value={form.optionsJson} onChange={(event) => setForm((old) => ({ ...old, optionsJson: event.target.value }))} required />
+              
+{["pilihan_tunggal", "pilihan_ganda"].includes(
+  form.questionType
+) && (
+  <div className="kd-options-editor">
+    <label>Pilihan Jawaban</label>
+    <p className="kd-options-hint">
+      Tambahkan pilihan untuk responden.
+    </p>
+
+    {questionOptions.map((option, index) => (
+      <div className="kd-option-row" key={index}>
+        <span className="kd-option-number">
+          {form.questionType === "pilihan_tunggal" ? "◯" : "☐"}
+        </span>
+
+        <input
+          value={option}
+          onChange={(event) =>
+            setQuestionOptions((previous) =>
+              previous.map((value, i) =>
+                i === index ? event.target.value : value
+              )
+            )
+          }
+          placeholder={`Pilihan ${index + 1}`}
+          aria-label={`Pilihan jawaban ${index + 1}`}
+        />
+
+        <button
+          type="button"
+          className="kd-option-remove"
+          disabled={questionOptions.length <= 2}
+          onClick={() =>
+            setQuestionOptions((previous) =>
+              previous.filter((_, i) => i !== index)
+            )
+          }
+          aria-label={`Hapus pilihan ${index + 1}`}
+        >
+          <Icon name="trash" size={15} />
+        </button>
+      </div>
+    ))}
+
+    <button
+      type="button"
+      className="kd-option-add"
+      onClick={() =>
+        setQuestionOptions((previous) => [...previous, ""])
+      }
+    >
+      <Icon name="plus" size={16} />
+      Tambah Pilihan
+    </button>
+  </div>
+)}
               <label htmlFor="kd-order">Urutan</label>
               <input id="kd-order" type="number" min="0" max="1000" value={form.order} onChange={(event) => setForm((old) => ({ ...old, order: event.target.value }))} />
               <label className="kd-check-row"><input type="checkbox" checked={form.required} onChange={(event) => setForm((old) => ({ ...old, required: event.target.checked }))} /> Wajib dijawab</label>
@@ -708,59 +883,138 @@ export default function KelolaData({ initialTab }) {
         </form>
       )}
 
-      <div className="kd-list-heading">
-        <h2>Daftar {activeTab}</h2>
-        <span>{filteredData.length} data ditemukan</span>
+      
+{activeTab === "Pertanyaan" &&
+selectedQuestionCategory === null ? (
+  <>
+    <div className="kd-list-heading">
+      <h2>Kategori Pertanyaan</h2>
+      <span>{categories.length} kategori</span>
+    </div>
+
+    <p className="kd-category-instruction">
+      Pilih kategori untuk mengelola pertanyaan di dalamnya.
+    </p>
+
+    <div className="kd-question-category-list">
+      {categories
+        .filter((category) =>
+          category.name.toLowerCase().includes(search.trim().toLowerCase())
+        )
+        .filter((category) =>
+          statusFilter === "Semua Status" ||
+          category.status === statusFilter
+        )
+        .map((category) => {
+          const count = questions.filter(
+            (question) => question.category === category.name
+          ).length;
+
+          return (
+            <button
+              type="button"
+              className="kd-question-category-card"
+              key={category.id}
+              onClick={() =>
+                setSelectedQuestionCategory(category.name)
+              }
+            >
+              <span className="kd-question-category-icon">
+                <Icon name="empty" size={23} />
+              </span>
+
+              <span className="kd-question-category-info">
+                <strong>{category.name}</strong>
+                <span>{count} pertanyaan</span>
+              </span>
+
+              <Icon name="chevronRight" size={22} />
+            </button>
+          );
+        })}
+    </div>
+  </>
+) : (
+  <>
+    <div className="kd-list-heading">
+      <h2>
+        {activeTab === "Pertanyaan"
+          ? `Pertanyaan — ${selectedQuestionCategory}`
+          : `Daftar ${activeTab}`}
+      </h2>
+      <span>{filteredData.length} data ditemukan</span>
+    </div>
+
+    {activeTab === "Pertanyaan" && (
+      <button
+        type="button"
+        className="kd-cancel-button kd-back-category"
+        onClick={() => {
+          setSelectedQuestionCategory(null);
+          setShowForm(false);
+          setEditingId(null);
+          setSearch("");
+          setCurrentPage(1);
+          setMessage("");
+        }}
+      >
+        <Icon name="back" size={16} />
+        Kembali ke Kategori
+      </button>
+    )}
+
+    {paginatedData.length > 0 ? (
+      <div className="kd-card-list">
+        {paginatedData.map(renderCard)}
       </div>
-
-      {paginatedData.length > 0 ? (
-        <div className="kd-card-list">
-          {paginatedData.map(renderCard)}
+    ) : (
+      <div className="kd-empty">
+        <div className="kd-empty-icon">
+          <Icon name="empty" size={24} />
         </div>
-      ) : (
-        <div className="kd-empty">
-          <div className="kd-empty-icon">
-            <Icon name="empty" size={24} />
-          </div>
+        <h3>
+          {activeTab === "Pertanyaan"
+            ? "Belum ada pertanyaan di kategori ini"
+            : "Data tidak ditemukan"}
+        </h3>
+        <p>
+          {activeTab === "Pertanyaan"
+            ? "Klik Tambah Data untuk membuat pertanyaan pertama"
+            : "Coba ubah kata kunci atau filter status"}
+        </p>
+      </div>
+    )}
+  </>
+)}
 
-          <h3>
-            {activeTab === "Pertanyaan" && !search
-              ? "Belum ada data pertanyaan"
-              : "Data tidak ditemukan"}
-          </h3>
 
-          <p>
-            {activeTab === "Pertanyaan" && !search
-              ? "Klik Tambah Data untuk membuat entri pertama"
-              : "Coba ubah kata kunci atau filter status"}
-          </p>
+           {!(activeTab === "Pertanyaan" &&
+        selectedQuestionCategory === null) && (
+        <div className="kd-pagination">
+          <button
+            type="button"
+            disabled={currentPage <= 1}
+            onClick={() => setCurrentPage((page) => page - 1)}
+            aria-label="Halaman sebelumnya"
+          >
+            <Icon name="chevronLeft" size={17} />
+          </button>
+
+          <span>
+            {filteredData.length === 0 ? 0 : currentPage} /{" "}
+            {filteredData.length === 0 ? 0 : totalPages}
+          </span>
+
+          <button
+            type="button"
+            disabled={currentPage >= totalPages}
+            onClick={() => setCurrentPage((page) => page + 1)}
+            aria-label="Halaman berikutnya"
+          >
+            <Icon name="chevronRight" size={17} />
+          </button>
         </div>
       )}
-
-      <div className="kd-pagination">
-        <button
-          type="button"
-          disabled={currentPage <= 1}
-          onClick={() => setCurrentPage((page) => page - 1)}
-          aria-label="Halaman sebelumnya"
-        >
-          <Icon name="chevronLeft" size={17} />
-        </button>
-
-        <span>
-          {filteredData.length === 0 ? 0 : currentPage} /{" "}
-          {filteredData.length === 0 ? 0 : totalPages}
-        </span>
-
-        <button
-          type="button"
-          disabled={currentPage >= totalPages}
-          onClick={() => setCurrentPage((page) => page + 1)}
-          aria-label="Halaman berikutnya"
-        >
-          <Icon name="chevronRight" size={17} />
-        </button>
-      </div>
 
       {viewingItem && (
         <div

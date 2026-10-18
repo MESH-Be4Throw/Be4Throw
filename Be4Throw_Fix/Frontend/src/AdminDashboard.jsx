@@ -273,28 +273,6 @@ if (
 
   <div className="admin-header-actions">
     <button
-      type="button"
-      className="admin-notification-button"
-      onClick={() => alert("Tidak ada notifikasi baru")}
-      aria-label="Notifikasi"
-    >
-      <svg
-        viewBox="0 0 24 24"
-        width="21"
-        height="21"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9" />
-        <path d="M10 21h4" />
-      </svg>
-      <span className="admin-notification-dot" />
-    </button>
-
-    <button
   type="button"
   className="admin-profile-button"
   onClick={() => handleMenuClick("profil")}
@@ -356,19 +334,17 @@ if (
             <span className="admin-quick-arrow">→</span>
           </button>
 
+          
           <button
             type="button"
             className="admin-quick-button"
-            onClick={() =>
-              window.alert(
-                "FAQ Baru masih menggunakan data demo. Form FAQ akan dihubungkan saat fitur FAQ dibuat."
-              )
-            }
+            onClick={() => handleMenuClick("pertanyaan")}
           >
             <span className="admin-quick-icon purple">?</span>
-            <span className="admin-quick-label">FAQ Baru</span>
+            <span className="admin-quick-label">Pertanyaan</span>
             <span className="admin-quick-arrow">→</span>
           </button>
+
 
           <button
             type="button"
