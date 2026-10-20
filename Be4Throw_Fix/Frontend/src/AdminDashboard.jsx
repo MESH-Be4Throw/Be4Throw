@@ -4,7 +4,7 @@ import "./AdminDashboard.css";
 import KelolaData from "./KelolaData";
 import AuditSistem from "./AuditSistem";
 import ProfilAdmin from "./ProfilAdmin";
-import { API_ORIGIN, apiGetAllPages, apiRequest } from "./services/api";
+import { API_ORIGIN, apiGetAllPages, apiRequest, fileUrl } from "./services/api";
 import { useNavigate } from "react-router-dom";
 
 const menuItems = [
@@ -85,7 +85,7 @@ export default function AdminDashboard() {
   const [dashboardError, setDashboardError] = useState("");
   const [auditAktivitas, setAuditAktivitas] = useState([]);
   const [serverAktif, setServerAktif] = useState(null);
-  const adminUser = getStoredUser();
+  const [adminUser, setAdminUser] = useState(() => getStoredUser());
   const namaAdmin = adminUser?.nama || "Administrator";
   const inisialAdmin = namaAdmin.trim().charAt(0).toUpperCase() || "A";
   const navigate = useNavigate();
@@ -101,6 +101,23 @@ export default function AdminDashboard() {
       );
     }
   }
+useEffect(() => {
+    function perbaruiProfilAdmin() {
+        setAdminUser(getStoredUser());
+    }
+
+    window.addEventListener(
+        "admin-profile-updated",
+        perbaruiProfilAdmin
+    );
+
+    return () => {
+        window.removeEventListener(
+            "admin-profile-updated",
+            perbaruiProfilAdmin
+        );
+    };
+}, []);
 
 useEffect(() => {
   let active = true;
@@ -204,7 +221,16 @@ if (
         </div>
 
         <div className="admin-profile">
-          <div className="admin-avatar">{inisialAdmin}</div>
+          <div className="admin-avatar">
+    {adminUser?.fotoProfil ? (
+        <img
+            src={fileUrl(adminUser.fotoProfil)}
+            alt="Foto profil admin"
+        />
+    ) : (
+        inisialAdmin
+    )}
+</div>
           <div>
             <strong>{namaAdmin}</strong>
             <span>{adminUser?.role === "admin" ? "Admin Sistem" : adminUser?.role}</span>
@@ -278,7 +304,14 @@ if (
   onClick={() => handleMenuClick("profil")}
   aria-label="Buka profil admin"
 >
-  {inisialAdmin}
+  {adminUser?.fotoProfil ? (
+    <img
+        src={fileUrl(adminUser.fotoProfil)}
+        alt="Foto profil admin"
+    />
+) : (
+    inisialAdmin
+)}
 </button>
   </div>
 </header>

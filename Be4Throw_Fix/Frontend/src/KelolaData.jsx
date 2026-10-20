@@ -80,12 +80,18 @@ const QUESTION_TYPE_LABELS = {
 function renderQuestionDetail(item) {
   const opsi = item.opsi;
   const choices = Array.isArray(opsi) ? opsi : [];
-  const isNumber = item.questionType === "angka" && opsi && !Array.isArray(opsi);
+  const isNumber =
+    item.questionType === "angka" &&
+    opsi &&
+    !Array.isArray(opsi);
 
   return (
     <dl className="kd-detail-list">
       <dt>Tipe</dt>
-      <dd>{QUESTION_TYPE_LABELS[item.questionType] || item.questionType}</dd>
+      <dd>
+        {QUESTION_TYPE_LABELS[item.questionType] ||
+          item.questionType}
+      </dd>
 
       {choices.length > 0 && (
         <>
@@ -93,7 +99,9 @@ function renderQuestionDetail(item) {
           <dd>
             <ul className="kd-detail-options">
               {choices.map((option, index) => (
-                <li key={option.nilai || index}>{option.label || option.nilai}</li>
+                <li key={option.nilai || index}>
+                  {option.label || option.nilai}
+                </li>
               ))}
             </ul>
           </dd>
@@ -104,7 +112,8 @@ function renderQuestionDetail(item) {
         <>
           <dt>Rentang nilai</dt>
           <dd>
-            {opsi.min ?? "-"} – {opsi.max ?? "-"} {opsi.satuan || ""}
+            {opsi.min ?? "-"} - {opsi.max ?? "-"}{" "}
+            {opsi.satuan || ""}
           </dd>
         </>
       )}
@@ -140,6 +149,8 @@ export default function KelolaData({ initialTab }) {
   const [message, setMessage] = useState("");
 
   const [form, setForm] = useState({
+    indukId: "",
+    tampilJikaJawaban: "",
     name: "",
     description: "",
     category: "",
@@ -168,7 +179,24 @@ export default function KelolaData({ initialTab }) {
       const questionRows = questionResponse.data || [];
       setCategories(categoryRows.map((item) => ({ ...item, name: item.nama, description: item.deskripsi || "", status: item.status === "aktif" ? "Aktif" : "Nonaktif" })));
       setItems(itemRows.map((item) => ({ ...item, name: item.nama, category: item.kategori?.nama || "", categoryId: item.kategoriId, description: item.estimasiBerat != null ? `Estimasi berat: ${item.estimasiBerat} kg` : "Estimasi berat belum ditentukan", status: item.status === "aktif" ? "Aktif" : "Nonaktif" })));
-      setQuestions(questionRows.map((item) => ({ ...item, code: item.kode, title: item.teks, optionsJson: JSON.stringify(item.opsi ?? {}, null, 2), questionType: item.tipe, required: item.wajib, unknownAllowed: item.bolehTidakTahu, order: item.urutan, category: item.kategori?.nama || "", status: item.status === "aktif" ? "Aktif" : "Nonaktif" })));
+      setQuestions(
+  questionRows.map((item) => ({
+    ...item,
+    code: item.kode,
+    title: item.teks,
+    content: `Tipe: ${item.tipe} · Opsi: ${JSON.stringify(item.opsi ?? {})}`,
+    optionsJson: JSON.stringify(item.opsi ?? [], null, 2),
+    questionType: item.tipe,
+    required: item.wajib,
+    unknownAllowed: item.bolehTidakTahu,
+    order: item.urutan,
+    category: item.kategori?.nama || "",
+    status: item.status === "aktif" ? "Aktif" : "Nonaktif",
+    indukId: item.indukId ?? "",
+    tampilJikaJawaban: item.tampilJika?.jawaban ?? "",
+    inti: Boolean(item.inti),
+  }))
+);
     } catch (err) {
       setMessage(err.message || "Gagal mengambil data admin. Pastikan login sebagai admin dan backend aktif.");
     } finally {
@@ -301,6 +329,8 @@ const NILAI_FUNGSI_UTAMA = [
   function resetForm() {
     setQuestionOptions(["", ""]);
     setForm({
+      indukId: "",
+      tampilJikaJawaban: "",
       name: "",
       description: "",
       category: categories[0]?.name || "",
@@ -318,8 +348,11 @@ const NILAI_FUNGSI_UTAMA = [
     setEditingId(null);
     setViewingItem(null);
     setQuestionOptions(["", ""]);
+    
 
     setForm({
+      indukId: "",
+      tampilJikaJawaban: "",
       name: "",
       description: "",
       category:
@@ -346,6 +379,8 @@ setQuestionOptions(
 );
 
     setForm({
+      indukId: item.indukId ?? "",
+      tampilJikaJawaban: item.tampilJika?.jawaban ?? "",
       name: item.name || "",
       description: item.description || "",
       category: item.category || categories[0]?.name || "",
@@ -380,6 +415,16 @@ setQuestionOptions(
       setMessage("Kode pertanyaan wajib diisi, misalnya kondisi_fisik.");
       return;
     }
+    if (
+  isQuestion &&
+  form.indukId &&
+  !form.tampilJikaJawaban
+) {
+  setMessage(
+    "Pilih jawaban pemicu untuk pertanyaan lanjutan."
+  );
+  return;
+}
 
     try {
       let payload;
@@ -392,6 +437,7 @@ setQuestionOptions(
           nama: name,
           deskripsi: description || null,
           status: form.status === "Aktif" ? "aktif" : "nonaktif",
+      
         };
       } else if (isQuestion) {
         endpoint = "/admin/pertanyaan";
@@ -433,19 +479,28 @@ setQuestionOptions(
         }
 
         payload = {
-          kategoriId: Number(
-            categories.find(
-              (item) => item.name === form.category
-            )?.id
-          ),
-          teks: name,
-          tipe: form.questionType,
-          opsi,
-          wajib: Boolean(form.required),
-          bolehTidakTahu: Boolean(form.unknownAllowed),
-          urutan: Number(form.order) || 0,
-          status: form.status === "Aktif" ? "aktif" : "nonaktif",
-        };
+  kategoriId: Number(
+    categories.find(
+      (item) => item.name === form.category
+    )?.id
+  ),
+  teks: name,
+  tipe: form.questionType,
+  opsi,
+  wajib: Boolean(form.required),
+  bolehTidakTahu: Boolean(form.unknownAllowed),
+  urutan: Number(form.order) || 0,
+  status: form.status === "Aktif" ? "aktif" : "nonaktif",
+
+  // Relasi pertanyaan lanjutan
+  indukId: form.indukId
+    ? Number(form.indukId)
+    : null,
+
+  tampilJika: form.indukId
+    ? { jawaban: form.tampilJikaJawaban }
+    : null,
+};
 
         if (editingId === null) {
           payload.kode = kodePertanyaan;
@@ -606,9 +661,7 @@ setQuestionOptions(
           </p>
         )}
 
-        {activeTab !== "Pertanyaan" && (
-          <p className="kd-card-description">{description}</p>
-        )}
+        <p className="kd-card-description">{description}</p>
       </article>
     );
   }
@@ -827,9 +880,108 @@ setQuestionOptions(
               <label htmlFor="kd-code">Kode Pertanyaan {editingId !== null ? "(terkunci setelah dibuat)" : ""}</label>
               <input id="kd-code" value={form.code} disabled={editingId !== null} onChange={(event) => setForm((old) => ({ ...old, code: event.target.value }))} placeholder="misalnya kondisi_fisik" required={editingId === null} />
               <label htmlFor="kd-question-type">Tipe Pertanyaan</label>
-              <select id="kd-question-type" value={form.questionType} onChange={(event) => setForm((old) => ({ ...old, questionType: event.target.value }))}>
+              <select id="kd-question-type" value={form.questionType} onChange={(event) => setForm((old) => ({ ...old, questionType: event.target.value }))} disabled={Boolean(
+  questions.find((question) => question.id === editingId)?.inti
+)}>
                 <option value="pilihan_tunggal">Pilihan tunggal</option><option value="pilihan_ganda">Pilihan ganda</option><option value="angka">Angka</option><option value="ya_tidak">Ya / Tidak</option>
               </select>
+              {/* PERTANYAAN INDUK */}
+<label htmlFor="kd-parent-question">
+  Pertanyaan Induk
+</label>
+
+<select
+  id="kd-parent-question"
+  value={form.indukId}
+  onChange={(event) =>
+    setForm((old) => ({
+      ...old,
+      indukId: event.target.value,
+      tampilJikaJawaban: "",
+    }))
+  }
+>
+  <option value="">Tidak ada (pertanyaan utama)</option>
+
+  {questions
+    .filter((question) => {
+      const sameCategory =
+        question.kategoriId ===
+        Number(
+          categories.find(
+            (category) => category.name === form.category
+          )?.id
+        );
+
+      const validType = [
+        "pilihan_tunggal",
+        "ya_tidak",
+      ].includes(question.questionType);
+
+      const notSelf = question.id !== editingId;
+      const isMainQuestion = !question.indukId;
+
+      return (
+        sameCategory &&
+        validType &&
+        notSelf &&
+        isMainQuestion
+      );
+    })
+    .map((question) => (
+      <option key={question.id} value={String(question.id)}>
+        {question.code} — {question.title}
+      </option>
+    ))}
+</select>
+
+{form.indukId !== "" && (
+  <>
+    <label htmlFor="kd-parent-answer">
+      Tampilkan Jika Jawaban Induk
+      <span className="required-mark">*</span>
+    </label>
+
+    <select
+      id="kd-parent-answer"
+      value={form.tampilJikaJawaban}
+      onChange={(event) =>
+        setForm((old) => ({
+          ...old,
+          tampilJikaJawaban: event.target.value,
+        }))
+      }
+      required
+    >
+      <option value="">Pilih jawaban pemicu...</option>
+
+      {(() => {
+        const parent = questions.find(
+          (question) =>
+            question.id === Number(form.indukId)
+        );
+
+        const options = Array.isArray(parent?.opsi)
+          ? parent.opsi
+          : [];
+
+        return options.map((option) => (
+          <option
+            key={option.nilai}
+            value={option.nilai}
+          >
+            {option.label} ({option.nilai})
+          </option>
+        ));
+      })()}
+    </select>
+
+    <p className="form-helper">
+      Pertanyaan ini hanya ditampilkan ketika pengguna
+      memilih jawaban pemicu tersebut.
+    </p>
+  </>
+)}
               
 {["pilihan_tunggal", "pilihan_ganda"].includes(
   form.questionType
@@ -907,18 +1059,23 @@ setQuestionOptions(
           <label htmlFor="kd-status">Status</label>
 
           <select
-            id="kd-status"
-            value={form.status}
-            onChange={(event) =>
-              setForm((previous) => ({
-                ...previous,
-                status: event.target.value,
-              }))
-            }
-          >
-            <option value="Aktif">Aktif</option>
-            <option value="Nonaktif">Nonaktif</option>
-          </select>
+  id="kd-status"
+  value={form.status}
+  disabled={Boolean(
+    questions.find(
+      (question) => question.id === editingId
+    )?.inti
+  )}
+  onChange={(event) =>
+    setForm((previous) => ({
+      ...previous,
+      status: event.target.value,
+    }))
+  }
+>
+  <option value="Aktif">Aktif</option>
+  <option value="Nonaktif">Nonaktif</option>
+</select>
 
           <div className="kd-form-actions">
             <button className="kd-add-button" type="submit">
@@ -1121,14 +1278,14 @@ selectedQuestionCategory === null ? (
             )}
 
             {activeTab === "Pertanyaan" ? (
-              renderQuestionDetail(viewingItem)
-            ) : (
-              <p className="kd-detail-description">
-                {viewingItem.description ||
-                  viewingItem.content ||
-                  "Belum ada deskripsi."}
-              </p>
-            )}
+  renderQuestionDetail(viewingItem)
+) : (
+  <p className="kd-detail-description">
+    {viewingItem.description ||
+      viewingItem.content ||
+      "Belum ada deskripsi."}
+  </p>
+)}
 
             <div className="kd-form-actions">
               <button

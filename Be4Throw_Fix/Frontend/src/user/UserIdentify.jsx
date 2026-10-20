@@ -24,9 +24,14 @@ export default function UserIdentify() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const selectedItems = location.state?.selectedItems ?? [];
-  const barang = selectedItems[0];
-  const kategoriId = barang?.kategori?.id;
+const selectedItems = location.state?.selectedItems ?? [];
+
+const [indeksBarang, setIndeksBarang] = useState(0);
+const barang = selectedItems[indeksBarang];
+const kategoriId = barang?.kategori?.id;
+
+const [dataSemuaBarang, setDataSemuaBarang] = useState({});
+const [analisisTersimpan, setAnalisisTersimpan] = useState({});
 
   const [pertanyaan, setPertanyaan] = useState([]);
   const [jawaban, setJawaban] = useState({});
@@ -35,30 +40,40 @@ export default function UserIdentify() {
   const [beratKg, setBeratKg] = useState(String(barang?.estimasiBerat || ""));
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    let aktif = true;
+useEffect(() => {
+  let aktif = true;
 
-    if (!kategoriId) {
-      setLoadingPertanyaan(false);
-      setError("Pilih barang dari katalog terlebih dahulu.");
-      return undefined;
-    }
+  setLoadingPertanyaan(true);
+  setPertanyaan([]);
+  setError("");
 
-    apiRequest(`/kategori/${kategoriId}/pertanyaan`)
-      .then((response) => {
-        if (aktif) setPertanyaan(response.data?.pertanyaan ?? []);
-      })
-      .catch((err) => {
-        if (aktif) setError(err.message || "Gagal memuat pertanyaan dari server.");
-      })
-      .finally(() => {
-        if (aktif) setLoadingPertanyaan(false);
-      });
+  if (!kategoriId) {
+    setLoadingPertanyaan(false);
+    setError("Pilih barang dari katalog terlebih dahulu.");
+    return undefined;
+  }
 
-    return () => {
-      aktif = false;
-    };
-  }, [kategoriId]);
+  apiRequest(`/kategori/${kategoriId}/pertanyaan`)
+    .then((response) => {
+      if (aktif) {
+        setPertanyaan(response.data?.pertanyaan ?? []);
+      }
+    })
+    .catch((err) => {
+      if (aktif) {
+        setError(
+          err.message || "Gagal memuat pertanyaan dari server."
+        );
+      }
+    })
+    .finally(() => {
+      if (aktif) setLoadingPertanyaan(false);
+    });
+
+  return () => {
+    aktif = false;
+  };
+}, [kategoriId]);
 
   const cari = (kode) => pertanyaan.find((item) => item.kode === kode);
   const pFungsi = cari("fungsi_utama");
@@ -148,44 +163,138 @@ export default function UserIdentify() {
       .join(" ");
   }
 
-  async function handleSubmit(event) {
-    event.preventDefault();
-    setError("");
-
-    if (!barang?.id) {
-      setError("Pilih barang dari katalog terlebih dahulu.");
-      return;
-    }
-
-    const jawabanKirim = susunJawaban();
-
-    setLoading(true);
-    try {
-      const response = await apiRequest("/analisis", {
-        method: "POST",
-        body: JSON.stringify({
-          barangId: Number(barang.id),
-          beratKg: beratKg === "" ? null : Number(beratKg),
-          jawaban: jawabanKirim,
-          kirim: true,
-        }),
-      });
-      const analisis = response.data;
-      navigate("/user/analisis", {
-        state: {
-          selectedItems,
-          kondisiBarang: { jawaban: jawabanKirim, beratKg: analisis.beratKg },
-          analisisId: analisis.id,
-          kodeAkses: analisis.kodeAkses || null,
-        },
-      });
-    } catch (err) {
-      setError(pesanError(err));
-    } finally {
-      setLoading(false);
-    }
+  function handlePreviousItem() {
+  if (indeksBarang === 0) {
+    navigate(-1);
+    return;
   }
 
+  const indeksSebelumnya = indeksBarang - 1;
+  const dataSebelumnya = dataSemuaBarang[indeksSebelumnya];
+
+  setIndeksBarang(indeksSebelumnya);
+  setJawaban(dataSebelumnya?.jawaban ?? {});
+  setBeratKg(
+    String(
+      dataSebelumnya?.beratKg ??
+      selectedItems[indeksSebelumnya]?.estimasiBerat ??
+      ""
+    )
+  );
+  setError("");
+}
+
+  async function handleSubmit(event) {
+  event.preventDefault();
+  setError("");
+
+  if (!selectedItems.length || !barang?.id) {
+    setError("Pilih barang dari katalog terlebih dahulu.");
+    return;
+  }
+
+  if (beratKg === "" || !Number.isFinite(Number(beratKg)) ||
+      Number(beratKg) <= 0 || Number(beratKg) > 1000) {
+    setError("Masukkan berat barang yang valid.");
+    return;
+  }
+
+  const dataSaatIni = {
+    jawaban: susunJawaban(),
+    beratKg: Number(beratKg),
+  };
+
+  const semuaData = {
+    ...dataSemuaBarang,
+    [indeksBarang]: dataSaatIni,
+  };
+
+  setDataSemuaBarang(semuaData);
+
+  // Jika masih ada barang berikutnya, pindah tanpa mengirim analisis.
+  if (indeksBarang < selectedItems.length - 1) {
+    const indeksBerikutnya = indeksBarang + 1;
+    const dataBerikutnya = semuaData[indeksBerikutnya];
+
+    setIndeksBarang(indeksBerikutnya);
+    setJawaban(dataBerikutnya?.jawaban ?? {});
+    setBeratKg(
+      String(
+        dataBerikutnya?.beratKg ??
+        selectedItems[indeksBerikutnya]?.estimasiBerat ??
+        ""
+      )
+    );
+
+    return;
+  }
+
+  setLoading(true);
+
+  try {
+    const semuaAnalisis = { ...analisisTersimpan };
+
+    // Buat satu analisis untuk setiap barang yang belum berhasil dibuat.
+    for (let i = 0; i < selectedItems.length; i++) {
+      if (semuaAnalisis[i]) continue;
+
+      const item = selectedItems[i];
+      const data = semuaData[i];
+
+      if (!data) {
+        throw new Error(
+          `Data identifikasi ${item.nama || "barang"} belum tersedia.`
+        );
+      }
+
+      try {
+        const response = await apiRequest("/analisis", {
+          method: "POST",
+          body: JSON.stringify({
+            barangId: Number(item.id),
+            beratKg: data.beratKg,
+            jawaban: data.jawaban,
+            kirim: true,
+          }),
+        });
+
+        semuaAnalisis[i] = {
+          ...response.data,
+          kodeAkses: response.data?.kodeAkses || null,
+          selectedItem: item,
+          kondisiBarang: {
+            jawaban: data.jawaban,
+            beratKg: response.data?.beratKg ?? data.beratKg,
+          },
+        };
+
+        setAnalisisTersimpan({ ...semuaAnalisis });
+      } catch (err) {
+        setIndeksBarang(i);
+        setJawaban(data.jawaban);
+        setBeratKg(String(data.beratKg));
+
+        throw err;
+      }
+    }
+
+    const daftarAnalisis = selectedItems.map((item, i) => ({
+      ...semuaAnalisis[i],
+      selectedItem: item,
+    }));
+
+    navigate("/user/analisis", {
+      state: {
+        selectedItems,
+        analyses: daftarAnalisis,
+      },
+    });
+  } catch (err) {
+    setError(pesanError(err));
+  } finally {
+    setLoading(false);
+  }
+}
   function renderPilihanTunggal(item, gaya) {
     return daftarOpsi(item).map((opsi) => {
       const aktif = jawaban[item.kode] === opsi.nilai;
@@ -401,11 +510,11 @@ export default function UserIdentify() {
         <footer className="identify-actions">
           <button
             type="button"
-            className="identify-previous-button"
-            onClick={() => navigate(-1)}
-          >
-            Sebelumnya
-          </button>
+           className="identify-previous-button"
+           onClick={handlePreviousItem}
+           > 
+               Sebelumnya
+              </button>
 
           <button
             type="submit"

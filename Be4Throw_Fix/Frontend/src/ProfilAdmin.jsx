@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { apiRequest } from "./services/api";
+import { apiRequest, fileUrl } from "./services/api";
 import "./ProfilAdmin.css";
 
 export default function ProfilAdmin() {
@@ -13,10 +13,78 @@ export default function ProfilAdmin() {
     });
 
     const [pesan, setPesan] = useState("");
+    const [fotoProfil, setFotoProfil] = useState("");
+const [previewFoto, setPreviewFoto] = useState("");
+const [fileFoto, setFileFoto] = useState(null);
+const [loadingFoto, setLoadingFoto] = useState(false);
 
-    function isiProfil(data) {
-        setProfil((old) => ({ ...old, nama: data.nama || "", username: data.username || "", email: data.email || "", telepon: data.noTelepon || "", domisili: data.domisili || "", jabatan: data.role === "admin" ? "Administrator" : "Pengguna" }));
+
+function sinkronkanDataAdmin(data) {
+    if (!data) return;
+
+    for (const storage of [localStorage, sessionStorage]) {
+        const tersimpan = storage.getItem("be4throw_user");
+
+        if (tersimpan) {
+            try {
+                const userLama = JSON.parse(tersimpan);
+                storage.setItem(
+                    "be4throw_user",
+                    JSON.stringify({ ...userLama, ...data })
+                );
+            } catch (error) {
+                console.error("Gagal memperbarui data admin:", error);
+            }
+        }
     }
+
+    window.dispatchEvent(new Event("admin-profile-updated"));
+}
+
+function isiProfil(data) {
+    setProfil((old) => ({
+        ...old,
+        nama: data.nama || "",
+        username: data.username || "",
+        email: data.email || "",
+        telepon: data.noTelepon || "",
+        domisili: data.domisili || "",
+        jabatan: data.role === "admin" ? "Administrator" : "Pengguna",
+    }));
+
+    setFotoProfil(data.fotoProfil || "");
+    setPreviewFoto(data.fotoProfil ? fileUrl(data.fotoProfil) : "");
+    setFileFoto(null);
+}
+
+function handleFotoChange(event) {
+    const file = event.target.files?.[0];
+
+    if (!file) return;
+
+    const tipeDiizinkan = [
+        "image/jpeg",
+        "image/png",
+        "image/webp",
+    ];
+
+    if (!tipeDiizinkan.includes(file.type)) {
+        setPesan("Foto harus berformat JPG, PNG, atau WebP.");
+        event.target.value = "";
+        return;
+    }
+
+    if (file.size > 2 * 1024 * 1024) {
+        setPesan("Ukuran foto maksimal 2 MB.");
+        event.target.value = "";
+        return;
+    }
+
+    setFileFoto(file);
+    setPreviewFoto(URL.createObjectURL(file));
+    setPesan("");
+}
+
 
     async function muatProfil() {
         try {
@@ -28,6 +96,64 @@ export default function ProfilAdmin() {
             return false;
         }
     }
+
+    async function handleHapusFoto() {
+    if (!fotoProfil) {
+        setPesan("Belum ada foto profil yang tersimpan.");
+        return;
+    }
+
+    try {
+        setLoadingFoto(true);
+        setPesan("");
+
+        const response = await apiRequest("/akun/foto", {
+            method: "DELETE",
+        });
+
+        isiProfil(response.data);
+        sinkronkanDataAdmin(response.data);
+        setPesan("Foto profil berhasil dihapus.");
+    } catch (error) {
+        setPesan(
+            error.message || "Gagal menghapus foto profil."
+        );
+    } finally {
+        setLoadingFoto(false);
+    }
+}
+
+    async function handleUploadFoto() {
+    if (!fileFoto) {
+        setPesan("Pilih foto terlebih dahulu.");
+        return;
+    }
+
+    try {
+        setLoadingFoto(true);
+        setPesan("");
+
+        const formData = new FormData();
+        formData.append("foto", fileFoto);
+
+        const response = await apiRequest("/akun/foto", {
+            method: "PUT",
+            body: formData,
+        });
+
+        isiProfil(response.data);
+        sinkronkanDataAdmin(response.data);
+        setPesan("Foto profil berhasil diperbarui.");
+    } catch (error) {
+        setPesan(
+            error.errors?.map((item) => item.message).join(" ") ||
+            error.message ||
+            "Gagal mengunggah foto profil."
+        );
+    } finally {
+        setLoadingFoto(false);
+    }
+}
 
     useEffect(() => {
         muatProfil();
@@ -81,14 +207,56 @@ export default function ProfilAdmin() {
 
                 <section className="profil-admin-card profil-admin-identity">
                     <div className="profil-admin-avatar">
-                        {profil.nama
-                            .trim()
-                            .split(/\s+/)
-                            .slice(0, 2)
-                            .map((kata) => kata[0])
-                            .join("")
-                            .toUpperCase()}
-                    </div>
+  {previewFoto ? (
+    <img
+      src={previewFoto}
+      alt="Foto profil administrator"
+    />
+  ) : (
+    profil.nama
+      .trim()
+      .split(/\s+/)
+      .filter(Boolean)
+      .slice(0, 2)
+      .map((kata) => kata[0])
+      .join("")
+      .toUpperCase() || "AD"
+  )}
+</div>
+
+<label className="profil-admin-photo-button">
+  Pilih Foto
+  <input
+    type="file"
+    accept="image/jpeg,image/png,image/webp"
+    onChange={handleFotoChange}
+  />
+</label>
+
+{fileFoto && (
+  <button
+    type="button"
+    className="profil-admin-upload-button"
+    onClick={handleUploadFoto}
+    disabled={loadingFoto}
+  >
+    {loadingFoto ? "Mengunggah..." : "Simpan Foto"}
+  </button>
+)}
+{fotoProfil && !fileFoto && (
+    <button
+        type="button"
+        className="profil-admin-delete-button"
+        onClick={handleHapusFoto}
+        disabled={loadingFoto}
+    >
+        Hapus Foto
+    </button>
+)}
+
+<small className="profil-admin-photo-hint">
+  JPG, PNG, atau WebP. Maksimal 2 MB.
+</small>
 
                     <h2>{profil.nama || "Administrator"}</h2>
                     <p className="profil-admin-username">

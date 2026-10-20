@@ -10,16 +10,38 @@ const tahapan = [
   "Perhitungan Skor Solusi",
 ];
 
-// Satu analisis hanya boleh diproses sekali; effect yang terpanggil dua kali memakai request yang sama
 const prosesBerjalan = new Map();
 
 function prosesAnalisis(analisisId, headers) {
   if (!prosesBerjalan.has(analisisId)) {
-    const request = apiRequest(`/analisis/${analisisId}/proses`, { method: "POST", headers })
-      .finally(() => prosesBerjalan.delete(analisisId));
+    const request = apiRequest(`/analisis/${analisisId}/proses`, {
+      method: "POST",
+      headers,
+    }).finally(() => prosesBerjalan.delete(analisisId));
+
     prosesBerjalan.set(analisisId, request);
   }
+
   return prosesBerjalan.get(analisisId);
+}
+
+async function prosesSatuAnalisis(item) {
+  const headers = item.kodeAkses
+    ? { "X-Kode-Akses": item.kodeAkses }
+    : {};
+
+  try {
+    const response = await prosesAnalisis(item.id, headers);
+    return response.data;
+  } catch (err) {
+    if (err.status !== 409) throw err;
+
+    const response = await apiRequest(`/analisis/${item.id}`, {
+      headers,
+    });
+
+    return response.data;
+  }
 }
 
 export default function UserAnalyzing() {
@@ -32,38 +54,74 @@ export default function UserAnalyzing() {
 
   useEffect(() => {
     let aktif = true;
-    const analisisId = location.state?.analisisId;
-    if (!analisisId) {
-      setError("Data analisis tidak ditemukan. Silakan ulangi identifikasi.");
-      return undefined;
-    }
-    const timer = setInterval(() => setTahapAktif((t) => Math.min(t + 1, tahapan.length - 1)), 900);
-    async function proses() {
-      const headers = location.state?.kodeAkses ? { "X-Kode-Akses": location.state.kodeAkses } : {};
+    const timer = setInterval(() => {
+      setTahapAktif((t) => Math.min(t + 1, tahapan.length - 1));
+    }, 900);
+
+    async function prosesSemua() {
+      const daftar = location.state?.analyses ?? [];
+
+      if (!daftar.length) {
+        setError(
+          "Data analisis tidak ditemukan. Silakan ulangi identifikasi."
+        );
+        return;
+      }
+
       try {
-        let response;
-        try {
-          response = await prosesAnalisis(analisisId, headers);
-        } catch (err) {
-          // 409 = analisis sudah selesai (mis. request ganda); ambil hasil yang sudah tersimpan
-          if (err.status !== 409) throw err;
-          response = await apiRequest(`/analisis/${analisisId}`, { headers });
+        const hasilSemua = [];
+
+        for (const item of daftar) {
+          if (!item?.id) {
+            throw new Error("ID analisis salah satu barang tidak ditemukan.");
+          }
+
+          const hasil = await prosesSatuAnalisis(item);
+
+          hasilSemua.push({
+            ...item,
+            analisis: hasil,
+          });
         }
-        if (aktif) navigate("/user/rekomendasi", { replace: true, state: { ...location.state, analisis: response.data } });
+
+        if (aktif) {
+          navigate("/user/rekomendasi", {
+            replace: true,
+            state: {
+              ...location.state,
+              analyses: hasilSemua,
+              analisis: hasilSemua[0]?.analisis ?? {},
+              analisisId: hasilSemua[0]?.id,
+              kodeAkses: hasilSemua[0]?.kodeAkses ?? null,
+              kondisiBarang: hasilSemua[0]?.kondisiBarang ?? {},
+            },
+          });
+        }
       } catch (err) {
-        if (aktif) setError(err.errors?.map((item) => item.message).join(" ") || err.message || "Analisis gagal diproses.");
+        if (aktif) {
+          setError(
+            err.errors?.map((item) => item.message).join(" ") ||
+              err.message ||
+              "Analisis gagal diproses."
+          );
+        }
       }
     }
-    proses();
-    return () => { aktif = false; clearInterval(timer); };
+
+    prosesSemua();
+
+    return () => {
+      aktif = false;
+      clearInterval(timer);
+    };
   }, [dibatalkan, location.state, navigate]);
 
   function handleCancel() {
     setDibatalkan(true);
+
     navigate("/user/identifikasi", {
       state: {
         selectedItems: location.state?.selectedItems ?? [],
-        kondisiBarang: location.state?.kondisiBarang ?? {},
       },
     });
   }
@@ -79,7 +137,34 @@ export default function UserAnalyzing() {
       </header>
 
       <section className="analyzing-content">
-        {error && <div role="alert" style={{padding: "16px", marginBottom: "16px", borderRadius: "10px", background: "#fff0f0", color: "#8a1c1c"}}><strong>Analisis belum berhasil</strong><p>{error}</p><button type="button" onClick={() => navigate("/user/identifikasi", { state: { selectedItems: location.state?.selectedItems || [] } })}>Kembali ke Identifikasi</button></div>}
+        {error && (
+          <div
+            role="alert"
+            style={{
+              padding: "16px",
+              marginBottom: "16px",
+              borderRadius: "10px",
+              background: "#fff0f0",
+              color: "#8a1c1c",
+            }}
+          >
+            <strong>Analisis belum berhasil</strong>
+            <p>{error}</p>
+            <button
+              type="button"
+              onClick={() =>
+                navigate("/user/identifikasi", {
+                  state: {
+                    selectedItems: location.state?.selectedItems || [],
+                  },
+                })
+              }
+            >
+              Kembali ke Identifikasi
+            </button>
+          </div>
+        )}
+
         <div className="analyzing-animation" aria-hidden="true">
           <svg
             viewBox="0 0 64 64"
@@ -121,7 +206,7 @@ export default function UserAnalyzing() {
         <div className="analyzing-steps">
           {tahapan.map((tahap, index) => {
             const selesai = index < tahapAktif;
-            const aktif = index === tahapAktif;
+            const aktifTahap = index === tahapAktif;
 
             return (
               <div className="analyzing-step" key={tahap}>
@@ -134,14 +219,14 @@ export default function UserAnalyzing() {
                     className={
                       selesai
                         ? "analyzing-status done"
-                        : aktif
+                        : aktifTahap
                           ? "analyzing-status active"
                           : "analyzing-status waiting"
                     }
                   >
                     {selesai
                       ? "Selesai ✓"
-                      : aktif
+                      : aktifTahap
                         ? "Memproses..."
                         : "Menunggu"}
                   </span>
@@ -151,7 +236,11 @@ export default function UserAnalyzing() {
                   <div
                     className="analyzing-step-fill"
                     style={{
-                      width: selesai ? "100%" : aktif ? "65%" : "0%",
+                      width: selesai
+                        ? "100%"
+                        : aktifTahap
+                          ? "65%"
+                          : "0%",
                     }}
                   />
                 </div>

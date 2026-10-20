@@ -1,7 +1,7 @@
 
-import { useEffect, useMemo, useState } from "react";
-import { apiGetAllPages } from "../services/api";
-import { Link } from "react-router-dom";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { apiGetAllPages, apiRequest,} from "../services/api";
+import { Link, useLocation } from "react-router-dom";
 import UserMenu from "../UserMenu";
 import "./UserHistory.css";
 
@@ -10,33 +10,114 @@ export default function UserHistory() {
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("Semua");
   const [selected, setSelected] = useState(null);
+  const [detailLoading, setDetailLoading] = useState(false);
+const [detailError, setDetailError] = useState("");
   const [historyData, setHistoryData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const location = useLocation();
 
-  useEffect(() => {
-    let active = true;
-    apiGetAllPages("/riwayat").then((items) => {
-      if (active) setHistoryData(items.map((item) => ({ id: item.id, category: item.barang?.kategori?.nama || "Lainnya", date: item.tanggal ? new Date(item.tanggal).toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" }) : "-", name: item.barang?.nama || "Barang", status: item.rekomendasiUtama?.label || (item.adaBahaya ? "Perlu penanganan aman" : "Analisis selesai"), baik: item.rekomendasiUtama?.tindakan === "gunakan_kembali", detail: item })));
-    }).catch((err) => { if (active) setError(err.message || "Gagal memuat riwayat."); }).finally(() => { if (active) setLoading(false); });
-    return () => { active = false; };
-  }, []);
+  const muatRiwayat = useCallback(async () => {
+  setLoading(true);
+  setError("");
 
-  const filters = useMemo(() => ["Semua", ...new Set(historyData.map((item) => item.category))], [historyData]);
+  try {
+    const items = await apiGetAllPages("/riwayat");
 
-  const history = useMemo(
-    () =>
-      historyData.filter((item) => {
-        const matchesCategory =
-          filter === "Semua" || item.category === filter;
-        const matchesSearch = item.name
-          .toLowerCase()
-          .includes(search.toLowerCase());
+    setHistoryData(
+      items.map((item) => ({
+        id: item.id,
+        lengkap: item.lengkap,
+        category: item.barang?.kategori?.nama || "Lainnya",
+        date: item.tanggal
+          ? new Date(item.tanggal).toLocaleDateString("id-ID", {
+              day: "numeric",
+              month: "long",
+              year: "numeric",
+            })
+          : "-",
+        name: item.barang?.nama || "Barang",
+        status:
+          item.rekomendasiUtama?.label ||
+          (item.adaBahaya
+            ? "Perlu penanganan aman"
+            : "Analisis selesai"),
+        baik:
+          item.rekomendasiUtama?.tindakan === "gunakan_kembali",
+        detail: item,
+      }))
+    );
+  } catch (err) {
+    setError(err.message || "Gagal memuat riwayat.");
+  } finally {
+    setLoading(false);
+  }
+}, []);
 
-        return matchesCategory && matchesSearch;
-      }),
-    [historyData, filter, search]
-  );
+useEffect(() => {
+  muatRiwayat();
+}, [muatRiwayat, location.key]);
+
+useEffect(() => {
+  const saatKembaliKeTab = () => {
+    if (document.visibilityState === "visible") {
+      muatRiwayat();
+    }
+  };
+
+  document.addEventListener("visibilitychange", saatKembaliKeTab);
+
+  return () => {
+    document.removeEventListener("visibilitychange", saatKembaliKeTab);
+  };
+}, [muatRiwayat]);
+
+
+const filters = useMemo(
+  () => [
+    "Semua",
+    ...new Set(historyData.map((item) => item.category)),
+  ],
+  [historyData]
+);
+
+const history = useMemo(
+  () =>
+    historyData.filter((item) => {
+      const matchesCategory =
+        filter === "Semua" || item.category === filter;
+
+      const matchesSearch = item.name
+        .toLowerCase()
+        .includes(search.toLowerCase());
+
+      return matchesCategory && matchesSearch;
+    }),
+  [historyData, filter, search]
+);
+
+  
+async function lihatDetail(item) {
+  setSelected(item);
+  setDetailLoading(true);
+  setDetailError("");
+
+  try {
+    const response = await apiRequest(`/analisis/${item.id}`);
+
+    setSelected({
+      ...item,
+      analisis: response.data,
+    });
+  } catch (err) {
+    setDetailError(
+      err.message || "Gagal mengambil detail analisis."
+    );
+  } finally {
+    setDetailLoading(false);
+  }
+}
+
 
   return (
     <main className="uh-page">
@@ -108,6 +189,14 @@ export default function UserHistory() {
               </div>
 
               <h2>{item.name}</h2>
+              <p className="uh-completeness">
+  Status data:{" "}
+  <strong>
+    {item.lengkap
+      ? "Data lengkap"
+      : "Data tidak lengkap"}
+  </strong>
+</p>
 
               <div className="uh-card-bottom">
                 <p>
@@ -115,7 +204,7 @@ export default function UserHistory() {
                 </p>
                 <button
                   type="button"
-                  onClick={() => setSelected(item)}
+                  onClick={() => lihatDetail(item)}
                 >
                   Lihat Detail →
                 </button>
@@ -159,7 +248,54 @@ export default function UserHistory() {
             <p>Kategori: {selected.category}</p>
             <p>Tanggal analisis: {selected.date}</p>
             <p>Status: <strong>{selected.status}</strong></p>
-            <p>ID Analisis: {selected.id}</p>
+
+<p className="uh-completeness">
+  Status data:{" "}
+  <strong>
+    {selected.lengkap
+      ? "Data lengkap"
+      : "Data tidak lengkap"}
+  </strong>
+</p>
+
+<p>ID Analisis: {selected.id}</p>
+            {detailLoading && (
+  <p>Memuat detail analisis...</p>
+)}
+
+{detailError && (
+  <p role="alert">{detailError}</p>
+)}
+
+{selected.analisis?.hasil && (
+  <>
+    <h3>Hasil Analisis</h3>
+
+    <p>
+      Rekomendasi utama:{" "}
+      <strong>
+        {selected.analisis.hasil.rekomendasiUtama?.label ||
+          "Tidak tersedia"}
+      </strong>
+    </p>
+
+    <p>
+      Status keselamatan:{" "}
+      <strong>
+        {selected.analisis.hasil.keselamatan?.aman
+          ? "Aman berdasarkan pemeriksaan"
+          : "Perlu perhatian keselamatan"}
+      </strong>
+    </p>
+
+    {selected.analisis.hasil.pesanKeterbatasan && (
+      <p>
+        Catatan:{" "}
+        {selected.analisis.hasil.pesanKeterbatasan}
+      </p>
+    )}
+  </>
+)}
             <Link to="/user/katalog" className="uh-primary">
               Analisis Barang Lain
             </Link>

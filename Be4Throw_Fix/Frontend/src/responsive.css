@@ -1,0 +1,134 @@
+
+/* ========================================
+   RESPONSIVE BE4THROW
+   CSS tambahan - tidak mengganti desain lama
+======================================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: clip;
+}
+
+body,
+#root {
+  width: 100%;
+  min-width: 0;
+  min-height: 100vh;
+  margin: 0;
+}
+
+img,
+video,
+canvas,
+svg {
+  max-width: 100%;
+}
+
+input,
+select,
+textarea,
+button {
+  max-width: 100%;
+}
+
+input,
+select,
+textarea {
+  min-width: 0;
+}
+
+/* Tablet */
+@media (max-width: 1024px) {
+  .dashboard,
+  .dashboard-content,
+  .main-content,
+  .page-content,
+  .content-wrapper {
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  .dashboard,
+  .dashboard-content,
+  .main-content,
+  .page-content,
+  .content-wrapper,
+  main {
+    overflow-wrap: anywhere;
+  }
+
+  table {
+    max-width: 100%;
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  html,
+  body,
+  #root {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .dashboard,
+  .dashboard-content,
+  .main-content,
+  .page-content,
+  .content-wrapper,
+  main {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  img {
+    height: auto;
+  }
+
+  input,
+  select,
+  textarea {
+    width: 100%;
+    font-size: 16px;
+  }
+
+  button {
+    min-height: 40px;
+  }
+
+  table {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+  }
+
+  pre {
+    max-width: 100%;
+    overflow-x: auto;
+  }
+}
+
+/* Mobile kecil */
+@media (max-width: 480px) {
+  h1 {
+    overflow-wrap: anywhere;
+  }
+
+  .dashboard,
+  .dashboard-content,
+  .main-content,
+  .page-content,
+  .content-wrapper {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+}
