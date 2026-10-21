@@ -1,9 +1,10 @@
 
 /* ========================================
    RESPONSIVE BE4THROW
-   CSS tambahan - tidak mengganti desain lama
+   Desktop, tablet, dan mobile
 ======================================== */
 
+/* Reset ukuran elemen */
 *,
 *::before,
 *::after {
@@ -12,8 +13,10 @@
 
 html {
   width: 100%;
-  max-width: 100%;
+  min-width: 0;
+  min-height: 100%;
   overflow-x: clip;
+  -webkit-text-size-adjust: 100%;
 }
 
 body,
@@ -24,6 +27,12 @@ body,
   margin: 0;
 }
 
+#root {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Media mengikuti kontainer */
 img,
 video,
 canvas,
@@ -31,11 +40,17 @@ svg {
   max-width: 100%;
 }
 
+img,
+video {
+  height: auto;
+}
+
 input,
 select,
 textarea,
 button {
   max-width: 100%;
+  font: inherit;
 }
 
 input,
@@ -44,13 +59,99 @@ textarea {
   min-width: 0;
 }
 
-/* Tablet */
+button {
+  cursor: pointer;
+}
+
+/* Konten tidak memaksa layout melebar */
+main,
+section,
+article,
+aside,
+header,
+footer,
+.dashboard,
+.dashboard-content,
+.main-content,
+.page-content,
+.content-wrapper {
+  min-width: 0;
+  max-width: 100%;
+}
+
+h1,
+h2,
+h3,
+h4,
+p,
+label,
+td,
+th {
+  overflow-wrap: anywhere;
+}
+
+/* Grid dan flex lebih fleksibel */
+.grid,
+.content-grid,
+.dashboard-grid,
+.stats-grid,
+.card-grid {
+  min-width: 0;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(min(100%, 240px), 1fr)
+  );
+}
+
+.flex,
+.flex-container {
+  min-width: 0;
+  flex-wrap: wrap;
+}
+
+img,
+video {
+  object-fit: contain;
+}
+
+/* Tabel tidak membuat halaman melebar */
+table {
+  max-width: 100%;
+  border-collapse: collapse;
+}
+
+pre,
+code {
+  overflow-wrap: anywhere;
+}
+
+pre {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+/* Form responsif */
+form {
+  min-width: 0;
+  max-width: 100%;
+}
+
+input,
+select,
+textarea {
+  max-width: 100%;
+}
+
+/* ========================================
+   TABLET
+======================================== */
 @media (max-width: 1024px) {
   .dashboard,
   .dashboard-content,
   .main-content,
   .page-content,
   .content-wrapper {
+    width: 100%;
     max-width: 100%;
     min-width: 0;
   }
@@ -59,17 +160,34 @@ textarea {
   .dashboard-content,
   .main-content,
   .page-content,
-  .content-wrapper,
-  main {
-    overflow-wrap: anywhere;
+  .content-wrapper {
+    padding-left: clamp(12px, 2vw, 24px);
+    padding-right: clamp(12px, 2vw, 24px);
   }
 
-  table {
+  /* Grid kartu menyesuaikan ruang */
+  .grid,
+  .content-grid,
+  .dashboard-grid,
+  .stats-grid,
+  .card-grid {
+    grid-template-columns: repeat(
+      auto-fit,
+      minmax(min(100%, 220px), 1fr)
+    );
+  }
+
+  /* Form tidak melampaui kontainer */
+  input,
+  select,
+  textarea {
     max-width: 100%;
   }
 }
 
-/* Mobile */
+/* ========================================
+   MOBILE
+======================================== */
 @media (max-width: 768px) {
   html,
   body,
@@ -89,40 +207,6 @@ textarea {
     min-width: 0;
   }
 
-  img {
-    height: auto;
-  }
-
-  input,
-  select,
-  textarea {
-    width: 100%;
-    font-size: 16px;
-  }
-
-  button {
-    min-height: 40px;
-  }
-
-  table {
-    display: block;
-    width: 100%;
-    max-width: 100%;
-    overflow-x: auto;
-  }
-
-  pre {
-    max-width: 100%;
-    overflow-x: auto;
-  }
-}
-
-/* Mobile kecil */
-@media (max-width: 480px) {
-  h1 {
-    overflow-wrap: anywhere;
-  }
-
   .dashboard,
   .dashboard-content,
   .main-content,
@@ -130,5 +214,85 @@ textarea {
   .content-wrapper {
     padding-left: 12px;
     padding-right: 12px;
+  }
+
+  /* Judul menyesuaikan lebar layar */
+  h1 {
+    font-size: clamp(1.4rem, 5vw, 2rem);
+  }
+
+  h2 {
+    font-size: clamp(1.2rem, 4vw, 1.6rem);
+  }
+
+  /* Input nyaman digunakan di HP */
+  input,
+  select,
+  textarea {
+    width: 100%;
+    min-width: 0;
+    font-size: 16px;
+  }
+
+  button {
+    min-height: 40px;
+  }
+
+  /* Kartu menjadi satu kolom jika ruang terbatas */
+  .grid,
+  .content-grid,
+  .dashboard-grid,
+  .stats-grid,
+  .card-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* Baris aksi dapat turun ke baris berikutnya */
+  .flex,
+  .flex-container {
+    flex-wrap: wrap;
+  }
+
+  /* Tabel bisa digeser tanpa melebar-kan halaman */
+  .table-container,
+  .table-wrapper {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .table-container table,
+  .table-wrapper table {
+    min-width: 560px;
+  }
+
+  /* Modal mengikuti lebar layar */
+  [role="dialog"] {
+    max-width: calc(100vw - 24px);
+    max-height: calc(100dvh - 24px);
+    overflow-y: auto;
+  }
+}
+
+/* ========================================
+   MOBILE KECIL
+======================================== */
+@media (max-width: 480px) {
+  .dashboard,
+  .dashboard-content,
+  .main-content,
+  .page-content,
+  .content-wrapper {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  button {
+    max-width: 100%;
+  }
+
+  img {
+    max-width: 100%;
   }
 }

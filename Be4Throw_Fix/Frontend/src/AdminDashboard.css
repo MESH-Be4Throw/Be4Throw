@@ -1031,3 +1031,265 @@ body {
     object-fit: cover;
     border-radius: 50%;
 }
+
+/* =========================================
+   RESPONSIVE PATCH - ADMIN DASHBOARD
+   Tambahkan di bagian paling bawah file
+========================================= */
+
+/* Layout utama selalu mengikuti lebar container */
+.admin-layout {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.admin-main {
+  flex: 1 1 0%;
+  width: 0;
+  min-width: 0;
+  max-width: none;
+  padding: clamp(14px, 2.2vw, 30px);
+}
+
+/* Header menyesuaikan ukuran layar */
+.admin-topbar,
+.admin-global-header {
+  min-width: 0;
+  flex-wrap: wrap;
+  gap: clamp(10px, 1.5vw, 20px);
+}
+
+.admin-topbar > *,
+.admin-global-header > * {
+  min-width: 0;
+}
+
+.admin-topbar h1 {
+  font-size: clamp(21px, 2.2vw, 27px);
+  overflow-wrap: anywhere;
+}
+
+.admin-page-description {
+  line-height: 1.6;
+}
+
+/* Statistik: jumlah kolom mengikuti ruang tersedia */
+.admin-stats-grid {
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(min(100%, 220px), 1fr)
+  );
+  gap: clamp(10px, 1.4vw, 17px);
+}
+
+.admin-stat-card {
+  min-width: 0;
+  padding: clamp(12px, 1.5vw, 20px);
+}
+
+.admin-stat-content h2 {
+  font-size: clamp(19px, 2vw, 25px);
+  overflow-wrap: anywhere;
+}
+
+/* Panel mengikuti ruang yang tersedia */
+.admin-content-grid {
+  grid-template-columns: repeat(
+    2,
+    minmax(0, 1fr)
+  );
+  gap: clamp(12px, 1.5vw, 20px);
+}
+
+.admin-panel {
+  min-width: 0;
+  padding: clamp(14px, 1.8vw, 22px);
+}
+
+.admin-panel-heading {
+  min-width: 0;
+  flex-wrap: wrap;
+}
+
+/* Aksi cepat fleksibel */
+.admin-quick-grid {
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(min(100%, 220px), 1fr)
+  );
+  gap: clamp(10px, 1.4vw, 16px);
+}
+
+.admin-quick-button {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+/* Log dan daftar tidak mendorong container */
+.admin-log-item,
+.admin-draft-item {
+  min-width: 0;
+}
+
+.admin-log-info,
+.admin-draft-info {
+  overflow-wrap: anywhere;
+}
+
+.admin-log-item time {
+  white-space: normal;
+  text-align: right;
+}
+
+/* Grafik menyesuaikan lebar panel */
+.admin-chart {
+  width: 100%;
+  min-width: 0;
+}
+
+.admin-chart-body {
+  min-width: 0;
+}
+
+/* Tablet */
+@media (max-width: 900px) {
+  .admin-layout:not(.sidebar-collapsed) .admin-sidebar {
+    width: 190px;
+    flex: 0 0 190px;
+    padding: 18px 12px;
+  }
+
+  .admin-content-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .admin-main {
+    padding: 18px;
+  }
+}
+
+/* HP */
+@media (max-width: 650px) {
+  .admin-layout {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  .admin-layout .admin-sidebar {
+    position: static;
+    display: flex;
+    flex: 0 0 auto;
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+    padding: 12px;
+    overflow: visible;
+    border-right: 0;
+    border-bottom: 1px solid var(--admin-border);
+  }
+
+  .admin-layout.sidebar-collapsed .admin-sidebar {
+    display: none;
+    width: 0;
+    padding: 0;
+  }
+
+  .admin-brand {
+    min-width: 0;
+    padding: 0 6px 12px;
+  }
+
+  .admin-navigation {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    min-width: 0;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    padding-bottom: 4px;
+  }
+
+  .admin-nav-item {
+    flex: 0 0 auto;
+    min-width: 72px;
+    width: auto;
+  }
+
+  .admin-main {
+    flex: 1 1 auto;
+    width: 100%;
+    padding: clamp(12px, 3.5vw, 18px);
+  }
+
+  .admin-topbar {
+    align-items: flex-start;
+  }
+
+  .admin-topbar-actions {
+    gap: 8px;
+  }
+
+  .admin-stats-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .admin-stat-card {
+    gap: 8px;
+    padding: 12px 9px;
+  }
+
+  .admin-stat-icon {
+    width: 32px;
+    height: 32px;
+    font-size: 16px;
+  }
+
+  .admin-stat-content p {
+    line-height: 1.5;
+  }
+
+  .admin-content-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .admin-quick-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .admin-panel-heading {
+    gap: 8px;
+  }
+
+  .admin-period-switch {
+    max-width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .admin-log-item {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .admin-log-item time {
+    margin-left: 44px;
+    text-align: left;
+  }
+}
+
+/* HP sangat kecil */
+@media (max-width: 360px) {
+  .admin-stats-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .admin-topbar h1 {
+    font-size: 20px;
+  }
+
+  .admin-panel {
+    padding: 12px;
+  }
+}
