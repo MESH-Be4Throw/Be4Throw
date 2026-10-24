@@ -1,5 +1,7 @@
 
+import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { apiRequest } from "../services/api";
 import "./UserEnvironmentalImpact.css";
 
 export default function UserEnvironmentalImpact() {
@@ -10,10 +12,14 @@ export default function UserEnvironmentalImpact() {
     selectedItems = [],
     kondisiBarang = {},
     rekomendasi = {},
-    analisis = {},
+    analisis: analisisAwal = {},
     analisisId,
     kodeAkses,
   } = location.state ?? {};
+
+  const [analisis, setAnalisis] = useState(analisisAwal);
+  const [menghitung, setMenghitung] = useState(false);
+  const [pesanHitung, setPesanHitung] = useState("");
 
   const namaBarang =
     selectedItems[0]?.name ??
@@ -26,6 +32,27 @@ export default function UserEnvironmentalImpact() {
   const totalDialihkan = dampakUtama?.pengalihanLimbah?.nilai;
   const emisiDihindari = dampakUtama?.emisiDihindari?.nilai;
   const formatAngka = (nilai) => nilai.toLocaleString("id-ID", { maximumFractionDigits: 3 });
+  const belumDihitung =
+    Boolean(analisisId) &&
+    (analisis.hasil?.dampak ?? rekomendasi.dampak)?.status === "belum_dihitung";
+
+  async function handleHitungUlang() {
+    setMenghitung(true);
+    setPesanHitung("");
+
+    try {
+      const headers = kodeAkses ? { "X-Kode-Akses": kodeAkses } : {};
+      const response = await apiRequest(`/analisis/${analisisId}/dampak`, {
+        method: "POST",
+        headers,
+      });
+      setAnalisis(response.data);
+    } catch (err) {
+      setPesanHitung(err.message || "Dampak lingkungan belum bisa dihitung. Coba lagi.");
+    } finally {
+      setMenghitung(false);
+    }
+  }
 
   return (
     <main className="impact-page">
@@ -48,6 +75,24 @@ export default function UserEnvironmentalImpact() {
         <p className="impact-subtitle">
           Laporan akumulatif dari efisiensi pengelolaan limbah.
         </p>
+
+        {belumDihitung && (
+          <div className="impact-retry" role="status">
+            <p>
+              {analisis.hasil?.dampak?.catatan?.[0] ||
+                "Dampak lingkungan belum berhasil dihitung."}
+            </p>
+            <button
+              type="button"
+              className="impact-retry-button"
+              onClick={handleHitungUlang}
+              disabled={menghitung}
+            >
+              {menghitung ? "Menghitung..." : "Coba Hitung Lagi"}
+            </button>
+            {pesanHitung && <p className="impact-retry-error">{pesanHitung}</p>}
+          </div>
+        )}
 
         <article className="impact-card">
           <span className="impact-label">TOTAL LIMBAH DIALIHKAN</span>

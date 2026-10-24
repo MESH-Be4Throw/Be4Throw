@@ -1293,3 +1293,181 @@ body {
     padding: 12px;
   }
 }
+
+/* =========================================
+   RESPONSIVE PATCH 2 - ADMIN LAYOUT
+   Mengikuti perubahan ukuran frame
+========================================= */
+
+.admin-layout {
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+/* Sidebar tetap bisa di-scroll saat tinggi layar pendek */
+.admin-sidebar {
+  height: 100vh;
+  height: 100dvh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.admin-nav-item span:last-child,
+.admin-profile > div:last-child,
+.admin-brand > div {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.admin-profile strong,
+.admin-profile span {
+  overflow-wrap: anywhere;
+}
+
+/* Header: tombol tidak mengecil / bertumpuk */
+.admin-menu-toggle,
+.admin-notification-button,
+.admin-profile-button {
+  flex-shrink: 0;
+  min-height: 0;
+}
+
+.admin-global-brand {
+  min-width: 0;
+  flex-wrap: nowrap;
+}
+
+.admin-global-brand > strong {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+/* Grafik */
+.admin-chart-days {
+  margin-left: 0;
+  padding-left: 33px;
+}
+
+.admin-chart-days span {
+  min-width: 0;
+  text-align: center;
+}
+
+.admin-period-switch button {
+  min-height: 0;
+}
+
+/* Layar sangat lebar: konten tidak melar tanpa batas */
+@media (min-width: 1700px) {
+  .admin-main {
+    max-width: 1600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+/* Tablet kecil / landscape HP */
+@media (max-width: 900px) {
+  .admin-stat-card {
+    padding: 14px 12px;
+  }
+
+  .admin-log-item time {
+    max-width: 90px;
+  }
+}
+
+/* HP */
+@media (max-width: 650px) {
+  .admin-layout {
+    min-height: 100vh;
+    min-height: 100dvh;
+  }
+
+  .admin-layout .admin-sidebar {
+    max-height: none;
+    overflow-y: visible;
+  }
+
+  .admin-nav-item {
+    min-height: 0;
+  }
+
+  .admin-global-header {
+    flex-wrap: nowrap;
+  }
+
+  .admin-stat-content h2 {
+    font-size: clamp(17px, 5vw, 21px);
+  }
+
+  .admin-quick-label {
+    font-size: 13px;
+  }
+
+  .admin-log-item time {
+    max-width: none;
+  }
+
+  .admin-draft-info {
+    flex-basis: calc(100% - 50px);
+  }
+}
+
+/* HP kecil */
+@media (max-width: 480px) {
+  .admin-chart {
+    height: 150px;
+  }
+
+  .admin-chart-days {
+    font-size: 9px;
+    padding-left: 26px;
+    gap: 2px;
+  }
+
+  .admin-chart-labels {
+    padding-right: 8px;
+  }
+
+  .admin-quick-button {
+    gap: 10px;
+  }
+
+  .admin-quick-icon {
+    width: 36px;
+    height: 36px;
+    font-size: 21px;
+  }
+}
+
+@media (max-width: 360px) {
+  .admin-main {
+    padding: 10px;
+  }
+
+  .admin-global-brand {
+    gap: 6px;
+  }
+
+  .admin-global-brand > strong {
+    font-size: 15px;
+  }
+
+  .admin-menu-toggle {
+    width: 38px;
+    height: 38px;
+    padding: 9px;
+  }
+}
+
+/* Layar pendek (landscape HP) */
+@media (max-height: 520px) and (min-width: 651px) {
+  .admin-brand {
+    padding-bottom: 14px;
+  }
+
+  .admin-profile {
+    margin: 12px 0 16px;
+  }
+}

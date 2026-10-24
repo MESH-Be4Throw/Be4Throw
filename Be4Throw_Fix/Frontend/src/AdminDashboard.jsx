@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import "./AdminDashboard.css";
 import KelolaData from "./KelolaData";
+import KelolaAnalisis from "./KelolaAnalisis";
 import AuditSistem from "./AuditSistem";
 import ProfilAdmin from "./ProfilAdmin";
 import { API_ORIGIN, apiGetAllPages, apiRequest, fileUrl } from "./services/api";
@@ -12,6 +13,8 @@ const menuItems = [
   { id: "kategori", label: "Kategori", icon: "▤" },
   { id: "barang", label: "Barang", icon: "♻" },
   { id: "pertanyaan", label: "Pertanyaan", icon: "?" },
+  { id: "aturan", label: "Aturan", icon: "⚙" },
+  { id: "faktor", label: "Faktor Dampak", icon: "❖" },
   { id: "audit", label: "Audit Sistem", icon: "≡" },
 ];
 
@@ -77,7 +80,9 @@ const defaultStats = [
 
 export default function AdminDashboard() {
   
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(
+    () => typeof window === "undefined" || window.innerWidth > 650
+  );
   const [activeMenu, setActiveMenu] = useState("dashboard");
   const [period, setPeriod] = useState("Minggu");
   const [stats, setStats] = useState(defaultStats);
@@ -159,6 +164,14 @@ useEffect(() => {
   return () => { active = false; };
 }, [navigate]);
 
+// Sidebar menutup otomatis saat frame menyempit ke ukuran HP dan terbuka lagi saat melebar
+useEffect(() => {
+  const query = window.matchMedia("(max-width: 650px)");
+  const handleChange = (event) => setSidebarOpen(!event.matches);
+  query.addEventListener("change", handleChange);
+  return () => query.removeEventListener("change", handleChange);
+}, []);
+
 useEffect(() => {
   let active = true;
   fetch(`${API_ORIGIN}/`)
@@ -199,6 +212,14 @@ if (
   };
 
   return <KelolaData initialTab={tabMap[activeMenu]} />;
+}
+
+if (["aturan", "faktor"].includes(activeMenu)) {
+  return (
+    <KelolaAnalisis
+      initialTab={activeMenu === "aturan" ? "Aturan" : "Faktor Dampak"}
+    />
+  );
 }
 
   return (
@@ -375,6 +396,26 @@ if (
           >
             <span className="admin-quick-icon purple">?</span>
             <span className="admin-quick-label">Pertanyaan</span>
+            <span className="admin-quick-arrow">→</span>
+          </button>
+
+          <button
+            type="button"
+            className="admin-quick-button"
+            onClick={() => handleMenuClick("aturan")}
+          >
+            <span className="admin-quick-icon blue">⚙</span>
+            <span className="admin-quick-label">Aturan</span>
+            <span className="admin-quick-arrow">→</span>
+          </button>
+
+          <button
+            type="button"
+            className="admin-quick-button"
+            onClick={() => handleMenuClick("faktor")}
+          >
+            <span className="admin-quick-icon green">❖</span>
+            <span className="admin-quick-label">Faktor Dampak</span>
             <span className="admin-quick-arrow">→</span>
           </button>
 

@@ -956,3 +956,342 @@
   color: #367747;
   cursor: pointer;
 }
+
+/* =========================================
+   RESPONSIVE PATCH - KELOLA DATA
+========================================= */
+
+/* Tombol bawaan (min-height: 40px di mobile) tidak boleh merusak ikon kecil */
+.kd-back-button,
+.kd-profile-button,
+.kd-icon-button,
+.kd-clear-search,
+.kd-pagination button,
+.kd-option-remove {
+  min-height: 0;
+}
+
+/* Tab: tetap di tengah, tidak terpotong saat melebihi lebar layar */
+.kd-tabs {
+  justify-content: flex-start;
+  -webkit-overflow-scrolling: touch;
+}
+
+.kd-tabs > .kd-tab:first-child {
+  margin-left: auto;
+}
+
+.kd-tabs > .kd-tab:last-child {
+  margin-right: auto;
+}
+
+.kd-filter-wrap {
+  width: clamp(96px, 28vw, 150px);
+}
+
+.kd-filter {
+  text-overflow: ellipsis;
+}
+
+.kd-message {
+  flex-wrap: wrap;
+}
+
+.kd-list-heading {
+  flex-wrap: wrap;
+}
+
+.kd-list-heading h2 {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.kd-card-top {
+  flex-wrap: wrap;
+}
+
+.kd-card-meta {
+  flex: 1 1 auto;
+}
+
+.kd-category-instruction,
+.kd-options-hint {
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.kd-options-hint {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.kd-question-category-list {
+  padding: 0 16px;
+}
+
+.kd-back-category {
+  margin-left: 16px;
+  margin-right: 16px;
+}
+
+/* Form: checkbox tidak ikut melebar 100% */
+.kd-form input[type="checkbox"] {
+  width: auto;
+  min-width: 0;
+  flex-shrink: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.kd-form .kd-check-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 3px;
+}
+
+.kd-form .form-helper {
+  margin: 0;
+  color: #7b8698;
+  font-size: 10px;
+  line-height: 1.5;
+}
+
+.kd-form .required-mark {
+  margin-left: 3px;
+  color: #c94c4c;
+}
+
+.kd-options-editor,
+.kd-option-row,
+.kd-form-actions > button {
+  min-width: 0;
+}
+
+/* Modal mengikuti tinggi layar sebenarnya */
+.kd-modal {
+  max-height: 85vh;
+  max-height: 85dvh;
+}
+
+.kd-detail-list {
+  grid-template-columns: max-content minmax(0, 1fr);
+}
+
+/* Layar sentuh: area sentuh lebih besar */
+@media (pointer: coarse) {
+  .kd-icon-button {
+    width: 32px;
+    height: 32px;
+  }
+
+  .kd-pagination button {
+    width: 34px;
+    height: 34px;
+  }
+
+  .kd-back-button {
+    width: 40px;
+    height: 40px;
+  }
+
+  .kd-profile-button {
+    width: 34px;
+    height: 34px;
+  }
+}
+
+/* Tablet dan desktop: margin ikut lebar, daftar memakai ruang yang tersedia */
+@media (min-width: 701px) {
+  .kd-toolbar,
+  .kd-list-heading,
+  .kd-card-list,
+  .kd-empty,
+  .kd-message,
+  .kd-form,
+  .kd-category-instruction,
+  .kd-question-category-list,
+  .kd-back-category {
+    margin-left: clamp(16px, 2.5vw, 28px);
+    margin-right: clamp(16px, 2.5vw, 28px);
+  }
+
+  .kd-toolbar,
+  .kd-card-list,
+  .kd-category-instruction,
+  .kd-question-category-list {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .kd-add-button {
+    width: auto;
+    min-width: 180px;
+    margin-left: clamp(16px, 2.5vw, 28px);
+    margin-right: clamp(16px, 2.5vw, 28px);
+  }
+}
+
+@media (min-width: 900px) {
+  .kd-card-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 380px), 1fr));
+    align-items: start;
+  }
+
+  .kd-question-category-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr));
+  }
+
+  .kd-form {
+    max-width: 900px;
+  }
+}
+
+/* HP kecil */
+@media (max-width: 480px) {
+  .kd-modal-backdrop {
+    padding: 12px;
+  }
+
+  .kd-modal {
+    padding: 16px;
+  }
+
+  .kd-detail-list {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2px;
+  }
+
+  .kd-detail-list dd {
+    margin-bottom: 8px;
+  }
+
+  .kd-form {
+    margin-left: 12px;
+    margin-right: 12px;
+    padding: 12px;
+  }
+
+  .kd-form-actions .kd-add-button,
+  .kd-form-actions .kd-cancel-button {
+    flex: 1 1 auto;
+  }
+
+  .kd-question-category-card {
+    padding: 14px 12px;
+    gap: 10px;
+  }
+
+  .kd-question-category-icon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .kd-question-category-info strong {
+    font-size: 15px;
+    overflow-wrap: anywhere;
+  }
+
+  .kd-question-category-info > span {
+    font-size: 12px;
+  }
+
+  .kd-category-instruction {
+    padding-left: 12px;
+    padding-right: 12px;
+    font-size: 12px;
+  }
+
+  .kd-options-hint {
+    font-size: 12px;
+  }
+
+  .kd-question-category-list {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .kd-back-category {
+    margin-left: 12px;
+    margin-right: 12px;
+  }
+
+  .kd-option-row {
+    gap: 6px;
+  }
+
+  .kd-option-number {
+    width: 18px;
+  }
+
+  .kd-tabs {
+    gap: 16px;
+  }
+}
+
+@media (max-width: 380px) {
+  .kd-filter-wrap {
+    width: 96px;
+  }
+
+  .kd-form {
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+}
+
+/* =========================================
+   EDITOR SYARAT KONDISI (Aturan)
+========================================= */
+
+.kd-option-row select {
+  flex: 1;
+  min-width: 0;
+}
+
+.kd-condition-row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+  padding: 10px;
+  border: 1px solid #e2eae4;
+  border-radius: 10px;
+  background: #f9fbf9;
+}
+
+.kd-check-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+}
+
+.kd-range-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.kd-check-row {
+  color: #34483b;
+  font-size: 10px;
+  font-weight: 500;
+}
+
+.kd-option-add:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.kd-add-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+@media (max-width: 480px) {
+  .kd-range-fields {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

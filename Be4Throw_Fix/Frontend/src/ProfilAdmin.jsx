@@ -13,6 +13,13 @@ export default function ProfilAdmin() {
     });
 
     const [pesan, setPesan] = useState("");
+    const [formPassword, setFormPassword] = useState({
+        passwordLama: "",
+        passwordBaru: "",
+        konfirmasiPassword: "",
+    });
+    const [pesanPassword, setPesanPassword] = useState(null);
+    const [loadingPassword, setLoadingPassword] = useState(false);
     const [fotoProfil, setFotoProfil] = useState("");
 const [previewFoto, setPreviewFoto] = useState("");
 const [fileFoto, setFileFoto] = useState(null);
@@ -168,6 +175,40 @@ function handleFotoChange(event) {
         }));
 
         setPesan("");
+    }
+
+    function handlePasswordChange(event) {
+        const { name, value } = event.target;
+
+        setFormPassword((data) => ({ ...data, [name]: value }));
+        setPesanPassword(null);
+    }
+
+    async function handlePasswordSubmit(event) {
+        event.preventDefault();
+
+        if (formPassword.passwordBaru !== formPassword.konfirmasiPassword) {
+            setPesanPassword({ error: true, teks: "Konfirmasi password tidak sama." });
+            return;
+        }
+
+        try {
+            setLoadingPassword(true);
+            const response = await apiRequest("/akun/password", {
+                method: "PUT",
+                body: JSON.stringify(formPassword),
+            });
+
+            setFormPassword({ passwordLama: "", passwordBaru: "", konfirmasiPassword: "" });
+            setPesanPassword({ error: false, teks: response.message || "Password berhasil diubah." });
+        } catch (err) {
+            setPesanPassword({
+                error: true,
+                teks: err.errors?.map((item) => item.message).join(" ") || err.message || "Password gagal diubah.",
+            });
+        } finally {
+            setLoadingPassword(false);
+        }
     }
 
     async function handleSubmit(event) {
@@ -456,6 +497,108 @@ function handleFotoChange(event) {
                             Simpan Perubahan
                         </button>
                     </div>
+                </form>
+
+                <form
+                    className="profil-admin-form profil-admin-password-form"
+                    onSubmit={handlePasswordSubmit}
+                >
+                    <section className="profil-admin-card">
+                        <div className="profil-admin-section-title">
+                            <span className="profil-admin-section-icon">
+                                🔑
+                            </span>
+
+                            <div>
+                                <h3>Ubah Password</h3>
+                                <p>
+                                    Gunakan password baru minimal 8 karakter
+                                    yang mengandung huruf dan angka.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div className="profil-admin-fields">
+                            <div className="profil-admin-field">
+                                <label htmlFor="admin-password-lama">
+                                    Password Lama
+                                </label>
+
+                                <input
+                                    id="admin-password-lama"
+                                    name="passwordLama"
+                                    type="password"
+                                    value={formPassword.passwordLama}
+                                    onChange={handlePasswordChange}
+                                    placeholder="Masukkan password lama"
+                                    autoComplete="current-password"
+                                    required
+                                />
+                            </div>
+
+                            <div className="profil-admin-field">
+                                <label htmlFor="admin-password-baru">
+                                    Password Baru
+                                </label>
+
+                                <input
+                                    id="admin-password-baru"
+                                    name="passwordBaru"
+                                    type="password"
+                                    value={formPassword.passwordBaru}
+                                    onChange={handlePasswordChange}
+                                    placeholder="Masukkan password baru"
+                                    autoComplete="new-password"
+                                    minLength={8}
+                                    maxLength={72}
+                                    required
+                                />
+                            </div>
+
+                            <div className="profil-admin-field">
+                                <label htmlFor="admin-password-konfirmasi">
+                                    Konfirmasi Password Baru
+                                </label>
+
+                                <input
+                                    id="admin-password-konfirmasi"
+                                    name="konfirmasiPassword"
+                                    type="password"
+                                    value={formPassword.konfirmasiPassword}
+                                    onChange={handlePasswordChange}
+                                    placeholder="Ulangi password baru"
+                                    autoComplete="new-password"
+                                    required
+                                />
+                            </div>
+                        </div>
+
+                        {pesanPassword && (
+                            <div
+                                className={
+                                    pesanPassword.error
+                                        ? "profil-admin-error"
+                                        : "profil-admin-success"
+                                }
+                                role="status"
+                                style={{ marginTop: 18, marginBottom: 0 }}
+                            >
+                                {pesanPassword.error ? "" : "✓ "}
+                                {pesanPassword.teks}
+                            </div>
+                        )}
+
+                        <div className="profil-admin-actions">
+                            <button
+                                type="submit"
+                                className="profil-admin-save"
+                                disabled={loadingPassword}
+                            >
+                                <span>✓</span>
+                                {loadingPassword ? "Menyimpan..." : "Ubah Password"}
+                            </button>
+                        </div>
+                    </section>
                 </form>
             </main>
 

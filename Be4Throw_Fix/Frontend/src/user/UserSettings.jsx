@@ -17,6 +17,11 @@ export default function UserSettings() {
   const [photo, setPhoto] = useState("");
   const [status, setStatus] = useState("");
   const [message, setMessage] = useState("");
+  const [passwordLama, setPasswordLama] = useState("");
+  const [passwordBaru, setPasswordBaru] = useState("");
+  const [konfirmasiPassword, setKonfirmasiPassword] = useState("");
+  const [passwordMessage, setPasswordMessage] = useState("");
+  const [passwordLoading, setPasswordLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -95,6 +100,29 @@ export default function UserSettings() {
       setMessage("Profil berhasil disimpan ke database.");
       simpanUserLokal(user);
     } catch (err) { setMessage(err.errors?.map((item) => item.message).join(" ") || err.message || "Profil gagal disimpan."); }
+  }
+
+  async function handlePasswordSave(event) {
+    event.preventDefault();
+
+    if (passwordBaru !== konfirmasiPassword) {
+      setPasswordMessage("Konfirmasi password tidak sama.");
+      return;
+    }
+
+    try {
+      setPasswordLoading(true);
+      const response = await apiRequest("/akun/password", {
+        method: "PUT",
+        body: JSON.stringify({ passwordLama, passwordBaru, konfirmasiPassword }),
+      });
+      setPasswordLama(""); setPasswordBaru(""); setKonfirmasiPassword("");
+      setPasswordMessage(response.message || "Password berhasil diubah.");
+    } catch (err) {
+      setPasswordMessage(err.errors?.map((item) => item.message).join(" ") || err.message || "Password gagal diubah.");
+    } finally {
+      setPasswordLoading(false);
+    }
   }
 
   function handleLogout() {
@@ -211,6 +239,51 @@ export default function UserSettings() {
 
         {message && (
           <p className="us-message" role="status">{message}</p>
+        )}
+
+        <h2 className="us-password-heading">Ubah Password</h2>
+
+        <form className="us-form us-password-form" onSubmit={handlePasswordSave}>
+          <label htmlFor="us-password-old">Password Lama</label>
+          <input
+            id="us-password-old"
+            type="password"
+            value={passwordLama}
+            onChange={(event) => { setPasswordLama(event.target.value); setPasswordMessage(""); }}
+            autoComplete="current-password"
+            required
+          />
+
+          <label htmlFor="us-password-new">Password Baru</label>
+          <input
+            id="us-password-new"
+            type="password"
+            value={passwordBaru}
+            onChange={(event) => { setPasswordBaru(event.target.value); setPasswordMessage(""); }}
+            autoComplete="new-password"
+            minLength={8}
+            maxLength={72}
+            required
+          />
+          <small>Minimal 8 karakter, mengandung huruf dan angka.</small>
+
+          <label htmlFor="us-password-confirm">Konfirmasi Password Baru</label>
+          <input
+            id="us-password-confirm"
+            type="password"
+            value={konfirmasiPassword}
+            onChange={(event) => { setKonfirmasiPassword(event.target.value); setPasswordMessage(""); }}
+            autoComplete="new-password"
+            required
+          />
+
+          <button type="submit" className="us-save-button" disabled={passwordLoading}>
+            {passwordLoading ? "Menyimpan..." : "Ubah Password"}
+          </button>
+        </form>
+
+        {passwordMessage && (
+          <p className="us-message" role="status">{passwordMessage}</p>
         )}
 
         <button

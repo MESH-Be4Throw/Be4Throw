@@ -301,3 +301,21 @@
     font-size: 10px;
   }
 }
+
+/* Ubah password */
+.us-password-heading {
+  margin: 14px 0 0;
+  color: #175b3d;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.us-password-form {
+  margin-top: 8px;
+}
+
+@media (min-width: 700px) {
+  .us-password-heading {
+    font-size: 14px;
+  }
+}

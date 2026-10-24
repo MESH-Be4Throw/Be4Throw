@@ -487,3 +487,106 @@
   background: #ffffff !important;
   background-color: #ffffff !important;
 }
+
+/* =========================================
+   RESPONSIVE PATCH - AUDIT SISTEM
+========================================= */
+
+.audit-page {
+  padding: clamp(14px, 2.4vw, 24px);
+  overflow-wrap: anywhere;
+}
+
+.audit-page-header {
+  flex-wrap: wrap;
+  gap: clamp(12px, 1.8vw, 20px);
+}
+
+.audit-page-header > div:first-child {
+  flex: 1 1 240px;
+  min-width: 0;
+}
+
+.audit-page-header h1 {
+  font-size: clamp(22px, 3vw, 28px);
+}
+
+.audit-export-button,
+.audit-filter-toggle,
+.audit-reset-button,
+.audit-detail-button {
+  min-height: 42px;
+}
+
+.audit-filter-panel {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
+}
+
+.audit-filter-panel .audit-reset-button {
+  align-self: end;
+}
+
+.audit-filter-toggle > span,
+.audit-card-top > *,
+.audit-card-bottom > *,
+.audit-modal-header > div {
+  min-width: 0;
+}
+
+.audit-modal-backdrop {
+  padding: clamp(10px, 3vw, 20px);
+}
+
+.audit-detail-modal {
+  max-height: calc(100vh - 40px);
+  max-height: calc(100dvh - 40px);
+}
+
+@media (max-width: 900px) {
+  .audit-detail-list > div {
+    grid-template-columns: minmax(100px, 140px) minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 760px) {
+  .audit-detail-list > div {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .audit-page {
+    border-radius: 12px;
+  }
+
+  .audit-actions .audit-export-button {
+    width: 100%;
+  }
+
+  .audit-card h3 {
+    font-size: 15px;
+  }
+
+  .audit-card-bottom {
+    margin-top: 16px;
+  }
+
+  .audit-modal-header h2 {
+    font-size: 17px;
+  }
+}
+
+@media (max-width: 360px) {
+  .audit-page {
+    padding: 10px;
+  }
+
+  .audit-card {
+    padding: 12px;
+  }
+
+  .audit-filter-toggle {
+    padding: 12px;
+    font-size: 13px;
+  }
+}

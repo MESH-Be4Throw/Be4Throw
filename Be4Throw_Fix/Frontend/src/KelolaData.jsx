@@ -4,7 +4,13 @@ import "./KelolaData.css";
 
 const tabs = ["Kategori", "Barang", "Pertanyaan"];
 
-function Icon({ name, size = 17 }) {
+// Halaman terpisah (KelolaAnalisis), dibuka lewat menu admin
+const extraTabs = [
+  { label: "Aturan", menu: "aturan" },
+  { label: "Faktor Dampak", menu: "faktor" },
+];
+
+export function Icon({ name, size = 17 }) {
   const common = {
     width: size,
     height: size,
@@ -713,6 +719,23 @@ setQuestionOptions(
             onClick={() => changeTab(tab)}
           >
             {tab}
+          </button>
+        ))}
+
+        {extraTabs.map((tab) => (
+          <button
+            type="button"
+            key={tab.menu}
+            className="kd-tab"
+            onClick={() =>
+              window.dispatchEvent(
+                new CustomEvent("admin-menu-change", {
+                  detail: { menu: tab.menu },
+                })
+              )
+            }
+          >
+            {tab.label}
           </button>
         ))}
       </nav>

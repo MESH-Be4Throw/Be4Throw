@@ -148,3 +148,45 @@
     padding-top: 32px;
   }
 }
+
+/* Hitung ulang dampak */
+.impact-retry {
+  margin-bottom: 14px;
+  padding: 14px 16px;
+  border: 1px solid #f3dfb8;
+  border-radius: 12px;
+  background: #fff9ec;
+}
+
+.impact-retry p {
+  margin: 0 0 10px;
+  color: #8a6416;
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+.impact-retry-button {
+  min-height: 38px;
+  padding: 0 16px;
+  border: 1px solid #155c3d;
+  border-radius: 8px;
+  background: #fff;
+  color: #155c3d;
+  font-size: 11px;
+  font-weight: 750;
+  cursor: pointer;
+}
+
+.impact-retry-button:hover:not(:disabled) {
+  background: #eef7f0;
+}
+
+.impact-retry-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.impact-retry-error {
+  margin: 10px 0 0;
+  color: #b42318;
+}
