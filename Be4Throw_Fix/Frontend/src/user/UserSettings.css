@@ -155,6 +155,8 @@
 .us-photo-actions {
   display: flex;
   align-items: center;
+  justify-content: center;
+  width: 100%;
   gap: 7px;
   margin-top: 11px;
 }
@@ -162,6 +164,9 @@
 .us-photo-button,
 .us-remove-photo {
   display: inline-flex;
+  flex: 1 1 0;
+  min-width: 0;
+  max-width: 104px;
   min-height: 25px;
   align-items: center;
   justify-content: center;
@@ -234,6 +239,11 @@
   font-size: 10px;
   font-weight: 700;
   cursor: pointer;
+}
+
+.us-save-button:disabled {
+  background: #b9c9bf;
+  cursor: not-allowed;
 }
 
 .us-message {

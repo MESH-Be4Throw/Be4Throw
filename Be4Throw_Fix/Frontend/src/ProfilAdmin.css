@@ -291,10 +291,17 @@
 
 .profil-admin-role-badge,
 .profil-admin-active-badge {
-    padding: 7px 11px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    min-width: 64px;
+    height: 28px;
+    padding: 0 12px;
     border-radius: 20px;
     font-size: 10px;
     font-weight: 800;
+    line-height: 1;
     white-space: nowrap;
 }
 
@@ -372,6 +379,17 @@
     background: var(--admin-green-dark);
 }
 
+.profil-admin-save:disabled {
+    background: #b9c9bf;
+    box-shadow: none;
+    cursor: not-allowed;
+}
+
+.profil-admin-save:disabled:hover {
+    background: #b9c9bf;
+    transform: none;
+}
+
 .profil-admin-save span {
     font-size: 17px;
 }
@@ -442,94 +460,78 @@
   object-fit: cover;
 }
 
-.profil-admin-photo-button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 14px;
-  padding: 10px 16px;
-  border: 1px solid #d8ebd1;
-  border-radius: 10px;
-  background: #ffffff;
-  color: #18583f;
-  font-size: 12px;
-  font-weight: 700;
-  cursor: pointer;
+/* Aksi foto profil: tombol sejajar, ukuran sama */
+.profil-admin-photo-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    margin-top: 14px;
 }
 
-.profil-admin-photo-button input {
-  display: none;
-}
-
-.profil-admin-upload-button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 8px;
-  padding: 10px 16px;
-  border: none;
-  border-radius: 10px;
-  background: #18583f;
-  color: #ffffff;
-  font-size: 12px;
-  font-weight: 700;
-  cursor: pointer;
-}
-
-.profil-admin-upload-button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-.profil-admin-photo-hint {
-  display: block;
-  margin-top: 7px;
-  color: #718477;
-  font-size: 11px;
-}
+.profil-admin-photo-button,
+.profil-admin-upload-button,
 .profil-admin-delete-button {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    margin-top: 8px;
-    margin-left: 8px;
-    padding: 10px 16px;
-    border: 1px solid #f0caca;
+    box-sizing: border-box;
+    flex: 1 1 0;
+    min-width: 0;
+    max-width: 140px;
+    min-height: 40px;
+    margin: 0;
+    padding: 0 14px;
+    border: 1px solid transparent;
     border-radius: 10px;
-    background: #fff;
-    color: #b42318;
+    font-family: inherit;
     font-size: 12px;
     font-weight: 700;
+    line-height: 1;
+    text-align: center;
     cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
 }
 
+.profil-admin-photo-button,
+.profil-admin-upload-button {
+    border-color: var(--admin-green);
+    background: var(--admin-green);
+    color: #ffffff;
+}
+
+.profil-admin-photo-button:hover,
+.profil-admin-upload-button:hover:not(:disabled) {
+    border-color: var(--admin-green-dark);
+    background: var(--admin-green-dark);
+}
+
+.profil-admin-delete-button {
+    border-color: #f0caca;
+    background: #ffffff;
+    color: #b42318;
+}
+
+.profil-admin-delete-button:hover:not(:disabled) {
+    background: #fff5f5;
+}
+
+.profil-admin-upload-button:disabled,
 .profil-admin-delete-button:disabled {
     opacity: 0.6;
     cursor: not-allowed;
 }
 
-/* Tombol pilih foto profil */
-
-.profil-admin-photo-button {
-    display: inline-flex !important;
-    position: relative;
-    align-items: center;
-    justify-content: center;
-    margin: 12px auto;
-    padding: 10px 18px;
-    border: none;
-    border-radius: 8px;
-    background: #18583f;
-    color: #ffffff;
-    font-size: 13px;
-    font-weight: 700;
-    cursor: pointer;
-    visibility: visible;
-    opacity: 1;
-}
-
 .profil-admin-photo-button input[type="file"] {
     display: none;
+}
+
+.profil-admin-photo-hint {
+    display: block;
+    margin-top: 8px;
+    color: #65756a;
+    font-size: 12px;
 }
 
 .profil-admin-avatar {
@@ -594,22 +596,11 @@
     flex-wrap: wrap;
 }
 
-.profil-admin-photo-button,
-.profil-admin-upload-button,
-.profil-admin-delete-button {
-    min-height: 40px;
-    max-width: 100%;
-}
-
 .profil-admin-photo-hint {
     text-align: center;
 }
 
 @media (max-width: 600px) {
-    .profil-admin-delete-button {
-        margin-left: 0;
-    }
-
     .profil-admin-actions button {
         min-height: 46px;
     }

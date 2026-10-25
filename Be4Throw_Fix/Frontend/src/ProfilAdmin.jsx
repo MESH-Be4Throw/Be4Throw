@@ -12,6 +12,14 @@ export default function ProfilAdmin() {
         jabatan: "Administrator",
     });
 
+    // Data yang tersimpan di server, pembanding untuk mengaktifkan "Simpan Perubahan"
+    const [profilAsli, setProfilAsli] = useState({
+        nama: "",
+        username: "",
+        telepon: "",
+        domisili: "",
+    });
+
     const [pesan, setPesan] = useState("");
     const [formPassword, setFormPassword] = useState({
         passwordLama: "",
@@ -58,6 +66,13 @@ function isiProfil(data) {
         domisili: data.domisili || "",
         jabatan: data.role === "admin" ? "Administrator" : "Pengguna",
     }));
+
+    setProfilAsli({
+        nama: data.nama || "",
+        username: data.username || "",
+        telepon: data.noTelepon || "",
+        domisili: data.domisili || "",
+    });
 
     setFotoProfil(data.fotoProfil || "");
     setPreviewFoto(data.fotoProfil ? fileUrl(data.fotoProfil) : "");
@@ -211,12 +226,21 @@ function handleFotoChange(event) {
         }
     }
 
+    const adaPerubahan =
+        profil.nama !== profilAsli.nama ||
+        profil.username !== profilAsli.username ||
+        profil.telepon !== profilAsli.telepon ||
+        profil.domisili !== profilAsli.domisili;
+
     async function handleSubmit(event) {
         event.preventDefault();
+        if (!adaPerubahan) return;
         try {
             const response = await apiRequest("/akun/profil", { method: "PUT", body: JSON.stringify({ nama: profil.nama, username: profil.username || null, noTelepon: profil.telepon || null, domisili: profil.domisili || null }) });
             const data = response.data || {};
-            setProfil((old) => ({ ...old, nama: data.nama || old.nama, username: data.username || "", email: data.email || old.email, telepon: data.noTelepon || "", domisili: data.domisili || "" }));
+            const tersimpan = { nama: data.nama || profil.nama, username: data.username || "", telepon: data.noTelepon || "", domisili: data.domisili || "" };
+            setProfil((old) => ({ ...old, ...tersimpan, email: data.email || old.email }));
+            setProfilAsli(tersimpan);
             setPesan("Profil berhasil disimpan ke database.");
         } catch (err) { setPesan(err.errors?.map((item) => item.message).join(" ") || err.message || "Profil gagal disimpan."); }
     }
@@ -265,35 +289,37 @@ function handleFotoChange(event) {
   )}
 </div>
 
-<label className="profil-admin-photo-button">
-  Pilih Foto
-  <input
-    type="file"
-    accept="image/jpeg,image/png,image/webp"
-    onChange={handleFotoChange}
-  />
-</label>
+<div className="profil-admin-photo-actions">
+  <label className="profil-admin-photo-button">
+    Pilih Foto
+    <input
+      type="file"
+      accept="image/jpeg,image/png,image/webp"
+      onChange={handleFotoChange}
+    />
+  </label>
 
-{fileFoto && (
-  <button
-    type="button"
-    className="profil-admin-upload-button"
-    onClick={handleUploadFoto}
-    disabled={loadingFoto}
-  >
-    {loadingFoto ? "Mengunggah..." : "Simpan Foto"}
-  </button>
-)}
-{fotoProfil && !fileFoto && (
+  {fileFoto && (
     <button
-        type="button"
-        className="profil-admin-delete-button"
-        onClick={handleHapusFoto}
-        disabled={loadingFoto}
+      type="button"
+      className="profil-admin-upload-button"
+      onClick={handleUploadFoto}
+      disabled={loadingFoto}
     >
-        Hapus Foto
+      {loadingFoto ? "Mengunggah..." : "Simpan Foto"}
     </button>
-)}
+  )}
+  {fotoProfil && !fileFoto && (
+    <button
+      type="button"
+      className="profil-admin-delete-button"
+      onClick={handleHapusFoto}
+      disabled={loadingFoto}
+    >
+      Hapus Foto
+    </button>
+  )}
+</div>
 
 <small className="profil-admin-photo-hint">
   JPG, PNG, atau WebP. Maksimal 2 MB.
@@ -424,79 +450,38 @@ function handleFotoChange(event) {
                                 />
                             </div>
                         </div>
+
+                        {pesan && (
+                            <div
+                                className="profil-admin-success"
+                                role="status"
+                            >
+                                ✓ {pesan}
+                            </div>
+                        )}
+
+                        <div className="profil-admin-actions">
+                            <button
+                                type="button"
+                                className="profil-admin-reset"
+                                onClick={async () => {
+                                    setPesan("");
+                                    if (await muatProfil()) setPesan("Form dikembalikan ke data tersimpan.");
+                                }}
+                            >
+                                Reset Form
+                            </button>
+
+                            <button
+                                type="submit"
+                                className="profil-admin-save"
+                                disabled={!adaPerubahan}
+                            >
+                                <span>✓</span>
+                                Simpan Perubahan
+                            </button>
+                        </div>
                     </section>
-
-                    <section className="profil-admin-card profil-admin-security">
-                        <div className="profil-admin-section-title">
-                            <span className="profil-admin-section-icon">
-                                🔐
-                            </span>
-
-                            <div>
-                                <h3>Keamanan Akun</h3>
-                                <p>
-                                    Informasi mengenai akses administrator.
-                                </p>
-                            </div>
-                        </div>
-
-                        <div className="profil-admin-security-row">
-                            <div>
-                                <strong>Role Akun</strong>
-                                <p>Administrator</p>
-                            </div>
-
-                            <span className="profil-admin-role-badge">
-                                ADMIN
-                            </span>
-                        </div>
-
-                        <div className="profil-admin-security-row">
-                            <div>
-                                <strong>Status Akun</strong>
-                                <p>Akun administrator aktif</p>
-                            </div>
-
-                            <span className="profil-admin-active-badge">
-                                Aktif
-                            </span>
-                        </div>
-
-                        <p className="profil-admin-security-note">
-                            Data keamanan akun dikelola melalui sistem
-                            autentikasi Be4Throw.
-                        </p>
-                    </section>
-
-                    {pesan && (
-                        <div
-                            className="profil-admin-success"
-                            role="status"
-                        >
-                            ✓ {pesan}
-                        </div>
-                    )}
-
-                    <div className="profil-admin-actions">
-                        <button
-                            type="button"
-                            className="profil-admin-reset"
-                            onClick={async () => {
-                                setPesan("");
-                                if (await muatProfil()) setPesan("Form dikembalikan ke data tersimpan.");
-                            }}
-                        >
-                            Reset Form
-                        </button>
-
-                        <button
-                            type="submit"
-                            className="profil-admin-save"
-                        >
-                            <span>✓</span>
-                            Simpan Perubahan
-                        </button>
-                    </div>
                 </form>
 
                 <form
@@ -600,6 +585,48 @@ function handleFotoChange(event) {
                         </div>
                     </section>
                 </form>
+
+                <section className="profil-admin-card profil-admin-security">
+                    <div className="profil-admin-section-title">
+                        <span className="profil-admin-section-icon">
+                            🔐
+                        </span>
+
+                        <div>
+                            <h3>Keamanan Akun</h3>
+                            <p>
+                                Informasi mengenai akses administrator.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div className="profil-admin-security-row">
+                        <div>
+                            <strong>Role Akun</strong>
+                            <p>Administrator</p>
+                        </div>
+
+                        <span className="profil-admin-role-badge">
+                            ADMIN
+                        </span>
+                    </div>
+
+                    <div className="profil-admin-security-row">
+                        <div>
+                            <strong>Status Akun</strong>
+                            <p>Akun administrator aktif</p>
+                        </div>
+
+                        <span className="profil-admin-active-badge">
+                            Aktif
+                        </span>
+                    </div>
+
+                    <p className="profil-admin-security-note">
+                        Data keamanan akun dikelola melalui sistem
+                        autentikasi Be4Throw.
+                    </p>
+                </section>
             </main>
 
             <footer className="profil-admin-footer">

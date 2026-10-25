@@ -14,6 +14,8 @@ export default function UserSettings() {
   const [domisili, setDomisili] = useState("");
   const [noTelepon, setNoTelepon] = useState("");
   const [loading, setLoading] = useState(true);
+  // Data yang tersimpan di server, pembanding untuk mengaktifkan "Simpan Perubahan"
+  const [saved, setSaved] = useState({ name: "", username: "", domisili: "", noTelepon: "" });
   const [photo, setPhoto] = useState("");
   const [status, setStatus] = useState("");
   const [message, setMessage] = useState("");
@@ -32,6 +34,7 @@ export default function UserSettings() {
       if (!active) return;
       setName(user.nama || ""); setUsername(user.username || ""); setEmail(user.email || "");
       setDomisili(user.domisili || ""); setNoTelepon(user.noTelepon || "");
+      setSaved({ name: user.nama || "", username: user.username || "", domisili: user.domisili || "", noTelepon: user.noTelepon || "" });
       setPhoto(fileUrl(user.fotoProfil)); setStatus(user.status || "");
     }).catch((err) => { if (active) setMessage(err.message || "Gagal memuat profil."); }).finally(() => { if (active) setLoading(false); });
     return () => { active = false; };
@@ -85,8 +88,15 @@ export default function UserSettings() {
     }
   }
 
+  const adaPerubahan =
+    name !== saved.name ||
+    username !== saved.username ||
+    domisili !== saved.domisili ||
+    noTelepon !== saved.noTelepon;
+
   async function handleSave(event) {
     event.preventDefault();
+    if (!adaPerubahan) return;
 
     if (!name.trim() || !username.trim() || !email.trim()) {
       setMessage("Semua kolom wajib diisi.");
@@ -97,6 +107,8 @@ export default function UserSettings() {
       const response = await apiRequest("/akun/profil", { method: "PUT", body: JSON.stringify({ nama: name.trim(), username: username.trim() || null, domisili: domisili.trim() || null, noTelepon: noTelepon.trim() || null }) });
       const user = response.data || {};
       setName(user.nama || name); setUsername(user.username || ""); setEmail(user.email || email);
+      setSaved({ name: user.nama || name, username: user.username || "", domisili: user.domisili || "", noTelepon: user.noTelepon || "" });
+      setDomisili(user.domisili || ""); setNoTelepon(user.noTelepon || "");
       setMessage("Profil berhasil disimpan ke database.");
       simpanUserLokal(user);
     } catch (err) { setMessage(err.errors?.map((item) => item.message).join(" ") || err.message || "Profil gagal disimpan."); }
@@ -232,7 +244,7 @@ export default function UserSettings() {
           <label htmlFor="us-domicile">Domisili</label>
           <input id="us-domicile" type="text" value={domisili} onChange={(event) => setDomisili(event.target.value)} />
 
-          <button type="submit" className="us-save-button">
+          <button type="submit" className="us-save-button" disabled={!adaPerubahan}>
             Simpan Perubahan
           </button>
         </form>
