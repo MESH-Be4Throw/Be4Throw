@@ -191,7 +191,7 @@ export default function KelolaData({ initialTab }) {
     ...item,
     code: item.kode,
     title: item.teks,
-    content: `Tipe: ${item.tipe} · Opsi: ${JSON.stringify(item.opsi ?? {})}`,
+    content: `Tipe: ${item.tipe}`,
     optionsJson: JSON.stringify(item.opsi ?? [], null, 2),
     questionType: item.tipe,
     required: item.wajib,
