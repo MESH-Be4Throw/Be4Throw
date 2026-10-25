@@ -93,10 +93,12 @@
 .us-avatar {
   position: relative;
   display: grid;
-  width: 66px;
-  height: 66px;
+  flex-shrink: 0;
+  width: 84px;
+  height: 84px;
+  margin-bottom: 4px;
   place-items: center;
-  border: 1px solid #d5e9c8;
+  border: 3px solid #d5e9c8;
   border-radius: 50%;
   background: #fff;
   box-shadow: 0 2px 3px rgb(20 60 35 / 8%);
@@ -105,9 +107,13 @@
   font-weight: 700;
 }
 
+/* Foto mengisi penuh lingkaran dan dipotong (cover), tidak ikut ukuran aslinya */
 .us-avatar img {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
+  max-width: none;
   border-radius: 50%;
   object-fit: cover;
 }

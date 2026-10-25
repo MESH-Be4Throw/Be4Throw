@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { apiRequest } from "./services/api";
+import AdminAvatar from "./AdminAvatar";
 import "./KelolaData.css";
 
 const tabs = ["Kategori", "Barang", "Pertanyaan"];
@@ -704,7 +705,7 @@ setQuestionOptions(
           }}
           aria-label="Profil admin"
         >
-          <Icon name="user" size={19} />
+          <AdminAvatar fallback={<Icon name="user" size={19} />} />
         </button>
       </header>
 

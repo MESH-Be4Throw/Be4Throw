@@ -1023,11 +1023,21 @@ body {
     flex-shrink: 0;
 }
 
+/* Foto mengisi penuh lingkaran (cover), tidak ikut ukuran aslinya */
+.admin-avatar,
+.admin-profile-button {
+    position: relative;
+    overflow: hidden;
+}
+
 .admin-avatar img,
 .admin-profile-button img {
+    position: absolute;
+    inset: 0;
     display: block;
     width: 100%;
     height: 100%;
+    max-width: none;
     object-fit: cover;
     border-radius: 50%;
 }

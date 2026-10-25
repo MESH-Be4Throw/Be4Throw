@@ -55,6 +55,14 @@
   border-radius: 50%;
   background: #eaf8e7;
   color: #17603e;
+  overflow: hidden;
+}
+
+.kd-profile-button .admin-avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
 }
 
 .kd-tabs {

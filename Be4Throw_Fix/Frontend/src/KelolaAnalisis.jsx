@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { apiRequest } from "./services/api";
 import { Icon } from "./KelolaData";
+import AdminAvatar from "./AdminAvatar";
 import "./KelolaData.css";
 
 // Tab di halaman ini dan tab Kelola Data berbagi satu bar navigasi
@@ -987,7 +988,7 @@ export default function KelolaAnalisis({ initialTab }) {
           }
           aria-label="Profil admin"
         >
-          <Icon name="user" size={19} />
+          <AdminAvatar fallback={<Icon name="user" size={19} />} />
         </button>
       </header>
 
