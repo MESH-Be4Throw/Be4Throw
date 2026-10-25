@@ -1,0 +1,135 @@
+/* ========================================
+   STANDAR UI BE4THROW (IMK / WCAG 2.2)
+   Dimuat terakhir di main.jsx supaya berlaku di semua halaman.
+
+   - Area sentuh tombol & input utama minimal 44px (Apple HIG, WCAG 2.5.5)
+   - Teks minimal 12px, kontras teks minimal 4,5:1 (WCAG 1.4.3)
+   - Fokus keyboard selalu terlihat (WCAG 2.4.7)
+   - State hover / ditekan / nonaktif seragam
+======================================== */
+
+:root {
+  --be4-green: #155c3d;
+  --be4-green-dark: #104b31;
+  --be4-disabled: #b9c9bf;
+  --be4-target: 44px;
+  --be4-radius: 10px;
+}
+
+/* Fokus keyboard: cincin jelas di semua elemen interaktif */
+a:focus-visible,
+button:focus-visible,
+select:focus-visible,
+summary:focus-visible,
+[tabindex]:focus-visible {
+  outline: 3px solid var(--be4-green) !important;
+  outline-offset: 2px;
+}
+
+input:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid var(--be4-green) !important;
+  outline-offset: 1px;
+}
+
+/* Interaksi sentuh lebih responsif */
+a,
+button,
+input,
+select,
+textarea,
+label {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Tombol utama & sekunder: ukuran, tipografi, dan bentuk seragam */
+.login-button,
+.register-submit,
+.forgot-submit,
+.kd-add-button,
+.audit-export-button,
+.detail-primary-button,
+.detail-secondary-button,
+.impact-primary-button,
+.identify-next-button,
+.identify-previous-button,
+.recommendation-save,
+.feedback-submit,
+.user-primary-button,
+.us-save-button,
+.us-logout,
+.profil-admin-save,
+.profil-admin-reset {
+  min-height: var(--be4-target);
+  border-radius: var(--be4-radius);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.2;
+  transition: background-color 0.18s ease, border-color 0.18s ease,
+    box-shadow 0.18s ease, transform 0.12s ease;
+}
+
+/* Ditekan */
+.login-button:active:not(:disabled),
+.register-submit:active:not(:disabled),
+.forgot-submit:active:not(:disabled),
+.kd-add-button:active:not(:disabled),
+.audit-export-button:active:not(:disabled),
+.detail-primary-button:active:not(:disabled),
+.impact-primary-button:active:not(:disabled),
+.identify-next-button:active:not(:disabled),
+.recommendation-save:active:not(:disabled),
+.feedback-submit:active:not(:disabled),
+.user-primary-button:active:not(:disabled),
+.us-save-button:active:not(:disabled),
+.profil-admin-save:active:not(:disabled),
+.profil-admin-photo-button:active,
+.profil-admin-upload-button:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+/* Nonaktif: tampilan sama di semua halaman */
+.login-button:disabled,
+.register-submit:disabled,
+.forgot-submit:disabled,
+.kd-add-button:disabled,
+.audit-export-button:disabled,
+.detail-primary-button:disabled,
+.impact-primary-button:disabled,
+.identify-next-button:disabled,
+.recommendation-save:disabled,
+.feedback-submit:disabled,
+.user-primary-button:disabled,
+.us-save-button:disabled,
+.profil-admin-save:disabled {
+  background: var(--be4-disabled);
+  border-color: var(--be4-disabled);
+  box-shadow: none;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Kolom isian: tinggi nyaman disentuh, teks terbaca */
+input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="range"]),
+select {
+  min-height: var(--be4-target);
+  font-size: 14px;
+}
+
+textarea {
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* Hormati preferensi pengguna yang tidak ingin animasi */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

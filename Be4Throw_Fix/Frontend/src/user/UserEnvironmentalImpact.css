@@ -25,7 +25,7 @@
   border: 0;
   background: transparent;
   color: #155c3d;
-  font-size: 11px;
+  font-size: 12px;
   cursor: pointer;
 }
 
@@ -45,7 +45,7 @@
 
 .impact-subtitle {
   margin: 0 0 18px;
-  color: #7b867e;
+  color: #6b756e;
   font-size: 12px;
 }
 
@@ -58,8 +58,8 @@
 }
 
 .impact-label {
-  color: #8a968d;
-  font-size: 9px;
+  color: #6a736d;
+  font-size: 12px;
   font-weight: 700;
 }
 
@@ -76,7 +76,7 @@
   gap: 12px;
   padding: 11px 0;
   border-top: 1px solid #edf1ed;
-  font-size: 11px;
+  font-size: 12px;
 }
 
 .impact-row span {
@@ -91,7 +91,7 @@
 .impact-card > p {
   margin: 0;
   color: #68756c;
-  font-size: 11px;
+  font-size: 12px;
   line-height: 1.6;
 }
 
@@ -110,20 +110,20 @@
 
 .impact-info strong {
   color: #456b51;
-  font-size: 11px;
+  font-size: 12px;
 }
 
 .impact-info p {
   margin: 6px 0 0;
-  color: #778178;
-  font-size: 10px;
+  color: #6b746c;
+  font-size: 12px;
   line-height: 1.6;
 }
 
 .impact-note {
   margin: 18px 0;
-  color: #929a94;
-  font-size: 10px;
+  color: #6d736f;
+  font-size: 12px;
   line-height: 1.6;
 }
 
@@ -135,7 +135,7 @@
   background: #155c3d;
   color: white;
   font-size: 12px;
-  font-weight: 750;
+  font-weight: 700;
   cursor: pointer;
 }
 
@@ -161,7 +161,7 @@
 .impact-retry p {
   margin: 0 0 10px;
   color: #8a6416;
-  font-size: 11px;
+  font-size: 12px;
   line-height: 1.6;
 }
 
@@ -172,8 +172,8 @@
   border-radius: 8px;
   background: #fff;
   color: #155c3d;
-  font-size: 11px;
-  font-weight: 750;
+  font-size: 12px;
+  font-weight: 700;
   cursor: pointer;
 }
 

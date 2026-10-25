@@ -1,9 +1,9 @@
 .profil-admin-page {
-    --admin-green: #18583f;
-    --admin-green-dark: #124832;
+    --admin-green: #155c3d;
+    --admin-green-dark: #104b31;
     --admin-green-light: #eaf7e7;
     --admin-text: #234c3b;
-    --admin-muted: #718477;
+    --admin-muted: #65756a;
     --admin-border: #eaf1e7;
     --admin-bg: #f8faf6;
 
@@ -42,7 +42,7 @@
 }
 
 .profil-admin-label {
-    font-size: 10px;
+    font-size: 12px;
     font-weight: 700;
     letter-spacing: 2px;
     color: var(--admin-muted);
@@ -182,7 +182,7 @@
 
 .profil-admin-role small {
     margin-top: 5px;
-    font-size: 11px;
+    font-size: 12px;
     color: var(--admin-muted);
 }
 
@@ -256,12 +256,12 @@
 }
 
 .profil-admin-field input::placeholder {
-    color: #9aaba0;
+    color: #69746d;
 }
 
 .profil-admin-field small {
     margin-top: 8px;
-    font-size: 11px;
+    font-size: 12px;
     line-height: 1.6;
     color: var(--admin-muted);
 }
@@ -299,7 +299,7 @@
     height: 28px;
     padding: 0 12px;
     border-radius: 20px;
-    font-size: 10px;
+    font-size: 12px;
     font-weight: 800;
     line-height: 1;
     white-space: nowrap;

@@ -28,7 +28,7 @@
 }
 
 .um-brand {
-  color: #175b3d;
+  color: #155c3d;
   font-size: 12px;
   font-weight: 800;
   text-decoration: none;
@@ -42,7 +42,7 @@
   border: 0;
   border-radius: 7px;
   background: #eff9e9;
-  color: #175b3d;
+  color: #155c3d;
   font-size: 22px;
   line-height: 1;
   cursor: pointer;
@@ -64,7 +64,7 @@
   border: 1px solid transparent;
   border-radius: 22px;
   color: #45624e;
-  font-size: 10px;
+  font-size: 12px;
   text-decoration: none;
   transition: background 0.15s ease;
 }
@@ -76,7 +76,7 @@
 .um-link.active {
   border-color: #d1e9b9;
   background: #effbe6;
-  color: #175b3d;
+  color: #155c3d;
   font-weight: 700;
 }
 
@@ -98,8 +98,8 @@
   gap: 7px;
   margin-top: auto;
   padding: 12px;
-  color: #175b3d;
-  font-size: 8px;
+  color: #155c3d;
+  font-size: 12px;
   font-weight: 700;
 }
 

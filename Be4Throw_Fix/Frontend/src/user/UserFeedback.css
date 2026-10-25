@@ -1,9 +1,9 @@
 
 .feedback-page {
-  --feedback-green: #18583f;
-  --feedback-green-dark: #124832;
+  --feedback-green: #155c3d;
+  --feedback-green-dark: #104b31;
   --feedback-text: #243c2d;
-  --feedback-muted: #78877b;
+  --feedback-muted: #68756b;
   --feedback-border: #e7eee8;
 
   min-height: 100vh;
@@ -73,7 +73,7 @@
 .feedback-card h2 {
   margin: 0 0 14px;
   color: #17583e;
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 700;
   line-height: 1.45;
 }
@@ -105,7 +105,7 @@
 }
 
 .feedback-star:hover:not(:disabled) {
-  color: #8eaf91;
+  color: #617763;
   transform: scale(1.1);
 }
 
@@ -136,7 +136,7 @@
   display: block;
   margin-bottom: 9px;
   color: #26382d;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 600;
 }
 
@@ -151,14 +151,14 @@
   background: #ffffff;
   color: #26382d;
   font-family: inherit;
-  font-size: 11px;
+  font-size: 12px;
   line-height: 1.6;
   resize: vertical;
   transition: border-color 0.2s ease;
 }
 
 .feedback-card textarea::placeholder {
-  color: #a2ada4;
+  color: #6d746e;
 }
 
 .feedback-card textarea:focus {
@@ -174,7 +174,7 @@
 /* Pesan validasi dan sukses */
 .feedback-message {
   margin: 10px 0 0;
-  font-size: 11px;
+  font-size: 12px;
   line-height: 1.5;
 }
 
@@ -203,7 +203,7 @@
   background: var(--feedback-green);
   color: #ffffff;
   font-family: inherit;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
   cursor: pointer;
   transition: background 0.2s ease;
@@ -233,7 +233,7 @@
   background: #ffffff;
   color: #26382d;
   font-family: inherit;
-  font-size: 11px;
+  font-size: 12px;
   cursor: pointer;
   transition: background 0.2s ease;
 }
@@ -276,7 +276,7 @@
   }
 
   .feedback-card h2 {
-    font-size: 12px;
+    font-size: 14px;
   }
 
   .feedback-star {

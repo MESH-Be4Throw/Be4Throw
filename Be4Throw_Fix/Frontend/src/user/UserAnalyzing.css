@@ -62,8 +62,8 @@
 .analyzing-description {
   max-width: 270px;
   margin: 0 auto 28px;
-  color: #78837b;
-  font-size: 10px;
+  color: #6b756d;
+  font-size: 12px;
   line-height: 1.7;
 }
 
@@ -95,13 +95,13 @@
   gap: 8px;
   margin-bottom: 7px;
   color: #39473d;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 650;
 }
 
 .analyzing-status {
   flex-shrink: 0;
-  font-size: 9px;
+  font-size: 12px;
   font-weight: 650;
 }
 
@@ -114,7 +114,7 @@
 }
 
 .analyzing-status.waiting {
-  color: #a0a9a2;
+  color: #6d736e;
 }
 
 .analyzing-step-track {
@@ -133,8 +133,8 @@
 
 .analyzing-note {
   margin: 23px 0 0;
-  color: #929b94;
-  font-size: 9px;
+  color: #6c736e;
+  font-size: 12px;
   line-height: 1.6;
 }
 
@@ -158,7 +158,7 @@
   background: #fff;
   color: #536057;
   font-family: inherit;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 650;
   cursor: pointer;
 }

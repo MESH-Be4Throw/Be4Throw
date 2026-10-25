@@ -40,7 +40,7 @@
 
 .recommendation-subtitle {
   margin: 0 0 18px;
-  color: #7b867e;
+  color: #6b756e;
   font-size: 12px;
 }
 
@@ -63,7 +63,7 @@
   border-radius: 20px;
   background: #e5f5df;
   color: #226943;
-  font-size: 9px;
+  font-size: 12px;
   font-weight: 800;
 }
 
@@ -75,8 +75,8 @@
 }
 
 .recommendation-score > span {
-  color: #849087;
-  font-size: 8px;
+  color: #6b756d;
+  font-size: 12px;
   font-weight: 700;
 }
 
@@ -87,8 +87,8 @@
 
 .recommendation-score small,
 .recommendation-option > strong small {
-  color: #8a968d;
-  font-size: 10px;
+  color: #6a736d;
+  font-size: 12px;
   font-weight: 500;
 }
 
@@ -101,7 +101,7 @@
 .recommendation-tagline,
 .recommendation-main-card > p {
   color: #68756c;
-  font-size: 11px;
+  font-size: 12px;
   line-height: 1.7;
 }
 
@@ -117,7 +117,7 @@
 .recommendation-main-card > h3 {
   margin: 15px 0 7px;
   color: #34463a;
-  font-size: 10px;
+  font-size: 14px;
   font-weight: 800;
 }
 
@@ -147,14 +147,14 @@
   border-radius: 50%;
   background: #e7f5e2;
   color: #286b44;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 800;
 }
 
 .recommendation-steps li p {
   margin: 2px 0 0;
   color: #58665c;
-  font-size: 11px;
+  font-size: 12px;
   line-height: 1.5;
 }
 
@@ -168,12 +168,12 @@
 }
 
 .recommendation-warning strong {
-  font-size: 10px;
+  font-size: 12px;
 }
 
 .recommendation-warning p {
   margin: 6px 0 0;
-  font-size: 10px;
+  font-size: 12px;
   line-height: 1.6;
 }
 
@@ -195,8 +195,8 @@
 }
 
 .recommendation-alternative-heading > span {
-  color: #849087;
-  font-size: 10px;
+  color: #6b756d;
+  font-size: 12px;
 }
 
 .recommendation-option {
@@ -225,13 +225,13 @@
 
 .recommendation-option-text h3 {
   margin: 0 0 4px;
-  font-size: 11px;
+  font-size: 14px;
 }
 
 .recommendation-option-text p {
   margin: 0;
-  color: #7a857d;
-  font-size: 10px;
+  color: #6a746d;
+  font-size: 12px;
   line-height: 1.5;
 }
 
@@ -243,8 +243,8 @@
 
 .recommendation-demo-note {
   margin: 18px 0;
-  color: #929a94;
-  font-size: 10px;
+  color: #6d736f;
+  font-size: 12px;
   line-height: 1.6;
   text-align: center;
 }
@@ -268,7 +268,7 @@
   background: #155c3d;
   color: #fff;
   font-size: 12px;
-  font-weight: 750;
+  font-weight: 700;
   cursor: pointer;
 }
 

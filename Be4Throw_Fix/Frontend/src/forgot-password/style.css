@@ -50,16 +50,16 @@
 
 .forgot-brand h1 {
   margin: 0;
-  color: #175d3d;
+  color: #155c3d;
   font-size: 18px;
-  font-weight: 750;
+  font-weight: 700;
   line-height: 1.5;
 }
 
 .forgot-brand > p {
   margin: 2px 0 0;
   color: #367b5b;
-  font-size: 9px;
+  font-size: 11px;
   font-weight: 500;
   letter-spacing: 0.5px;
   text-transform: uppercase;
@@ -77,14 +77,14 @@
   margin: 0 0 5px;
   color: #202938;
   font-size: 14px;
-  font-weight: 750;
+  font-weight: 700;
   line-height: 1.5;
 }
 
 .forgot-description {
   margin: 0 0 14px;
-  color: #818b9a;
-  font-size: 9.5px;
+  color: #6a727e;
+  font-size: 12px;
   line-height: 1.55;
 }
 
@@ -97,7 +97,7 @@
 
 .forgot-field label {
   color: #384253;
-  font-size: 9.5px;
+  font-size: 12px;
   font-weight: 650;
 }
 
@@ -120,7 +120,7 @@
 }
 
 .forgot-input-wrap > span {
-  color: #a3adbb;
+  color: #6c727b;
   font-size: 13px;
   font-weight: 600;
 }
@@ -135,11 +135,11 @@
   background: transparent;
   color: #202938;
   font: inherit;
-  font-size: 9.5px;
+  font-size: 12px;
 }
 
 .forgot-input-wrap input::placeholder {
-  color: #a3adbb;
+  color: #6c727b;
 }
 
 .forgot-submit {
@@ -155,7 +155,7 @@
   background: #155c3d;
   color: #ffffff;
   font: inherit;
-  font-size: 9.5px;
+  font-size: 12px;
   font-weight: 700;
   cursor: pointer;
   box-shadow: 0 2px 4px rgb(21 92 61 / 15%);
@@ -185,14 +185,14 @@
 .forgot-login {
   margin: 0;
   text-align: center;
-  color: #727c8b;
-  font-size: 9px;
+  color: #697280;
+  font-size: 12px;
 }
 
 .forgot-login a {
   margin-left: 3px;
   color: #155c3d;
-  font-weight: 750;
+  font-weight: 700;
   text-decoration: none;
 }
 
@@ -205,7 +205,7 @@
   margin-bottom: 12px;
   padding: 9px 10px;
   border-radius: 7px;
-  font-size: 10px;
+  font-size: 12px;
   line-height: 1.5;
   overflow-wrap: anywhere;
 }
@@ -225,8 +225,8 @@
 .forgot-footer {
   margin-top: 132px;
   text-align: center;
-  color: #9299a5;
-  font-size: 8px;
+  color: #6c717a;
+  font-size: 12px;
 }
 
 .forgot-footer > p {

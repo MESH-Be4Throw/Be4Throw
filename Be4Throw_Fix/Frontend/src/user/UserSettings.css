@@ -20,7 +20,7 @@
 }
 
 .us-brand {
-  color: #175b3d;
+  color: #155c3d;
   font-size: 18px;
   font-weight: 800;
   text-decoration: none;
@@ -43,7 +43,7 @@
 .us-menu-button span {
   width: 14px;
   height: 1.5px;
-  background: #175b3d;
+  background: #155c3d;
 }
 
 .us-content {
@@ -61,13 +61,13 @@
   border-radius: 20px;
   background: #effbe9;
   color: #39794a;
-  font-size: 9px;
+  font-size: 12px;
   font-weight: 700;
 }
 
 .us-content > h1 {
   margin: 10px 0 5px;
-  color: #175b3d;
+  color: #155c3d;
   font-size: 21px;
   font-weight: 800;
   letter-spacing: -0.35px;
@@ -76,7 +76,7 @@
 .us-intro {
   margin: 0 0 15px;
   color: #63796a;
-  font-size: 9px;
+  font-size: 12px;
   line-height: 1.7;
 }
 
@@ -102,7 +102,7 @@
   border-radius: 50%;
   background: #fff;
   box-shadow: 0 2px 3px rgb(20 60 35 / 8%);
-  color: #175b3d;
+  color: #155c3d;
   font-size: 24px;
   font-weight: 700;
 }
@@ -128,7 +128,7 @@
   place-items: center;
   border: 2px solid #fff;
   border-radius: 50%;
-  background: #175b3d;
+  background: #155c3d;
   color: #fff;
   font-size: 12px;
   cursor: pointer;
@@ -141,15 +141,15 @@
 
 .us-profile > h2 {
   margin: 10px 0 3px;
-  color: #175b3d;
-  font-size: 12px;
+  color: #155c3d;
+  font-size: 14px;
   font-weight: 800;
 }
 
 .us-profile > p {
   margin: 0;
   color: #58705f;
-  font-size: 9px;
+  font-size: 12px;
 }
 
 .us-photo-actions {
@@ -176,7 +176,7 @@
   background: #fff;
   color: #386848;
   font-family: inherit;
-  font-size: 9px;
+  font-size: 12px;
   cursor: pointer;
 }
 
@@ -198,7 +198,7 @@
 .us-form label {
   margin-top: 2px;
   color: #386348;
-  font-size: 9px;
+  font-size: 12px;
   font-weight: 700;
 }
 
@@ -213,7 +213,7 @@
   background: #fff;
   color: #244333;
   font-family: inherit;
-  font-size: 9px;
+  font-size: 12px;
 }
 
 .us-form input:focus {
@@ -223,8 +223,8 @@
 
 .us-form small {
   margin: -2px 0 4px;
-  color: #829183;
-  font-size: 8px;
+  color: #687469;
+  font-size: 12px;
   line-height: 1.5;
 }
 
@@ -233,10 +233,10 @@
   margin-top: 6px;
   border: 0;
   border-radius: 8px;
-  background: #175b3d;
+  background: #155c3d;
   color: #fff;
   font-family: inherit;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 700;
   cursor: pointer;
 }
@@ -249,7 +249,7 @@
 .us-message {
   margin: 10px 0;
   color: #39794a;
-  font-size: 10px;
+  font-size: 12px;
   line-height: 1.6;
 }
 
@@ -265,7 +265,7 @@
   background: #fff;
   color: #dc3333;
   font-family: inherit;
-  font-size: 10px;
+  font-size: 12px;
   cursor: pointer;
 }
 
@@ -276,8 +276,8 @@
 .us-footer {
   padding: 15px 10px;
   border-top: 1px solid #edf3ed;
-  color: #66816d;
-  font-size: 8px;
+  color: #5f7865;
+  font-size: 12px;
   text-align: center;
 }
 
@@ -297,7 +297,7 @@
   }
 
   .us-intro {
-    font-size: 11px;
+    font-size: 12px;
   }
 
   .us-profile {
@@ -310,19 +310,19 @@
 
   .us-form input {
     height: 36px;
-    font-size: 11px;
+    font-size: 12px;
   }
 
   .us-form label {
-    font-size: 10px;
+    font-size: 12px;
   }
 }
 
 /* Ubah password */
 .us-password-heading {
   margin: 14px 0 0;
-  color: #175b3d;
-  font-size: 12px;
+  color: #155c3d;
+  font-size: 14px;
   font-weight: 800;
 }
 

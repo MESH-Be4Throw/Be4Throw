@@ -36,7 +36,7 @@
 .detail-header h1 {
   margin: 0;
   font-size: 14px;
-  font-weight: 750;
+  font-weight: 700;
 }
 
 .detail-content {
@@ -77,8 +77,8 @@
   position: absolute;
   right: 10px;
   bottom: 9px;
-  color: #9aa49d;
-  font-size: 9px;
+  color: #6c736e;
+  font-size: 12px;
 }
 
 .detail-field {
@@ -90,9 +90,9 @@
 }
 
 .detail-label {
-  color: #8a968e;
-  font-size: 9px;
-  font-weight: 750;
+  color: #6a736d;
+  font-size: 12px;
+  font-weight: 700;
   letter-spacing: 0.4px;
 }
 
@@ -100,7 +100,7 @@
   margin: 0;
   color: #155c3d;
   font-size: 15px;
-  font-weight: 750;
+  font-weight: 700;
   line-height: 1.4;
 }
 
@@ -111,7 +111,7 @@
   border-radius: 6px;
   background: #f2f9ef;
   color: #39734d;
-  font-size: 11px;
+  font-size: 12px;
 }
 
 .detail-weight {
@@ -130,7 +130,7 @@
   border-radius: 9px;
   background: #f1faed;
   color: #4e7658;
-  font-size: 10px;
+  font-size: 12px;
   line-height: 1.6;
 }
 
@@ -167,7 +167,7 @@
   padding: 10px 14px;
   border-radius: 8px;
   font-family: inherit;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
   cursor: pointer;
 }
@@ -204,7 +204,7 @@
 }
 
 .detail-empty p {
-  color: #77837a;
+  color: #6a756d;
   font-size: 12px;
   line-height: 1.6;
 }

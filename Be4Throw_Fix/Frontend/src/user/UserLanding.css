@@ -18,7 +18,7 @@
 }
 
 .user-brand {
-  color: #175b3d;
+  color: #155c3d;
   font-size: 14px;
   font-weight: 800;
   text-decoration: none;
@@ -43,7 +43,7 @@
   width: 14px;
   height: 1.5px;
   border-radius: 2px;
-  background: #175b3d;
+  background: #155c3d;
 }
 
 .user-content {
@@ -59,7 +59,7 @@
 .user-hero h1 {
   max-width: 360px;
   margin: 0 0 11px;
-  color: #175b3d;
+  color: #155c3d;
   font-size: 21px;
   font-weight: 800;
   line-height: 1.23;
@@ -70,7 +70,7 @@
   max-width: 360px;
   margin: 0 0 13px;
   color: #5e6e63;
-  font-size: 10px;
+  font-size: 12px;
   line-height: 1.7;
 }
 
@@ -83,15 +83,15 @@
   min-height: 37px;
   padding: 9px 12px;
   border-radius: 9px;
-  background: #175b3d;
+  background: #155c3d;
   color: #fff;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 700;
   text-decoration: none;
 }
 
 .user-primary-button:hover {
-  background: #10472f;
+  background: #104b31;
 }
 
 .user-eco-card {
@@ -124,7 +124,7 @@
   border-radius: 20px;
   background: #83bd4d;
   color: #fff;
-  font-size: 8px;
+  font-size: 12px;
   font-weight: 700;
 }
 
@@ -132,7 +132,7 @@
   max-width: 210px;
   margin: 0;
   color: #42644b;
-  font-size: 8px;
+  font-size: 12px;
   line-height: 1.6;
 }
 
@@ -151,13 +151,13 @@
 .user-section-heading h2 {
   margin: 0;
   color: #27332b;
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 800;
 }
 
 .user-section-heading span {
   color: #6ca84b;
-  font-size: 8px;
+  font-size: 12px;
   font-weight: 700;
 }
 
@@ -186,23 +186,23 @@
   flex-shrink: 0;
   place-items: center;
   border-radius: 50%;
-  background: #175b3d;
+  background: #155c3d;
   color: #fff;
-  font-size: 9px;
+  font-size: 12px;
   font-weight: 700;
 }
 
 .user-step-card h3 {
   margin: 1px 0 4px;
   color: #34433a;
-  font-size: 10px;
-  font-weight: 750;
+  font-size: 14px;
+  font-weight: 700;
 }
 
 .user-step-card p {
   margin: 0;
-  color: #758078;
-  font-size: 8px;
+  color: #6a746d;
+  font-size: 12px;
   line-height: 1.6;
 }
 
@@ -210,8 +210,8 @@
   margin-top: 7px;
   padding: 20px 0 14px;
   border-top: 1px solid #f0f4ef;
-  color: #66816d;
-  font-size: 8px;
+  color: #5f7865;
+  font-size: 12px;
   text-align: center;
 }
 
@@ -241,7 +241,7 @@
   .user-primary-button {
     width: fit-content;
     min-width: 250px;
-    font-size: 11px;
+    font-size: 12px;
   }
 
   .user-eco-card {
@@ -257,10 +257,10 @@
   }
 
   .user-step-card h3 {
-    font-size: 12px;
+    font-size: 14px;
   }
 
   .user-step-card p {
-    font-size: 10px;
+    font-size: 12px;
   }
 }

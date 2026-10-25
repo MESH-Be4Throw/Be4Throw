@@ -26,20 +26,20 @@
 
 .audit-breadcrumb {
   margin: 0 0 8px;
-  color: #738078;
+  color: #69746d;
   font-size: 13px;
 }
 
 .audit-page-header h1 {
   margin: 0;
-  color: #0f5233;
+  color: #155c3d;
   font-size: 28px;
   font-weight: 700;
 }
 
 .audit-subtitle {
   margin: 8px 0 0;
-  color: #738078;
+  color: #69746d;
   font-size: 14px;
   line-height: 1.6;
 }
@@ -52,7 +52,7 @@
   place-items: center;
   border-radius: 14px;
   background: #e6f4ea;
-  color: #0f5233;
+  color: #155c3d;
 }
 
 .audit-page-icon svg {
@@ -75,7 +75,7 @@
   padding: 10px 16px;
   border: 0;
   border-radius: 9px;
-  background: #0f5233;
+  background: #155c3d;
   color: #fff;
   font: inherit;
   font-size: 13px;
@@ -85,7 +85,7 @@
 }
 
 .audit-export-button:hover {
-  background: #0b3d26;
+  background: #104b31;
 }
 
 .audit-export-button svg,
@@ -210,7 +210,7 @@
   padding: 5px 10px;
   border-radius: 7px;
   background: #e6f4ea;
-  color: #0f5233;
+  color: #155c3d;
   font-size: 12px;
   font-weight: 700;
 }
@@ -225,7 +225,7 @@
 
 .audit-card-top time {
   margin-left: auto;
-  color: #7b8780;
+  color: #6a746e;
   font-size: 12px;
 }
 
@@ -261,7 +261,7 @@
 }
 
 .audit-admin-info small {
-  color: #849087;
+  color: #6b756d;
   font-size: 12px;
 }
 
@@ -314,7 +314,7 @@
 }
 
 .audit-detail-button:hover {
-  color: #0b3d26;
+  color: #104b31;
 }
 
 .audit-detail-button span {
@@ -335,14 +335,14 @@
 
 .audit-empty p {
   margin: 0;
-  color: #738078;
+  color: #69746d;
   font-size: 13px;
 }
 
 .audit-page-footer {
   margin-top: 24px;
   padding: 18px 0;
-  color: #87938b;
+  color: #6b746e;
   font-size: 12px;
 }
 
@@ -423,7 +423,7 @@
 }
 
 .audit-detail-list dt {
-  color: #7b8780;
+  color: #6a746e;
   font-size: 13px;
 }
 

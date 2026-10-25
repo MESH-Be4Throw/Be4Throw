@@ -39,7 +39,7 @@
   margin: 0;
   color: #26332c;
   font-size: 14px;
-  font-weight: 750;
+  font-weight: 700;
 }
 
 /* AREA KONTEN */
@@ -66,7 +66,7 @@
 }
 
 .catalog-search > span {
-  color: #9aa69d;
+  color: #6c746e;
   font-size: 21px;
   line-height: 1;
 }
@@ -80,11 +80,11 @@
   background: transparent;
   color: #26332c;
   font: inherit;
-  font-size: 11px;
+  font-size: 12px;
 }
 
 .catalog-search input::placeholder {
-  color: #a2aaa5;
+  color: #6d726f;
 }
 
 .catalog-search input::-webkit-search-cancel-button {
@@ -95,7 +95,7 @@
   flex-shrink: 0;
   border: 0;
   background: transparent;
-  color: #738078;
+  color: #69746d;
   font-size: 19px;
   cursor: pointer;
 }
@@ -120,14 +120,14 @@
   padding: 9px 0 10px;
   border: 0;
   background: transparent;
-  color: #78827b;
-  font-size: 10px;
+  color: #6b746d;
+  font-size: 12px;
   cursor: pointer;
 }
 
 .catalog-categories button.active {
   color: #155c3d;
-  font-weight: 750;
+  font-weight: 700;
 }
 
 .catalog-categories button.active::after {
@@ -191,8 +191,8 @@
 .catalog-item-category {
   display: block;
   margin-bottom: 3px;
-  color: #8a968e;
-  font-size: 8px;
+  color: #6a736d;
+  font-size: 11px;
   font-weight: 700;
   text-transform: uppercase;
 }
@@ -200,16 +200,16 @@
 .catalog-item-info h2 {
   margin: 0 0 4px;
   color: #303b34;
-  font-size: 11px;
-  font-weight: 750;
+  font-size: 14px;
+  font-weight: 700;
   line-height: 1.35;
   overflow-wrap: anywhere;
 }
 
 .catalog-item-info p {
   margin: 0;
-  color: #8a948d;
-  font-size: 9px;
+  color: #6c736e;
+  font-size: 12px;
   line-height: 1.4;
 }
 
@@ -221,7 +221,7 @@
   border-radius: 6px;
   background: #155c3d;
   color: #ffffff;
-  font-size: 9px;
+  font-size: 12px;
   font-weight: 700;
   cursor: pointer;
 }
@@ -253,7 +253,7 @@
   border-radius: 50%;
   background: #155c3d;
   color: #ffffff;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 800;
 }
 
@@ -261,7 +261,7 @@
 
 .catalog-empty {
   padding: 45px 16px;
-  color: #7b887f;
+  color: #6a756d;
   text-align: center;
 }
 
@@ -276,7 +276,7 @@
 }
 
 .catalog-empty p {
-  font-size: 11px;
+  font-size: 12px;
 }
 
 .catalog-empty button {
@@ -285,7 +285,7 @@
   border-radius: 7px;
   background: #ffffff;
   color: #155c3d;
-  font-size: 11px;
+  font-size: 12px;
   cursor: pointer;
 }
 
@@ -316,8 +316,8 @@
 }
 
 .catalog-total span {
-  color: #99a39b;
-  font-size: 8px;
+  color: #6d746e;
+  font-size: 12px;
 }
 
 .catalog-total strong {
@@ -336,8 +336,8 @@
   border-radius: 8px;
   background: #155c3d;
   color: #ffffff;
-  font-size: 10px;
-  font-weight: 750;
+  font-size: 12px;
+  font-weight: 700;
   cursor: pointer;
 }
 
@@ -373,7 +373,7 @@
   }
 
   .catalog-item-info h2 {
-    font-size: 12px;
+    font-size: 14px;
   }
 }
 
@@ -399,7 +399,7 @@
   }
 
   .catalog-item-info h2 {
-    font-size: 10px;
+    font-size: 14px;
   }
 
   .catalog-select-button {

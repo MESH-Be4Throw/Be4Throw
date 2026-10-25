@@ -91,16 +91,16 @@
   border: 0;
   border-bottom: 2px solid transparent;
   background: transparent;
-  color: #737d8e;
+  color: #697281;
   font-family: inherit;
-  font-size: 10.5px;
+  font-size: 12px;
   font-weight: 500;
   cursor: pointer;
 }
 
 .kd-tab.active {
-  color: #176344;
-  border-bottom-color: #176344;
+  color: #155c3d;
+  border-bottom-color: #155c3d;
   font-weight: 700;
 }
 
@@ -122,7 +122,7 @@
   border: 1px solid #e4e8ec;
   border-radius: 11px;
   background: #fbfcfd;
-  color: #8c97a7;
+  color: #6a737f;
 }
 
 .kd-search-wrap {
@@ -140,11 +140,11 @@
   background: transparent;
   color: #26362d;
   font-family: inherit;
-  font-size: 10px;
+  font-size: 12px;
 }
 
 .kd-search::placeholder {
-  color: #a4adba;
+  color: #6c727b;
 }
 
 .kd-search-wrap:focus-within,
@@ -161,7 +161,7 @@
   border: 0;
   padding: 0;
   background: transparent;
-  color: #829084;
+  color: #69756b;
   cursor: pointer;
 }
 
@@ -180,7 +180,7 @@
   background: transparent;
   color: #344054;
   font-family: inherit;
-  font-size: 9.5px;
+  font-size: 12px;
   cursor: pointer;
 }
 
@@ -199,17 +199,17 @@
   padding: 7px 12px;
   border: 0;
   border-radius: 10px;
-  background: #175b3d;
+  background: #155c3d;
   color: #fff;
   font-family: inherit;
-  font-size: 10.5px;
+  font-size: 12px;
   font-weight: 600;
   cursor: pointer;
   transition: background 0.15s ease;
 }
 
 .kd-add-button:hover {
-  background: #10472f;
+  background: #104b31;
 }
 
 .kd-add-button:focus-visible,
@@ -230,8 +230,8 @@
   border: 1px solid #d5eadb;
   border-radius: 9px;
   background: #f0faf2;
-  color: #175b3d;
-  font-size: 11px;
+  color: #155c3d;
+  font-size: 12px;
   line-height: 1.5;
 }
 
@@ -254,14 +254,14 @@
 
 .kd-list-heading h2 {
   margin: 0;
-  font-size: 11px;
+  font-size: 14px;
   font-weight: 700;
   color: #25332b;
 }
 
 .kd-list-heading > span {
-  color: #8993a3;
-  font-size: 9px;
+  color: #6b737f;
+  font-size: 12px;
   white-space: nowrap;
 }
 
@@ -306,7 +306,7 @@
 
 .kd-code {
   color: #515d70;
-  font-size: 9px;
+  font-size: 12px;
   font-weight: 500;
   letter-spacing: 0.05px;
   white-space: nowrap;
@@ -321,7 +321,7 @@
   padding: 2px 6px;
   border: 1px solid transparent;
   border-radius: 5px;
-  font-size: 8px;
+  font-size: 12px;
   font-weight: 600;
   line-height: 1.2;
   white-space: nowrap;
@@ -336,7 +336,7 @@
 .kd-status.inactive {
   border-color: #e1e4e8;
   background: #f1f2f4;
-  color: #737b88;
+  color: #6b727e;
 }
 
 .kd-card-actions {
@@ -357,14 +357,14 @@
   border: 0;
   border-radius: 4px;
   background: transparent;
-  color: #8793a5;
+  color: #697381;
   cursor: pointer;
   transition: background 0.15s ease, color 0.15s ease;
 }
 
 .kd-icon-button:hover {
   background: #eff7f1;
-  color: #175b3d;
+  color: #155c3d;
 }
 
 .kd-icon-button.danger:hover {
@@ -375,7 +375,7 @@
 .kd-card-title {
   margin: 0 0 4px;
   color: #182331;
-  font-size: 11.5px;
+  font-size: 14px;
   font-weight: 700;
   line-height: 1.45;
   overflow-wrap: anywhere;
@@ -383,8 +383,8 @@
 
 .kd-card-category {
   margin: 0 0 4px;
-  color: #7b8698;
-  font-size: 10px;
+  color: #697281;
+  font-size: 12px;
   line-height: 1.45;
 }
 
@@ -392,8 +392,8 @@
   display: -webkit-box;
   overflow: hidden;
   margin: 0;
-  color: #7b8698;
-  font-size: 10px;
+  color: #697281;
+  font-size: 12px;
   font-weight: 400;
   line-height: 1.65;
   overflow-wrap: anywhere;
@@ -431,15 +431,15 @@
 .kd-empty h3 {
   margin: 0 0 5px;
   color: #283344;
-  font-size: 11px;
+  font-size: 14px;
   font-weight: 700;
 }
 
 .kd-empty p {
   max-width: 230px;
   margin: 0;
-  color: #8993a3;
-  font-size: 10px;
+  color: #6b737f;
+  font-size: 12px;
   line-height: 1.6;
 }
 
@@ -450,7 +450,7 @@
   gap: 12px;
   margin: 20px 0 24px;
   color: #475467;
-  font-size: 10px;
+  font-size: 12px;
 }
 
 .kd-pagination button {
@@ -469,7 +469,7 @@
 
 .kd-pagination button:hover:not(:disabled) {
   background: #f0f6f1;
-  color: #175b3d;
+  color: #155c3d;
 }
 
 .kd-pagination button:disabled {
@@ -508,15 +508,15 @@
 
 .kd-form-heading p {
   margin: 0;
-  color: #7b8698;
-  font-size: 10px;
+  color: #697281;
+  font-size: 12px;
   line-height: 1.5;
 }
 
 .kd-form > label {
   margin-top: 3px;
   color: #34483b;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 600;
 }
 
@@ -532,7 +532,7 @@
   background: #fff;
   color: #26362d;
   font-family: inherit;
-  font-size: 11px;
+  font-size: 12px;
 }
 
 .kd-form input:focus,
@@ -573,7 +573,7 @@
   background: #fff;
   color: #34483b;
   font-family: inherit;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 600;
   cursor: pointer;
 }
@@ -627,7 +627,7 @@
   gap: 8px;
   margin-bottom: 10px;
   color: #697586;
-  font-size: 10px;
+  font-size: 12px;
 }
 
 .kd-modal > h3 {
@@ -641,7 +641,7 @@
 .kd-detail-category,
 .kd-detail-description {
   margin: 0 0 10px;
-  color: #7b8698;
+  color: #697281;
   font-size: 12px;
   line-height: 1.7;
   overflow-wrap: anywhere;
@@ -667,7 +667,7 @@
 
 .kd-detail-list dd {
   margin: 0;
-  color: #7b8698;
+  color: #697281;
   overflow-wrap: anywhere;
 }
 
@@ -712,7 +712,7 @@
   }
 
   .kd-filter {
-    font-size: 11px;
+    font-size: 12px;
   }
 
   .kd-add-button {
@@ -725,11 +725,11 @@
   }
 
   .kd-list-heading h2 {
-    font-size: 13px;
+    font-size: 15px;
   }
 
   .kd-list-heading > span {
-    font-size: 11px;
+    font-size: 12px;
   }
 
   .kd-card-list {
@@ -741,20 +741,20 @@
   }
 
   .kd-card-title {
-    font-size: 13px;
+    font-size: 15px;
   }
 
   .kd-card-description,
   .kd-card-category {
-    font-size: 11px;
+    font-size: 12px;
   }
 
   .kd-code {
-    font-size: 10px;
+    font-size: 12px;
   }
 
   .kd-status {
-    font-size: 9px;
+    font-size: 12px;
   }
 
   .kd-icon-button {
@@ -763,11 +763,11 @@
   }
 
   .kd-empty h3 {
-    font-size: 13px;
+    font-size: 15px;
   }
 
   .kd-empty p {
-    font-size: 11px;
+    font-size: 12px;
   }
 }
 
@@ -789,7 +789,7 @@
   }
 
   .kd-filter {
-    font-size: 9px;
+    font-size: 12px;
   }
 
   .kd-add-button {
@@ -833,7 +833,7 @@
 
 .kd-category-instruction {
   margin: 0 0 14px;
-  color: #778078;
+  color: #6b736c;
   font-size: 14px;
 }
 
@@ -890,7 +890,7 @@
 }
 
 .kd-question-category-info > span {
-  color: #778078;
+  color: #6b736c;
   font-size: 14px;
 }
 
@@ -910,7 +910,7 @@
 
 .kd-options-hint {
   margin: -5px 0 3px;
-  color: #778078;
+  color: #6b736c;
   font-size: 13px;
 }
 
@@ -923,7 +923,7 @@
 .kd-option-number {
   width: 24px;
   flex-shrink: 0;
-  color: #778078;
+  color: #6b736c;
   text-align: center;
   font-size: 18px;
 }
@@ -1060,8 +1060,8 @@
 
 .kd-form .form-helper {
   margin: 0;
-  color: #7b8698;
-  font-size: 10px;
+  color: #697281;
+  font-size: 12px;
   line-height: 1.5;
 }
 
@@ -1284,7 +1284,7 @@
 
 .kd-check-row {
   color: #34483b;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 500;
 }
 

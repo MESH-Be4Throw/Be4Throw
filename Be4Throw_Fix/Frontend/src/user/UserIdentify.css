@@ -36,13 +36,13 @@
 
 .identify-back-label {
   color: #69766d;
-  font-size: 10px;
+  font-size: 12px;
 }
 
 .identify-header h1 {
   margin: 0;
-  font-size: 13px;
-  font-weight: 750;
+  font-size: 15px;
+  font-weight: 700;
 }
 
 .identify-content {
@@ -54,8 +54,8 @@
 
 .identify-description {
   margin: 0 0 18px;
-  color: #737e76;
-  font-size: 10px;
+  color: #6a746d;
+  font-size: 12px;
   line-height: 1.6;
 }
 
@@ -67,14 +67,14 @@
 .identify-safety h2 {
   margin: 0 0 7px;
   color: #39734d;
-  font-size: 11px;
+  font-size: 14px;
   font-weight: 800;
 }
 
 .identify-hint {
   margin: 0 0 8px;
-  color: #78837b;
-  font-size: 9px;
+  color: #6b756d;
+  font-size: 12px;
   line-height: 1.5;
 }
 
@@ -142,13 +142,13 @@
 
 .identify-option-text strong {
   color: #34433a;
-  font-size: 10px;
-  font-weight: 750;
+  font-size: 12px;
+  font-weight: 700;
 }
 
 .identify-option-text small {
-  color: #77837a;
-  font-size: 9px;
+  color: #6a756d;
+  font-size: 12px;
   line-height: 1.5;
 }
 
@@ -169,7 +169,7 @@
   border: 1px solid #e8ede9;
   border-radius: 6px;
   color: #4e5b52;
-  font-size: 9px;
+  font-size: 12px;
   cursor: pointer;
 }
 
@@ -196,7 +196,7 @@
   border-radius: 3px;
   background: #fff;
   color: #fff;
-  font-size: 9px;
+  font-size: 12px;
 }
 
 .identify-checkbox-card input:checked + .identify-custom-checkbox {
@@ -220,7 +220,7 @@
 
 .identify-field > span {
   color: #58665d;
-  font-size: 9px;
+  font-size: 12px;
   font-weight: 650;
 }
 
@@ -235,7 +235,7 @@
   background: #fff;
   color: #34433a;
   font: inherit;
-  font-size: 10px;
+  font-size: 12px;
 }
 
 .identify-field input:focus {
@@ -244,7 +244,7 @@
 }
 
 .identify-field input::placeholder {
-  color: #a3aca5;
+  color: #6d736f;
 }
 
 /* INDIKATOR BAHAYA */
@@ -266,8 +266,8 @@
 
 .identify-safety > p {
   margin: 0 0 10px;
-  color: #77837a;
-  font-size: 9px;
+  color: #6a756d;
+  font-size: 12px;
   line-height: 1.55;
 }
 
@@ -282,7 +282,7 @@
   border: 1px solid #e8ede9;
   border-radius: 6px;
   color: #536057;
-  font-size: 9px;
+  font-size: 12px;
   cursor: pointer;
 }
 
@@ -309,7 +309,7 @@
   border-radius: 7px;
   background: #fff7f6;
   color: #a33b32;
-  font-size: 10px;
+  font-size: 12px;
   line-height: 1.5;
 }
 
@@ -342,8 +342,8 @@
   padding: 8px 12px;
   border-radius: 7px;
   font-family: inherit;
-  font-size: 9px;
-  font-weight: 750;
+  font-size: 12px;
+  font-weight: 700;
   cursor: pointer;
 }
 

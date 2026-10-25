@@ -4,7 +4,7 @@
   --admin-green-light: #e9f6ee;
   --admin-border: #e5ebe7;
   --admin-text: #202a25;
-  --admin-muted: #7c8780;
+  --admin-muted: #6b746e;
 
   display: flex;
   min-height: 100vh;
@@ -64,7 +64,7 @@
 .admin-brand span {
   margin-top: 4px;
   color: var(--admin-muted);
-  font-size: 10px;
+  font-size: 12px;
   letter-spacing: 1px;
 }
 
@@ -98,13 +98,13 @@
 .admin-profile span {
   margin-top: 4px;
   color: var(--admin-muted);
-  font-size: 11px;
+  font-size: 12px;
 }
 
 .admin-menu-heading {
   padding: 0 10px;
-  color: #9aa39d;
-  font-size: 10px;
+  color: #6d746f;
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: 1px;
 }
@@ -156,7 +156,7 @@
   gap: 8px;
   padding: 12px 7px;
   color: #647068;
-  font-size: 11px;
+  font-size: 12px;
 }
 
 .status-dot {
@@ -294,7 +294,7 @@
 .admin-stat-content p {
   margin: 0 0 7px;
   color: var(--admin-muted);
-  font-size: 11px;
+  font-size: 12px;
 }
 
 .admin-stat-content h2 {
@@ -303,7 +303,7 @@
 }
 
 .admin-stat-arrow {
-  color: #a0aaa3;
+  color: #6d746f;
   font-size: 25px;
 }
 
@@ -339,7 +339,7 @@
 .admin-panel-heading p {
   margin: 6px 0 0;
   color: var(--admin-muted);
-  font-size: 11px;
+  font-size: 12px;
   line-height: 1.5;
 }
 
@@ -356,7 +356,7 @@
   border-radius: 6px;
   background: transparent;
   color: #68746b;
-  font-size: 10px;
+  font-size: 12px;
 }
 
 .admin-period-switch button.selected {
@@ -375,8 +375,8 @@
   flex-direction: column;
   justify-content: space-between;
   padding: 0 12px 0 0;
-  color: #9ba49d;
-  font-size: 10px;
+  color: #6c736e;
+  font-size: 12px;
 }
 
 .admin-chart-body {
@@ -410,8 +410,8 @@
   justify-content: space-between;
   gap: 5px;
   margin: 13px 0 0 33px;
-  color: #8a958d;
-  font-size: 10px;
+  color: #6c746e;
+  font-size: 12px;
 }
 
 .admin-text-button {
@@ -419,7 +419,7 @@
   border: 0;
   background: transparent;
   color: var(--admin-green);
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
   white-space: nowrap;
 }
@@ -466,7 +466,7 @@
 .admin-draft-info p {
   margin: 5px 0 7px;
   color: var(--admin-muted);
-  font-size: 10px;
+  font-size: 12px;
   line-height: 1.5;
 }
 
@@ -476,7 +476,7 @@
   border-radius: 5px;
   background: #fff3df;
   color: #a36b18;
-  font-size: 10px;
+  font-size: 12px;
 }
 
 .admin-review-button {
@@ -485,7 +485,7 @@
   border-radius: 7px;
   background: #fff;
   color: var(--admin-green);
-  font-size: 10px;
+  font-size: 12px;
 }
 
 .admin-review-button:hover {
@@ -538,20 +538,20 @@
 .admin-log-info p {
   margin: 5px 0 0;
   color: var(--admin-muted);
-  font-size: 11px;
+  font-size: 12px;
   line-height: 1.5;
 }
 
 .admin-log-item time {
   flex-shrink: 0;
-  color: #909a92;
-  font-size: 10px;
+  color: #6c736d;
+  font-size: 12px;
 }
 
 .admin-footer {
   padding: 10px 0;
-  color: #9aa39d;
-  font-size: 11px;
+  color: #6d746f;
+  font-size: 12px;
   text-align: center;
 }
 
@@ -619,7 +619,7 @@
     gap: 5px;
     min-width: 76px;
     padding: 10px 7px;
-    font-size: 10px;
+    font-size: 12px;
     text-align: center;
   }
 
@@ -651,7 +651,7 @@
   }
 
   .admin-stat-content p {
-    font-size: 10px;
+    font-size: 12px;
     line-height: 1.4;
   }
 
@@ -668,7 +668,7 @@
   }
 
   .admin-panel-heading h2 {
-    font-size: 13px;
+    font-size: 15px;
   }
 
   .admin-draft-item {
@@ -761,7 +761,7 @@
 }
 
 .admin-quick-arrow {
-  color: #9ca3af;
+  color: #6d727a;
   font-size: 19px;
   transition: color 0.2s ease, transform 0.2s ease;
 }
@@ -850,7 +850,7 @@
 .admin-global-label {
   margin-left: 4px;
   color: var(--admin-muted);
-  font-size: 10px;
+  font-size: 12px;
   letter-spacing: 1px;
 }
 
@@ -1431,7 +1431,7 @@ body {
   }
 
   .admin-chart-days {
-    font-size: 9px;
+    font-size: 12px;
     padding-left: 26px;
     gap: 2px;
   }
