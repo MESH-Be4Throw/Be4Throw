@@ -1,7 +1,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { apiRequest } from "../services/api";
+import { apiRequest, fileUrl } from "../services/api";
 import "./UserCatalog.css";
 
 function getNamaKategori(barang) {
@@ -16,6 +16,23 @@ function getDeskripsi(barang) {
   return berat != null
     ? `Estimasi berat ${berat} kg`
     : "Berat belum ditentukan";
+}
+
+// Gambar barang dari admin (Barang.gambar); ikon kategori dipakai kalau kosong atau gagal dimuat
+function IkonBarang({ barang, kategori }) {
+  const [gagal, setGagal] = useState(false);
+
+  if (!barang.gambar || gagal) return getIkon(kategori);
+
+  return (
+    <img
+      src={fileUrl(barang.gambar)}
+      alt=""
+      className="catalog-item-image"
+      loading="lazy"
+      onError={() => setGagal(true)}
+    />
+  );
 }
 
 function getIkon(kategori) {
@@ -192,7 +209,7 @@ export default function UserCatalog() {
                   key={barang.id}
                 >
                   <div className="catalog-item-icon" aria-hidden="true">
-                    {getIkon(kategori)}
+                    <IkonBarang barang={barang} kategori={kategori} />
                   </div>
 
                   <div className="catalog-item-info">
@@ -213,6 +230,8 @@ export default function UserCatalog() {
                   >
                     {terpilih ? "Batal" : "Pilih"}
                   </button>
+
+                  {terpilih && <span className="catalog-check" aria-hidden="true" />}
                 </article>
               );
             })

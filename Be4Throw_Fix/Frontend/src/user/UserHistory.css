@@ -9,85 +9,86 @@
 }
 
 .uh-navbar {
-  height: 49px;
+  height: 64px;
   flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 15px;
+  padding: 0 20px;
   background: #fff;
   border-bottom: 1px solid #edf3ed;
 }
 
 .uh-brand {
   color: #155c3d;
-  font-size: 18px;
+  font-size: 24px;
   font-weight: 800;
   text-decoration: none;
+  letter-spacing: -0.02em;
 }
 
 .uh-menu-button {
-  width: 28px;
-  height: 28px;
+  width: 44px;
+  height: 44px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 3px;
+  gap: 4px;
   border: 0;
-  border-radius: 8px;
+  border-radius: 12px;
   background: #effbe9;
   cursor: pointer;
 }
 
 .uh-menu-button span {
-  width: 14px;
-  height: 1.5px;
+  width: 18px;
+  height: 2px;
   background: #155c3d;
 }
 
 .uh-content {
-  width: calc(100% - 28px);
+  width: calc(100% - 40px);
   max-width: 560px;
   margin: 0 auto;
-  padding: 20px 0 30px;
+  padding: 24px 0 32px;
   flex: 1;
 }
 
 .uh-eyebrow {
   display: inline-flex;
   align-items: center;
-  padding: 5px 9px;
+  padding: 7px 14px;
   border-radius: 20px;
   background: #effbe9;
   color: #367447;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 700;
 }
 
 .uh-content > h1 {
-  margin: 10px 0 5px;
+  margin: 14px 0 8px;
   color: #155c3d;
-  font-size: 20px;
+  font-size: 28px;
   font-weight: 800;
-  letter-spacing: -0.35px;
+  letter-spacing: -0.02em;
 }
 
 .uh-intro {
-  margin: 0 0 13px;
+  margin: 0 0 18px;
   color: #63796a;
-  font-size: 12px;
+  font-size: 15px;
   line-height: 1.7;
 }
 
 .uh-search {
   display: flex;
   align-items: center;
-  gap: 8px;
-  height: 35px;
-  padding: 0 10px;
+  gap: 12px;
+  height: 52px;
+  padding: 0 16px;
   border: 1px solid #e7f0e5;
-  border-radius: 10px;
+  border-radius: 14px;
   background: #fff;
   color: #467957;
 }
@@ -103,7 +104,7 @@
   outline: 0;
   background: transparent;
   color: #244333;
-  font-size: 12px;
+  font-size: 15px;
 }
 
 .uh-search input::placeholder {
@@ -112,9 +113,9 @@
 
 .uh-filters {
   display: flex;
-  gap: 5px;
+  gap: 10px;
   overflow-x: auto;
-  padding: 12px 0 14px;
+  padding: 16px 0 18px;
   scrollbar-width: none;
 }
 
@@ -124,13 +125,15 @@
 
 .uh-filters button {
   flex-shrink: 0;
-  padding: 6px 10px;
+  padding: 9px 18px;
   border: 1px solid #e6f1e1;
-  border-radius: 7px;
+  border-radius: 12px;
   background: #effbe9;
   color: #276044;
-  font-size: 12px;
+  font-size: 15px;
   cursor: pointer;
+  min-height: 40px;
+  font-family: inherit;
 }
 
 .uh-filters button.active {
@@ -142,13 +145,13 @@
 .uh-list {
   display: flex;
   flex-direction: column;
-  gap: 9px;
+  gap: 16px;
 }
 
 .uh-card {
-  padding: 11px;
+  padding: 18px;
   border: 1px solid #e7f0e4;
-  border-radius: 13px;
+  border-radius: 20px;
   background: #fff;
   box-shadow: 0 2px 5px rgb(22 65 39 / 3%);
 }
@@ -157,33 +160,34 @@
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 5px;
+  gap: 10px;
 }
 
 .uh-category {
-  padding: 4px 7px;
-  border-radius: 5px;
+  padding: 6px 12px;
+  border-radius: 8px;
   background: #effbe9;
   color: #287047;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 700;
 }
 
 .uh-date {
   color: #657767;
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .uh-status {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: 8px;
   margin-left: auto;
-  padding: 4px 7px;
+  padding: 7px 14px;
   border: 1px solid #d8eccb;
   border-radius: 20px;
-  font-size: 12px;
+  font-size: 14px;
   white-space: nowrap;
+  font-weight: 600;
 }
 
 .uh-status.good {
@@ -198,16 +202,16 @@
 }
 
 .uh-status-dot {
-  width: 5px;
-  height: 5px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
   background: #80bf43;
 }
 
 .uh-card h2 {
-  margin: 9px 0 10px;
+  margin: 12px 0 14px;
   color: #155c3d;
-  font-size: 14px;
+  font-size: 20px;
 }
 
 .uh-card-bottom {
@@ -215,14 +219,14 @@
   align-items: center;
   justify-content: space-between;
   gap: 8px;
-  padding-top: 8px;
+  padding-top: 14px;
   border-top: 1px solid #edf3ed;
 }
 
 .uh-card-bottom p {
   margin: 0;
   color: #63796a;
-  font-size: 12px;
+  font-size: 15px;
 }
 
 .uh-card-bottom strong {
@@ -234,13 +238,13 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 27px;
-  padding: 6px 10px;
+  min-height: 40px;
+  padding: 8px 18px;
   border: 0;
-  border-radius: 20px;
+  border-radius: 999px;
   background: #155c3d;
   color: #fff;
-  font-size: 12px;
+  font-size: 15px;
   font-weight: 700;
   text-decoration: none;
   cursor: pointer;
@@ -260,14 +264,14 @@
 
 .uh-empty p {
   color: #65756a;
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .uh-footer {
-  padding: 15px 10px;
+  padding: 20px 12px;
   border-top: 1px solid #edf3ed;
   color: #5f7865;
-  font-size: 12px;
+  font-size: 14px;
   text-align: center;
 }
 
@@ -324,32 +328,7 @@
   }
 
   .uh-content > h1 {
-    font-size: 27px;
+    font-size: 30px;
   }
 
-  .uh-intro {
-    font-size: 12px;
-  }
-
-  .uh-card {
-    padding: 14px;
-  }
-
-  .uh-card h2 {
-    font-size: 14px;
-  }
-
-  .uh-date,
-  .uh-category {
-    font-size: 12px;
-  }
-
-  .uh-status {
-    font-size: 12px;
-  }
-
-  .uh-card-bottom p,
-  .uh-card-bottom button {
-    font-size: 12px;
-  }
 }

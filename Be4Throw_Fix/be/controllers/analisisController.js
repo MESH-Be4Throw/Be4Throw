@@ -149,6 +149,7 @@ function formatAnalisis(analisis, kodeAkses) {
     status: analisis.status,
     barang: { ...barang, kategori: { id: kategoriId, nama: kategori?.nama ?? null } },
     beratKg: analisis.beratKg,
+    diperbaruiPada: analisis.updatedAt, // waktu hasil (termasuk dampak) terakhir dihitung
     jawaban: analisis.kondisi?.jawaban ?? {},
     hasil: analisis.status === 'selesai' ? formatHasil(analisis) : null,
     umpanBalik: analisis.umpanBalik ? formatUmpanBalik(analisis.umpanBalik) : null, // FR-16

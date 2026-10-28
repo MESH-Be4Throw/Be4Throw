@@ -1,140 +1,180 @@
-
+/* Halaman Dampak Lingkungan: font dan gaya kartu mengikuti desain UI */
 .impact-page {
   min-height: 100vh;
   padding-bottom: 32px;
   background: #fff;
-  color: #26332c;
-  font-family: inherit;
+  color: #1f2a24;
+  font-family: "Plus Jakarta Sans", Arial, Helvetica, sans-serif;
 }
 
 .impact-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 16px 20px;
-  border-bottom: 1px solid #edf1ed;
-}
-
-.impact-header strong {
-  color: #155c3d;
-  font-size: 16px;
+  padding: 20px 20px 0;
 }
 
 .impact-header button {
+  min-height: 44px;
+  padding: 0;
   border: 0;
   background: transparent;
   color: #155c3d;
-  font-size: 12px;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
   cursor: pointer;
 }
 
 .impact-content {
-  width: calc(100% - 32px);
+  width: calc(100% - 40px);
   max-width: 540px;
   margin: 0 auto;
-  padding-top: 24px;
+  padding-top: 12px;
 }
 
 .impact-content > h1 {
-  margin: 0 0 5px;
+  margin: 0 0 6px;
   color: #155c3d;
-  font-size: 24px;
+  font-size: 28px;
   font-weight: 800;
+  letter-spacing: -0.02em;
 }
 
 .impact-subtitle {
-  margin: 0 0 18px;
-  color: #6b756e;
-  font-size: 12px;
+  margin: 0 0 22px;
+  color: #5f6b64;
+  font-size: 14px;
 }
 
 .impact-card {
-  margin-bottom: 14px;
-  padding: 16px;
+  margin-bottom: 18px;
+  padding: 18px;
   border: 1px solid #e5ece6;
-  border-radius: 12px;
+  border-radius: 16px;
   background: #fff;
+  box-shadow: 0 1px 3px rgba(21, 92, 61, 0.06);
 }
 
 .impact-label {
   color: #6a736d;
   font-size: 12px;
   font-weight: 700;
+  letter-spacing: 0.05em;
 }
 
 .impact-card h2 {
-  margin: 5px 0 14px;
+  margin: 6px 0 14px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid #edf1ed;
   color: #155c3d;
-  font-size: 25px;
+  font-size: 32px;
   font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.impact-card h2 small {
+  color: #5f6b64;
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: 0;
 }
 
 .impact-row {
   display: flex;
+  align-items: center;
   justify-content: space-between;
   gap: 12px;
-  padding: 11px 0;
-  border-top: 1px solid #edf1ed;
-  font-size: 12px;
+  padding: 12px 0;
+  border-top: 1px dashed #dfe7e1;
+  font-size: 14px;
 }
 
-.impact-row span {
-  color: #526458;
+.impact-row:first-of-type {
+  border-top: 0;
+}
+
+.impact-material {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #26332c;
+}
+
+.impact-icon {
+  display: grid;
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  place-items: center;
+  border-radius: 8px;
+  background: #e8f6ec;
+  color: #155c3d;
 }
 
 .impact-row strong {
-  color: #34463a;
+  color: #1f2a24;
+  font-weight: 700;
   white-space: nowrap;
 }
 
 .impact-card > p {
   margin: 0;
-  color: #68756c;
-  font-size: 12px;
+  color: #5f6b64;
+  font-size: 13px;
   line-height: 1.6;
 }
 
 .impact-content .impact-section-title {
-  margin: 22px 0 12px;
-  color: #26332c;
-  font-size: 14px;
+  margin: 26px 0 12px;
+  color: #155c3d;
+  font-size: 16px;
+  font-weight: 700;
 }
 
 .impact-info {
-  margin-bottom: 9px;
-  padding: 13px;
-  border: 1px solid #e8ede9;
-  border-radius: 9px;
+  margin-bottom: 10px;
+  padding: 14px 16px;
+  border: 1px solid #e3e9e4;
+  border-radius: 12px;
+  background: #f6f8f6;
 }
 
 .impact-info strong {
-  color: #456b51;
-  font-size: 12px;
+  color: #1f2a24;
+  font-size: 14px;
+  font-weight: 700;
 }
 
-.impact-info p {
+.impact-info strong span {
+  color: #155c3d;
+}
+
+.impact-info p,
+.impact-info ul {
   margin: 6px 0 0;
-  color: #6b746c;
-  font-size: 12px;
+  color: #5f6b64;
+  font-size: 13px;
   line-height: 1.6;
+}
+
+.impact-info ul {
+  padding-left: 18px;
 }
 
 .impact-note {
   margin: 18px 0;
   color: #6d736f;
-  font-size: 12px;
+  font-size: 13px;
   line-height: 1.6;
 }
 
 .impact-primary-button {
   width: 100%;
-  min-height: 44px;
+  min-height: 52px;
   border: 0;
-  border-radius: 8px;
+  border-radius: 12px;
   background: #155c3d;
   color: white;
-  font-size: 12px;
+  font: inherit;
+  font-size: 15px;
   font-weight: 700;
   cursor: pointer;
 }
@@ -145,7 +185,7 @@
 
 @media (min-width: 700px) {
   .impact-content {
-    padding-top: 32px;
+    padding-top: 20px;
   }
 }
 

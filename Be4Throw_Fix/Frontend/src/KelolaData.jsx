@@ -5,6 +5,27 @@ import "./KelolaData.css";
 
 const tabs = ["Kategori", "Barang", "Pertanyaan"];
 
+// Pratinjau URL gambar barang: memastikan link benar-benar gambar (bukan halaman web) sebelum disimpan
+function PratinjauGambar({ url }) {
+  const [gagal, setGagal] = useState(false);
+  const alamat = url.trim();
+
+  useEffect(() => setGagal(false), [alamat]);
+
+  if (!alamat) {
+    return <p className="kd-image-hint">Isi dengan link langsung ke file gambar (berakhiran .jpg, .png, atau .webp).</p>;
+  }
+
+  return gagal ? (
+    <p className="kd-image-hint kd-image-error">
+      Link ini tidak bisa dimuat sebagai gambar. Pakai link langsung ke file gambar, bukan halaman web
+      (klik kanan gambar → Salin alamat gambar).
+    </p>
+  ) : (
+    <img className="kd-image-preview" src={alamat} alt="Pratinjau gambar barang" onError={() => setGagal(true)} />
+  );
+}
+
 export function Icon({ name, size = 17 }) {
   const common = {
     width: size,
@@ -872,6 +893,7 @@ setQuestionOptions(
             <>
               <label htmlFor="kd-image">URL Gambar (opsional)</label>
               <input id="kd-image" type="url" value={form.image} onChange={(event) => setForm((old) => ({ ...old, image: event.target.value }))} placeholder="https://..." />
+              <PratinjauGambar url={form.image} />
               <label htmlFor="kd-weight">Estimasi Berat (kg, opsional)</label>
               <input id="kd-weight" type="number" min="0.01" max="1000" step="0.01" value={form.estimatedWeight} onChange={(event) => setForm((old) => ({ ...old, estimatedWeight: event.target.value }))} />
             </>

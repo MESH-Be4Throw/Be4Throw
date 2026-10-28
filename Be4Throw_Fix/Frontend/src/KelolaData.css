@@ -1303,3 +1303,26 @@
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+/* Pratinjau gambar barang */
+.kd-image-preview {
+  display: block;
+  width: 120px;
+  height: 120px;
+  margin: 8px 0 4px;
+  border: 1px solid #e3e9e4;
+  border-radius: 10px;
+  object-fit: cover;
+  background: #f4f6f4;
+}
+
+.kd-image-hint {
+  margin: 6px 0 4px;
+  color: #5f6b64;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.kd-image-error {
+  color: #b42318;
+}
