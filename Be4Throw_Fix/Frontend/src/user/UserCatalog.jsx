@@ -93,9 +93,7 @@ export default function UserCatalog() {
 
   function toggleBarang(id) {
     setBarangTerpilih((sebelumnya) =>
-      sebelumnya.includes(id)
-        ? sebelumnya.filter((itemId) => itemId !== id)
-        : [...sebelumnya, id]
+      sebelumnya.includes(id) ? [] : [id]
     );
   }
 
@@ -215,12 +213,6 @@ export default function UserCatalog() {
                   >
                     {terpilih ? "Batal" : "Pilih"}
                   </button>
-
-                  {terpilih && (
-                    <span className="catalog-check" aria-hidden="true">
-                      ✓
-                    </span>
-                  )}
                 </article>
               );
             })

@@ -96,7 +96,7 @@ export default function ResetPassword() {
         </section>
 
         <footer className="forgot-footer">
-          <p>© 2026 Be4Throw Indonesia. Blueprint System.</p>
+          <p>© 2026 Be4Throw Indonesia.</p>
           <div className="forgot-home-indicator" />
         </footer>
       </div>

@@ -178,7 +178,7 @@ export default function Login() {
         </section>
 
         <footer className="login-footer">
-          <p>© 2026 Be4Throw Indonesia. Blueprint System.</p>
+          <p>© 2026 Be4Throw Indonesia.</p>
 
           <nav aria-label="Informasi">
             <a href="#kebijakan">Kebijakan Privasi</a>

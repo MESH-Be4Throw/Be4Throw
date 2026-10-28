@@ -109,7 +109,7 @@ export default function ForgotPassword() {
         </section>
 
         <footer className="forgot-footer">
-          <p>© 2026 Be4Throw Indonesia. Blueprint System.</p>
+          <p>© 2026 Be4Throw Indonesia.</p>
 
           <nav aria-label="Tautan informasi">
             <a href="#" onClick={(event) => event.preventDefault()}>

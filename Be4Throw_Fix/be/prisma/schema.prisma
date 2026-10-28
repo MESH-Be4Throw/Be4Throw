@@ -135,10 +135,24 @@ model Barang {
   createdAt     DateTime     @default(now())
   updatedAt     DateTime     @updatedAt
 
-  kategori Kategori         @relation(fields: [kategoriId], references: [id])
-  analisis AnalisisBarang[]
+  kategori  Kategori          @relation(fields: [kategoriId], references: [id])
+  analisis  AnalisisBarang[]
+  komposisi KomposisiBarang[]
 
   @@unique([nama, kategoriId])
+}
+
+// Bahan penyusun barang (FR-13). persen total satu barang = 100; material dicocokkan ke FaktorDampak.material
+model KomposisiBarang {
+  id       Int     @id @default(autoincrement())
+  barangId Int
+  material String
+  persen   Float // 0–100, persen berat
+  sumber   String? // asal angka komposisi
+
+  barang Barang @relation(fields: [barangId], references: [id], onDelete: Cascade)
+
+  @@unique([barangId, material])
 }
 
 model Pertanyaan {
@@ -253,6 +267,7 @@ model DampakLingkungan {
   material             String
   limbahDialihkanKg    Float?
   emisiDihindariKgCO2e Float? // simpan kg, tampilkan ton di FE kalau perlu
+  bahan                Json? // [{ material, persen, beratKg, emisiKgCO2e }] rincian per bahan penyusun
   asumsi               String?
   sumber               String?
   tahunFaktor          Int?

@@ -241,22 +241,6 @@
   color: #155c3d;
 }
 
-.catalog-check {
-  position: absolute;
-  top: -6px;
-  right: -6px;
-  display: grid;
-  width: 17px;
-  height: 17px;
-  place-items: center;
-  border: 2px solid #ffffff;
-  border-radius: 50%;
-  background: #155c3d;
-  color: #ffffff;
-  font-size: 12px;
-  font-weight: 800;
-}
-
 /* HASIL KOSONG */
 
 .catalog-empty {

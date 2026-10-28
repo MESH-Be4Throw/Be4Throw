@@ -247,7 +247,7 @@ export default function Register() {
         </section>
 
         <footer className="register-footer">
-          <p>© 2026 Be4Throw Indonesia. Blueprint System.</p>
+          <p>© 2026 Be4Throw Indonesia.</p>
           <nav aria-label="Tautan informasi">
             <a href="#" onClick={(e) => e.preventDefault()}>Kebijakan Privasi</a>
             <span>•</span>

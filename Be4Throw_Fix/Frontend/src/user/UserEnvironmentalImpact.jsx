@@ -31,6 +31,8 @@ export default function UserEnvironmentalImpact() {
   const dampakUtama = rincianDampak.find((item) => item.jenis === "utama");
   const totalDialihkan = dampakUtama?.pengalihanLimbah?.nilai;
   const emisiDihindari = dampakUtama?.emisiDihindari?.nilai;
+  const materialBarang = analisis.hasil?.dampak?.material ?? rekomendasi.dampak?.material ?? "Tidak diketahui";
+  const rincianBahan = dampakUtama?.bahan ?? [];
   const formatAngka = (nilai) => nilai.toLocaleString("id-ID", { maximumFractionDigits: 3 });
   const belumDihitung =
     Boolean(analisisId) &&
@@ -73,7 +75,7 @@ export default function UserEnvironmentalImpact() {
       <section className="impact-content">
         <h1>Dampak Lingkungan</h1>
         <p className="impact-subtitle">
-          Laporan akumulatif dari efisiensi pengelolaan limbah.
+          Estimasi dampak dari barang yang kamu analisis.
         </p>
 
         {belumDihitung && (
@@ -98,12 +100,14 @@ export default function UserEnvironmentalImpact() {
           <span className="impact-label">TOTAL LIMBAH DIALIHKAN</span>
           <h2>{totalDialihkan == null ? "Belum tersedia" : `${formatAngka(totalDialihkan)} kg`}</h2>
 
-          {rincianDampak.length ? rincianDampak.map((item, index) => (
-            <div className="impact-row" key={`${item.tindakan}-${index}`}>
-              <span>♻ {item.label || item.tindakan}{item.jenis === "alternatif" ? " (alternatif)" : ""}</span>
-              <strong>{item.pengalihanLimbah?.nilai == null ? "Belum tersedia" : `${formatAngka(item.pengalihanLimbah.nilai)} kg`}</strong>
-            </div>
-          )) : <p>Dampak lingkungan belum tersedia untuk analisis ini.</p>}
+          {dampakUtama ? (
+            (dampakUtama.bahan?.length ? dampakUtama.bahan : [{ material: materialBarang, beratKg: totalDialihkan }]).map((bahan) => (
+              <div className="impact-row" key={bahan.material}>
+                <span>♻ {bahan.material}{bahan.persen != null ? ` (${formatAngka(bahan.persen)}%)` : ""}</span>
+                <strong>{bahan.beratKg == null ? "Belum tersedia" : `${formatAngka(bahan.beratKg)} kg`}</strong>
+              </div>
+            ))
+          ) : <p>Dampak lingkungan belum tersedia untuk analisis ini.</p>}
         </article>
 
         <article className="impact-card">
@@ -111,7 +115,15 @@ export default function UserEnvironmentalImpact() {
             TOTAL EMISI YANG DIHINDARI
           </span>
           <h2>{emisiDihindari == null ? "Belum tersedia" : `${formatAngka(emisiDihindari)} kg CO₂e`}</h2>
-          <p>{dampakUtama?.manfaatKualitatif || "Estimasi berdasarkan faktor dampak lingkungan yang tersedia di backend."}</p>
+
+          {rincianBahan.map((bahan) => (
+            <div className="impact-row" key={bahan.material}>
+              <span>♻ {bahan.material}</span>
+              <strong>{bahan.emisiKgCO2e == null ? "Belum tersedia" : `${formatAngka(bahan.emisiKgCO2e)} kg CO₂e`}</strong>
+            </div>
+          ))}
+
+          {emisiDihindari == null && <p>{dampakUtama?.manfaatKualitatif}</p>}
         </article>
 
         <h2 className="impact-section-title">
@@ -125,18 +137,20 @@ export default function UserEnvironmentalImpact() {
 
         <article className="impact-info">
           <strong>▤ Faktor Konversi Emisi</strong>
-          <p>
-            {dampakUtama?.sumber
-              ? `Sumber faktor: ${dampakUtama.sumber}${dampakUtama.tahunFaktor ? ` (${dampakUtama.tahunFaktor})` : ""}.`
-              : "Faktor konversi emisi belum tersedia untuk analisis ini."}
-          </p>
-        </article>
-
-        <article className="impact-info">
-          <strong>◷ Periode Pengukuran</strong>
-          <p>
-            Data diambil dari hasil analisis backend. Nilai yang tidak tersedia tidak akan dibuat-buat.
-          </p>
+          {rincianBahan.some((bahan) => bahan.faktor != null) ? (
+            <ul>
+              {rincianBahan.map((bahan) => (
+                <li key={bahan.material}>
+                  {bahan.material}:{" "}
+                  {bahan.faktor == null
+                    ? "faktor belum tersedia."
+                    : `${formatAngka(bahan.faktor)} ${bahan.satuan}, sumber: ${bahan.sumber} (${bahan.tahun}).`}
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p>Faktor konversi emisi belum tersedia, jadi manfaat ditampilkan secara kualitatif.</p>
+          )}
         </article>
 
         <p className="impact-note">Barang: {analisis.barang?.nama || namaBarang}. Rekomendasi: {rekomendasi.jenis ?? "Belum tersedia"}. {analisis.hasil?.dampak?.catatan?.join(" ") || ""}</p>

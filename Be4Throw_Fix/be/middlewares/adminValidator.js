@@ -1,6 +1,5 @@
 const { body, param, query } = require('express-validator');
 const { TINDAKAN } = require('../logic/tindakan');
-const { satuanDidukung, SATUAN_FAKTOR } = require('../logic/dampak');
 
 // Aturan validasi kelola data admin (FR-14).
 // wajib = true untuk tambah (POST); false untuk ubah (PUT, boleh kirim sebagian field).
@@ -32,18 +31,6 @@ const teksBolehKosong = (nama, label, max) =>
     .isLength({ max }).withMessage(`${label} maksimal ${max} karakter`);
 
 const status = () => body('status').optional().isIn(STATUS).withMessage('status harus aktif atau nonaktif');
-
-const tindakan = (wajib) =>
-  field('tindakan', wajib).isIn(TINDAKAN).withMessage(`tindakan harus salah satu dari: ${TINDAKAN.join(', ')}`);
-
-// Kode aturan/faktor dampak, mis. "ELK-03-DU" (otomatis jadi huruf besar)
-const kodeBesar = (wajib) =>
-  field('kode', wajib)
-    .isString().withMessage('Kode harus berupa teks').bail()
-    .trim()
-    .toUpperCase()
-    .matches(/^[A-Z0-9_-]{1,30}$/)
-    .withMessage('Kode hanya boleh huruf, angka, "-" dan "_" (maks. 30 karakter)');
 
 // ==================== PARAM & QUERY ====================
 
@@ -108,39 +95,6 @@ const pertanyaanRules = (wajib) => [
   status(),
 ];
 
-const aturanRules = (wajib) => [
-  kodeBesar(wajib),
-  teks('namaAturan', 'Nama aturan', 150, wajib),
-  // null = berlaku untuk semua kategori
-  body('kategoriId').optional({ values: 'null' }).isInt({ min: 1 }).withMessage('kategoriId harus berupa angka').toInt(),
-  // Format kondisi dicek lengkap di logic/validasiDataAdmin.js
-  field('kondisi', wajib)
-    .isObject().withMessage('Kondisi harus berupa objek, mis. { "fungsiUtama": "tidak_berfungsi" }'),
-  tindakan(wajib),
-  body('bobot').optional().isInt({ min: -100, max: 100 }).withMessage('bobot harus angka bulat -100 sampai 100').toInt(),
-  body('eliminasi').optional().isBoolean().withMessage('eliminasi harus true atau false').toBoolean(),
-  teks('alasan', 'Alasan', 500, wajib),
-  status(),
-];
-
-const faktorRules = (wajib) => [
-  kodeBesar(wajib),
-  // Harus sama dengan salah satu nama kategori (keputusan 11 Okt), dicek di controller
-  teks('material', 'Material', 50, wajib),
-  tindakan(wajib),
-  field('nilai', wajib).isFloat().withMessage('nilai harus berupa angka').toFloat(),
-  // Kalkulator dampak (FR-13) hanya bisa menghitung faktor per kg barang
-  teks('satuan', 'Satuan', 30, wajib)
-    .custom(satuanDidukung)
-    .withMessage(`Satuan harus "${SATUAN_FAKTOR}" (kg CO2e per kg barang)`),
-  teks('sumber', 'Sumber', 255, wajib),
-  field('tahun', wajib)
-    .isInt({ min: 1990, max: new Date().getUTCFullYear() })
-    .withMessage(`tahun harus antara 1990 dan ${new Date().getUTCFullYear()}`)
-    .toInt(),
-  status(),
-];
-
 module.exports = {
   idRules,
   listRules,
@@ -148,6 +102,4 @@ module.exports = {
   kategoriRules,
   barangRules,
   pertanyaanRules,
-  aturanRules,
-  faktorRules,
 };

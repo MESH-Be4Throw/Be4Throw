@@ -2,7 +2,6 @@
 import { useEffect, useState } from "react";
 import "./AdminDashboard.css";
 import KelolaData from "./KelolaData";
-import KelolaAnalisis from "./KelolaAnalisis";
 import AuditSistem from "./AuditSistem";
 import ProfilAdmin from "./ProfilAdmin";
 import { API_ORIGIN, apiGetAllPages, apiRequest, fileUrl } from "./services/api";
@@ -13,8 +12,6 @@ const menuItems = [
   { id: "kategori", label: "Kategori", icon: "▤" },
   { id: "barang", label: "Barang", icon: "♻" },
   { id: "pertanyaan", label: "Pertanyaan", icon: "?" },
-  { id: "aturan", label: "Aturan", icon: "⚙" },
-  { id: "faktor", label: "Faktor Dampak", icon: "❖" },
   { id: "audit", label: "Audit Sistem", icon: "≡" },
 ];
 
@@ -214,14 +211,6 @@ if (
   return <KelolaData initialTab={tabMap[activeMenu]} />;
 }
 
-if (["aturan", "faktor"].includes(activeMenu)) {
-  return (
-    <KelolaAnalisis
-      initialTab={activeMenu === "aturan" ? "Aturan" : "Faktor Dampak"}
-    />
-  );
-}
-
   return (
     
 <div
@@ -399,26 +388,6 @@ if (["aturan", "faktor"].includes(activeMenu)) {
             <span className="admin-quick-arrow">→</span>
           </button>
 
-          <button
-            type="button"
-            className="admin-quick-button"
-            onClick={() => handleMenuClick("aturan")}
-          >
-            <span className="admin-quick-icon blue">⚙</span>
-            <span className="admin-quick-label">Aturan</span>
-            <span className="admin-quick-arrow">→</span>
-          </button>
-
-          <button
-            type="button"
-            className="admin-quick-button"
-            onClick={() => handleMenuClick("faktor")}
-          >
-            <span className="admin-quick-icon green">❖</span>
-            <span className="admin-quick-label">Faktor Dampak</span>
-            <span className="admin-quick-arrow">→</span>
-          </button>
-
 
           <button
             type="button"
@@ -558,7 +527,7 @@ if (["aturan", "faktor"].includes(activeMenu)) {
       </section>
 
       <footer className="admin-footer">
-        Be4Throw Blueprint System · Frontend Demo
+        Be4Throw
       </footer>
     </>
 

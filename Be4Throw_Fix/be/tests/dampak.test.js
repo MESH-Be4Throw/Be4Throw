@@ -1,6 +1,7 @@
 // Unit test kalkulator dampak lingkungan (FR-13)
 const {
   hitungDampak,
+  hitungDampakKomposisi,
   catatanDampak,
   pilihFaktor,
   satuanDidukung,
@@ -155,5 +156,50 @@ describe('catatanDampak', () => {
 
   test('berat belum diisi → disebut sebagai data yang kurang', () => {
     expect(catatanDampak([r(2022)], null)).toEqual([PESAN_TANPA_BERAT]);
+  });
+});
+
+describe('hitungDampakKomposisi', () => {
+  const komposisi = [
+    { material: 'Plastik', persen: 60 },
+    { material: 'Logam', persen: 40 },
+  ];
+  const fm = (id, material, nilai) => f(id, 'daur_ulang', nilai, { material });
+  const hitungK = (daftarFaktor, beratKg = 2) =>
+    hitungDampakKomposisi({ beratKg, komposisi, materialDasar: 'Elektronik', daftarTindakan: ['daur_ulang'], daftarFaktor });
+
+  test('emisi = jumlah (berat × persen × faktor) tiap bahan, rincian bahan ikut', () => {
+    const { rincian, versiFaktor } = hitungK([fm(1, 'Plastik', 1), fm(2, 'Logam', 4)]);
+
+    expect(rincian[0].limbahDialihkanKg).toBe(2);
+    expect(rincian[0].emisiDihindariKgCO2e).toBe(4.4); // 1,2 × 1 + 0,8 × 4
+    expect(rincian[0].bahan).toEqual([
+      { material: 'Plastik', persen: 60, beratKg: 1.2, emisiKgCO2e: 1.2, faktor: 1, satuan: 'kgCO2e/kg', sumber: 'Sumber uji 1', tahun: 2022 },
+      { material: 'Logam', persen: 40, beratKg: 0.8, emisiKgCO2e: 3.2, faktor: 4, satuan: 'kgCO2e/kg', sumber: 'Sumber uji 2', tahun: 2022 },
+    ]);
+    expect(versiFaktor).toEqual([{ id: 1, versi: 1 }, { id: 2, versi: 1 }]);
+  });
+
+  test('satu bahan tanpa faktor → total null, bahan lain tetap dihitung', () => {
+    const { rincian } = hitungK([fm(1, 'Plastik', 1)]);
+
+    expect(rincian[0].emisiDihindariKgCO2e).toBeNull();
+    expect(rincian[0].bahan[0].emisiKgCO2e).toBe(1.2);
+    expect(rincian[0].bahan[1]).toMatchObject({ emisiKgCO2e: null, faktor: null, sumber: null, tahun: null });
+    expect(rincian[0].asumsi).toContain('Logam');
+  });
+
+  test('tanpa berat → semua null; tanpa komposisi → hitung seperti biasa per material dasar', () => {
+    expect(hitungK([fm(1, 'Plastik', 1), fm(2, 'Logam', 4)], null).rincian[0].emisiDihindariKgCO2e).toBeNull();
+
+    const { rincian } = hitungDampakKomposisi({
+      beratKg: 2,
+      komposisi: [],
+      materialDasar: 'Elektronik',
+      daftarTindakan: ['daur_ulang'],
+      daftarFaktor: [f(1, 'daur_ulang', 10)],
+    });
+    expect(rincian[0].emisiDihindariKgCO2e).toBe(20);
+    expect(rincian[0].bahan).toBeUndefined();
   });
 });

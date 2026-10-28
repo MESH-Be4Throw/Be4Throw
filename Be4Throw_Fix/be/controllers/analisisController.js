@@ -6,7 +6,7 @@ const { jalankanAnalisis } = require('../logic/ruleEngine');
 const { susunRekomendasi, pesanAlternatif } = require('../logic/rekomendasi');
 const { LABEL_TINDAKAN } = require('../logic/tindakan');
 const {
-  hitungDampak,
+  hitungDampakKomposisi,
   catatanDampak,
   MANFAAT_KUALITATIF,
   PESAN_BELUM_DIHITUNG,
@@ -64,6 +64,7 @@ function formatRincianDampak(r) {
     jenis: r.jenis, // utama / alternatif
     pengalihanLimbah: d.limbahDialihkanKg == null ? null : { nilai: d.limbahDialihkanKg, satuan: 'kg' },
     emisiDihindari: d.emisiDihindariKgCO2e == null ? null : { nilai: d.emisiDihindariKgCO2e, satuan: 'kg CO2e' },
+    bahan: d.bahan ?? [], // rincian per bahan penyusun
     asumsi: d.asumsi,
     sumber: d.sumber, // null = faktor belum tersedia
     tahunFaktor: d.tahunFaktor,
@@ -298,21 +299,30 @@ async function simpanDampak(analisisId) {
     where: { id: analisisId },
     select: {
       beratKg: true,
-      barang: { select: { kategori: { select: { nama: true } } } },
+      barang: {
+        select: {
+          kategori: { select: { nama: true } },
+          komposisi: { select: { material: true, persen: true }, orderBy: { persen: 'desc' } },
+        },
+      },
       rekomendasi: { select: { id: true, tindakan: true } },
     },
   });
 
-  const material = analisis.barang.kategori.nama;
+  const materialDasar = analisis.barang.kategori.nama;
+  const komposisi = analisis.barang.komposisi;
+  // Faktor dicari per bahan penyusun; barang tanpa komposisi memakai nama kategori
+  const daftarMaterial = komposisi.length ? komposisi.map((k) => k.material) : [materialDasar];
   const daftarFaktor = await prisma.faktorDampak.findMany({
-    where: { status: 'aktif', material },
+    where: { status: 'aktif', material: { in: daftarMaterial } },
     select: { id: true, versi: true, material: true, tindakan: true, nilai: true, satuan: true, sumber: true, tahun: true },
   });
 
   // Hitung di logic/dampak.js (fungsi murni, ada unit test-nya)
-  const hasil = hitungDampak({
+  const hasil = hitungDampakKomposisi({
     beratKg: analisis.beratKg,
-    material,
+    komposisi,
+    materialDasar,
     daftarTindakan: analisis.rekomendasi.map((r) => r.tindakan),
     daftarFaktor,
   });

@@ -204,6 +204,17 @@
   background: #26724a;
 }
 
+/* Centang digambar dengan CSS supaya tepat di tengah kotak */
+.identify-checkbox-card input:checked + .identify-custom-checkbox::after {
+  content: "";
+  width: 3px;
+  height: 7px;
+  margin-top: -1px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
 .identify-checkbox-card input:focus-visible + .identify-custom-checkbox {
   outline: 2px solid #78b58a;
   outline-offset: 2px;

@@ -2,6 +2,8 @@ require('dotenv/config');
 const { PrismaClient } = require('@prisma/client');
 const bcrypt = require('bcrypt');
 const { dataAturan, keBarisAturan } = require('./dataAturan');
+const { dataFaktor } = require('./dataFaktor');
+const { dataKomposisi } = require('./dataKomposisi');
 
 const prisma = new PrismaClient();
 
@@ -230,6 +232,37 @@ async function seedAturan(adminId) {
   }
 }
 
+// ==================== KOMPOSISI BARANG (FR-13) ====================
+// Isi komposisi ada di prisma/dataKomposisi.js. Barang yang sudah punya komposisi tidak ditimpa.
+async function seedKomposisi() {
+  let jumlahBarang = 0;
+  for (const [nama, bahan] of Object.entries(dataKomposisi)) {
+    const barang = await prisma.barang.findFirst({ where: { nama } });
+    if (!barang) continue;
+    if ((await prisma.komposisiBarang.count({ where: { barangId: barang.id } })) > 0) continue;
+
+    await prisma.komposisiBarang.createMany({
+      data: bahan.map(([material, persen, sumber]) => ({ barangId: barang.id, material, persen, sumber })),
+    });
+    jumlahBarang++;
+  }
+  console.log(`✔ Komposisi barang: ${jumlahBarang} barang baru`);
+}
+
+// ==================== FAKTOR DAMPAK (FR-13) ====================
+// Isi faktor ada di prisma/dataFaktor.js. Kode yang sudah ada tidak ditimpa.
+async function seedFaktor(adminId) {
+  let jumlahBaru = 0;
+  for (const faktor of dataFaktor) {
+    const sudahAda = await prisma.faktorDampak.findUnique({ where: { kode: faktor.kode } });
+    if (sudahAda) continue;
+
+    await prisma.faktorDampak.create({ data: { ...faktor, adminId, versi: 1, status: 'aktif' } });
+    jumlahBaru++;
+  }
+  console.log(`✔ Faktor dampak: ${jumlahBaru} baru`);
+}
+
 async function main() {
   // 1. Akun admin (kredensial dari .env, bukan hardcode)
   const { ADMIN_EMAIL, ADMIN_PASSWORD } = process.env;
@@ -274,6 +307,10 @@ async function main() {
 
   // 4. Aturan awal basis pengetahuan (FR-10) — DRAFT, divalidasi Shakira
   await seedAturan(admin.id);
+
+  // 5. Faktor emisi awal (FR-13), supaya emisi langsung bisa dihitung
+  await seedFaktor(admin.id);
+  await seedKomposisi();
 }
 
 main()
@@ -281,4 +318,4 @@ main()
     console.error('Seed gagal:', err.message);
     process.exit(1);
   })
-  .finally(() => prisma.$disconnect());
+  .finally(() => prisma.$disconnect());

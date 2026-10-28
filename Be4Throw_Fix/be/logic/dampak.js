@@ -125,6 +125,84 @@ function hitungDampak({ beratKg, material, daftarTindakan, daftarFaktor }) {
   return { rincian, versiFaktor };
 }
 
+// Versi per bahan penyusun: tiap bahan dihitung dengan beratnya sendiri (berat × persen),
+// lalu dijumlahkan per tindakan. Satu saja bahan tanpa faktor → total emisi null (tidak dikarang),
+// tetapi emisi bahan lain tetap tampil di rincian bahan.
+// komposisi: [{ material, persen }]; kosong → hitung seperti hitungDampak biasa dengan materialDasar.
+function hitungDampakKomposisi({ beratKg, komposisi, materialDasar, daftarTindakan, daftarFaktor }) {
+  if (!komposisi || komposisi.length === 0) {
+    return hitungDampak({ beratKg, material: materialDasar, daftarTindakan, daftarFaktor });
+  }
+
+  const perBahan = komposisi.map((k) => ({
+    k,
+    beratBahan: beratKg == null ? null : bulatkan((beratKg * k.persen) / 100),
+    hasil: hitungDampak({
+      beratKg: beratKg == null ? null : (beratKg * k.persen) / 100,
+      material: k.material,
+      daftarTindakan,
+      daftarFaktor,
+    }),
+  }));
+
+  const dipakai = new Map();
+  perBahan.forEach(({ hasil }) => hasil.versiFaktor.forEach((v) => dipakai.set(v.id, v.versi)));
+
+  const rincian = daftarTindakan.map((tindakan, i) => {
+    const baris = perBahan.map(({ k, beratBahan, hasil }) => ({ k, beratBahan, r: hasil.rincian[i] }));
+    const adaBerat = beratKg != null;
+    const semuaAdaFaktor = baris.every(({ r }) => r.tahunFaktor != null);
+    const tahun = baris.map(({ r }) => r.tahunFaktor).filter((t) => t != null);
+
+    return {
+      tindakan,
+      material: komposisi.map((k) => k.material).join(', '),
+      limbahDialihkanKg: adaBerat ? bulatkan(beratKg) : null,
+      emisiDihindariKgCO2e:
+        adaBerat && semuaAdaFaktor
+          ? bulatkan(baris.reduce((jumlah, { r }) => jumlah + r.emisiDihindariKgCO2e, 0))
+          : null,
+      // Faktor, satuan, sumber & tahun ditampilkan per bahan karena bisa berbeda (SDD)
+      bahan: baris.map(({ k, beratBahan, r }) => {
+        const faktor = pilihFaktor(daftarFaktor, k.material, tindakan);
+        return {
+          material: k.material,
+          persen: k.persen,
+          beratKg: beratBahan,
+          emisiKgCO2e: r.emisiDihindariKgCO2e,
+          faktor: faktor ? faktor.nilai : null,
+          satuan: faktor ? faktor.satuan : null,
+          sumber: faktor ? faktor.sumber : null,
+          tahun: faktor ? faktor.tahun : null,
+        };
+      }),
+      asumsi: susunAsumsiKomposisi(beratKg, tindakan, baris),
+      sumber: [...new Set(baris.map(({ r }) => r.sumber).filter(Boolean))].join('; ') || null,
+      tahunFaktor: tahun.length ? Math.min(...tahun) : null,
+    };
+  });
+
+  const versiFaktor = [...dipakai].map(([id, versi]) => ({ id, versi })).sort((a, b) => a.id - b.id);
+  return { rincian, versiFaktor };
+}
+
+function susunAsumsiKomposisi(beratKg, tindakan, baris) {
+  const label = LABEL_TINDAKAN[tindakan];
+  if (beratKg == null) return PESAN_TANPA_BERAT;
+
+  const bagian = [
+    `Berat barang ${angka(beratKg)} kg sesuai isian pengguna, dan seluruh barang dianggap ` +
+      `tidak dibuang ke TPA karena ${KETERANGAN_TINDAKAN[tindakan]}.`,
+    `Emisi dihitung per bahan penyusun: ${baris.map(({ k }) => `${k.material} ${angka(k.persen)}%`).join(', ')} ` +
+      `(berat bahan × faktor kg CO2e per kg untuk ${label}).`,
+  ];
+  const tanpaFaktor = baris.filter(({ r }) => r.tahunFaktor == null).map(({ k }) => k.material);
+  if (tanpaFaktor.length) {
+    bagian.push(`Faktor untuk ${tanpaFaktor.join(', ')} belum tersedia, jadi total emisi tidak dihitung.`);
+  }
+  return bagian.join(' ');
+}
+
 // Catatan keterbatasan untuk FE, dihitung dari baris DampakLingkungan yang sudah tersimpan.
 // tahunFaktor null = tindakan itu tidak punya faktor.
 function catatanDampak(rincian, beratKg) {
@@ -145,6 +223,7 @@ function catatanDampak(rincian, beratKg) {
 
 module.exports = {
   hitungDampak,
+  hitungDampakKomposisi,
   catatanDampak,
   pilihFaktor,
   satuanDidukung,

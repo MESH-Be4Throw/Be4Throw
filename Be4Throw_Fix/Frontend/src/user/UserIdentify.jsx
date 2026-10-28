@@ -354,9 +354,7 @@ useEffect(() => {
           checked={terpilih.includes(opsi.nilai)}
           onChange={() => togglePilihan(item.kode, opsi.nilai)}
         />
-        <span className="identify-custom-checkbox">
-          {terpilih.includes(opsi.nilai) ? "✓" : ""}
-        </span>
+        <span className="identify-custom-checkbox" aria-hidden="true" />
         <span>{opsi.label}</span>
       </label>
     ));

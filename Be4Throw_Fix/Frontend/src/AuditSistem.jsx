@@ -258,7 +258,7 @@ export default function AuditSistem() {
       </div>
 
       <footer className="audit-page-footer">
-        Be4Throw Blueprint System · Frontend Demo
+        Be4Throw
       </footer>
 
       {selectedLog && (
